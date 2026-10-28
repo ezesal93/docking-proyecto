@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juegos de Docking</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#eef2f3; --surface:#fff; --surface-2:#e7edef; --fg:#15242b; --muted:#56696f; --border:#d7e0e2;
+  --accent:#0d7c8b; --accent-ink:#0a5e6a; --accent-soft:rgba(13,124,139,.14);
+  --warm:#b0720f; --good:#2e8c58; --good-soft:rgba(46,140,88,.16);
+  --hl-sel:rgba(13,124,139,.30);
+  --w1:#0d7c8b; --w2:#2f6fae; --w3:#7a5bb0; --w4:#b0720f; --w5:#2e8c58;
+  --shadow:0 1px 2px rgba(20,40,48,.05),0 6px 18px rgba(20,40,48,.08);
+  --font:"Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1518; --surface:#132026; --surface-2:#1a2a31; --fg:#e7eef0; --muted:#9fb2b8; --border:#26393f;
+  --accent:#36b9cb; --accent-ink:#5fcede; --accent-soft:rgba(54,185,203,.16);
+  --warm:#e0a53a; --good:#4fba7e; --good-soft:rgba(79,186,126,.18); --hl-sel:rgba(54,185,203,.35);
+  --w1:#36b9cb; --w2:#6097dc; --w3:#a98cd8; --w4:#e0a53a; --w5:#4fba7e;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --bg:#0c1518; --surface:#132026; --surface-2:#1a2a31; --fg:#e7eef0; --muted:#9fb2b8; --border:#26393f;
+  --accent:#36b9cb; --accent-ink:#5fcede; --accent-soft:rgba(54,185,203,.16);
+  --warm:#e0a53a; --good:#4fba7e; --good-soft:rgba(79,186,126,.18); --hl-sel:rgba(54,185,203,.35);
+  --w1:#36b9cb; --w2:#6097dc; --w3:#a98cd8; --w4:#e0a53a; --w5:#4fba7e;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 8px}
+h1{font-size:1.15rem;font-weight:800;margin:0;letter-spacing:-.01em}
+h1 span{color:var(--accent)}
+.theme-btn{font:inherit;font-size:.8rem;border:1px solid var(--border);background:var(--surface-2);color:var(--fg);border-radius:999px;padding:.3rem .75rem;cursor:pointer}
+nav{display:flex;gap:6px;padding-bottom:10px}
+.tab{font:inherit;font-weight:600;font-size:.92rem;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:999px;padding:.45rem 1rem;cursor:pointer}
+.tab:hover{background:var(--surface-2);color:var(--fg)}
+.tab[aria-selected="true"]{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#07171b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#07171b}}
+main{padding:20px 0 40px}
+h2{font-size:1.45rem;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+.lede{color:var(--muted);margin:0 0 16px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-bottom:14px}
+.stat{font-family:var(--mono);font-size:.9rem;color:var(--muted)}
+.stat b{color:var(--fg);font-weight:500}
+.btn{font:inherit;font-weight:600;font-size:.88rem;border:1px solid var(--accent);background:var(--surface);color:var(--accent-ink);border-radius:10px;padding:.45rem .9rem;cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+.win{display:none;border-left:4px solid var(--good);background:var(--good-soft);border-radius:0 12px 12px 0;padding:.8rem 1rem;margin-bottom:14px;font-weight:600}
+.win.show{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---- sopa de letras ---- */
+.sopa{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;align-items:start}
+@media (max-width:720px){.sopa{grid-template-columns:1fr}}
+.board{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;box-shadow:var(--shadow);max-width:560px;width:100%}
+#grid{display:grid;gap:2px;touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:500;
+  font-size:clamp(.8rem,3.6vw,1.2rem);border-radius:6px;cursor:pointer;position:relative}
+.cell.sel{background:var(--hl-sel)}
+.cell.anchor{outline:2px solid var(--accent);outline-offset:-2px}
+.cell.found{color:#fff}
+:root[data-theme="dark"] .cell.found{color:#07171b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cell.found{color:#07171b}}
+.words{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.words h3{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.words ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.words li{font-weight:600;display:flex;align-items:center;gap:8px}
+.words li i{width:.75rem;height:.75rem;border-radius:3px;background:var(--border);flex:none}
+.words li.done{color:var(--muted);text-decoration:line-through}
+.hint{font-size:.85rem;color:var(--muted);margin-top:10px}
+
+/* ---- memorice ---- */
+.memo{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+@media (max-width:480px){.memo{grid-template-columns:repeat(3,1fr);gap:8px}}
+.card{aspect-ratio:3/4;perspective:800px;cursor:pointer;border:none;padding:0;background:none;font:inherit;color:inherit}
+.card .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.card.up .in,.card.ok .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:var(--shadow);overflow:hidden}
+.back{background:var(--accent);display:flex;align-items:center;justify-content:center;
+  background-image:radial-gradient(circle at 30% 30%,rgba(255,255,255,.22) 0 14%,transparent 15%),radial-gradient(circle at 70% 65%,rgba(255,255,255,.16) 0 10%,transparent 11%),radial-gradient(circle at 60% 25%,rgba(255,255,255,.12) 0 6%,transparent 7%)}
+.back svg{width:42%;color:rgba(255,255,255,.9)}
+.front{transform:rotateY(180deg);background:#fff;border:2px solid var(--border);display:flex;flex-direction:column}
+.front img{width:100%;flex:1;min-height:0;object-fit:contain;padding:6px}
+.front .lbl{background:var(--surface);color:var(--fg);padding:6px 6px 8px;text-align:center;border-top:1px solid var(--border)}
+.front .lbl b{display:block;font-size:.9rem;line-height:1.15}
+.front .lbl small{display:block;font-size:.7rem;color:var(--muted);margin-top:2px}
+.front .kind{position:absolute;top:6px;left:6px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.12rem .4rem;border-radius:999px;color:#fff}
+.kind.prot{background:var(--w2)}.kind.lig{background:var(--w4)}
+.card.ok .front{border-color:var(--good)}
+.card:disabled{cursor:default}
+@media (max-width:480px){.front .lbl b{font-size:.78rem}.front .lbl small{display:none}}
+.info{min-height:3em;margin:14px 0 0;padding:.7rem 1rem;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--muted)}
+.info b{color:var(--fg)}
+@media (prefers-reduced-motion:reduce){.card .in{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <h1>Juegos de <span>Docking</span></h1>
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro">◐ Tema</button>
+    </div>
+    <nav role="tablist" aria-label="Juegos">
+      <button class="tab" role="tab" data-tab="sopa" aria-selected="true">Sopa de letras</button>
+      <button class="tab" role="tab" data-tab="memo" aria-selected="false">Memorice</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ============ SOPA DE LETRAS ============ -->
+  <section id="sopa">
+    <h2>Sopa de letras</h2>
+    <p class="lede">Encuentra las 5 palabras clave del proyecto. Pueden estar en horizontal, vertical o diagonal, y también al revés.</p>
+    <div class="win" id="sopaWin"></div>
+    <div class="bar">
+      <span class="stat">Encontradas <b id="sopaCount">0</b>/5</span>
+      <span class="stat">Tiempo <b id="sopaTime">0:00</b></span>
+      <button class="btn" id="sopaNew">Nueva sopa</button>
+    </div>
+    <div class="sopa">
+      <div class="board"><div id="grid" aria-label="Sopa de letras"></div></div>
+      <div class="words">
+        <h3>Palabras</h3>
+        <ul id="wordList"></ul>
+        <p class="hint">Arrastra desde la primera letra hasta la última. También puedes tocar la primera letra y luego la última.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MEMORICE ============ -->
+  <section id="memo" hidden>
+    <h2>Memorice</h2>
+    <p class="lede">Encuentra las parejas de las 3 proteínas y los 4 ligandos del estudio. Las imágenes se generaron a partir de los archivos PDBQT usados en el docking.</p>
+    <div class="win" id="memoWin"></div>
+    <div class="bar">
+      <span class="stat">Parejas <b id="memoPairs">0</b>/7</span>
+      <span class="stat">Intentos <b id="memoMoves">0</b></span>
+      <span class="stat">Tiempo <b id="memoTime">0:00</b></span>
+      <button class="btn" id="memoNew">Nuevo juego</button>
+    </div>
+    <div class="memo" id="memoGrid"></div>
+    <p class="info" id="memoInfo">Da vuelta dos cartas. Si son iguales, ¡pareja!</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const mmss = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+
+  function cronometro(el) {
+    let t0 = 0, id = null;
+    return {
+      start() { if (id) return; t0 = Date.now(); id = setInterval(() => el.textContent = mmss(Math.floor((Date.now() - t0) / 1000)), 500); },
+      stop() { if (id) el.textContent = mmss(Math.floor((Date.now() - t0) / 1000)); clearInterval(id); id = null; return el.textContent; },
+      reset() { clearInterval(id); id = null; el.textContent = "0:00"; }
+    };
+  }
+
+  /* ---- pestañas y tema ---- */
+  document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === b));
+    $("sopa").hidden = b.dataset.tab !== "sopa";
+    $("memo").hidden = b.dataset.tab !== "memo";
+  });
+  try { const t = localStorage.getItem("juegos-tema"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  $("themeBtn").onclick = () => {
+    const cur = document.documentElement.dataset.theme;
+    const oscuro = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    const next = oscuro ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("juegos-tema", next); } catch (e) {}
+  };
+
+  /* ============ SOPA DE LETRAS ============ */
+  const PALABRAS = [
+    { txt: "Senescencia", color: "--w1" },
+    { txt: "Docking", color: "--w2" },
+    { txt: "Ligando", color: "--w3" },
+    { txt: "Proteína", color: "--w4" },
+    { txt: "Senolíticos", color: "--w5" }
+  ];
+  const N = 12;
+  const DIRS = [[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]];
+  const LETRAS = "ABCDEFGHIJLMNOPRSTUVZ";
+  const quitarTildes = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
+  let celdas = [], colocadas = [], encontradas = 0, ancla = null, inicio = null;
+  const relojSopa = cronometro($("sopaTime"));
+
+  function generarSopa() {
+    for (let intento = 0; intento < 200; intento++) {
+      const tab = Array.from({ length: N }, () => Array(N).fill(""));
+      const pos = [];
+      const ok = PALABRAS.every(p => {
+        const w = quitarTildes(p.txt);
+        for (let k = 0; k < 300; k++) {
+          const [dr, dc] = DIRS[Math.floor(Math.random() * DIRS.length)];
+          const r = Math.floor(Math.random() * N), c = Math.floor(Math.random() * N);
+          const er = r + dr * (w.length - 1), ec = c + dc * (w.length - 1);
+          if (er < 0 || er >= N || ec < 0 || ec >= N) continue;
+          let cabe = true;
+          for (let i = 0; i < w.length && cabe; i++) { const x = tab[r + dr * i][c + dc * i]; cabe = !x || x === w[i]; }
+          if (!cabe) continue;
+          for (let i = 0; i < w.length; i++) tab[r + dr * i][c + dc * i] = w[i];
+          pos.push({ ...p, w, r, c, er, ec, hallada: false });
+          return true;
+        }
+        return false;
+      });
+      if (ok) {
+        for (const fila of tab) for (let c = 0; c < N; c++) if (!fila[c]) fila[c] = LETRAS[Math.floor(Math.random() * LETRAS.length)];
+        return { tab, pos };
+      }
+    }
+  }
+
+  function nuevaSopa() {
+    const { tab, pos } = generarSopa();
+    colocadas = pos; encontradas = 0; ancla = null; inicio = null;
+    relojSopa.reset(); $("sopaCount").textContent = 0; $("sopaWin").classList.remove("show");
+    const g = $("grid"); g.innerHTML = ""; g.style.gridTemplateColumns = "repeat(" + N + ",1fr)";
+    celdas = [];
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+      const d = document.createElement("div");
+      d.className = "cell"; d.textContent = tab[r][c]; d.dataset.r = r; d.dataset.c = c;
+      g.appendChild(d); celdas.push(d);
+    }
+    $("wordList").innerHTML = PALABRAS.map((p, i) => '<li data-i="' + i + '"><i></i>' + p.txt + "</li>").join("");
+  }
+
+  const celda = (r, c) => celdas[r * N + c];
+  // Celdas en línea recta entre a y b (horizontal, vertical o diagonal), o null
+  function linea(a, b) {
+    const dr = b.r - a.r, dc = b.c - a.c;
+    if (dr && dc && Math.abs(dr) !== Math.abs(dc)) return null;
+    const n = Math.max(Math.abs(dr), Math.abs(dc)), sr = Math.sign(dr), sc = Math.sign(dc);
+    return Array.from({ length: n + 1 }, (_, i) => ({ r: a.r + sr * i, c: a.c + sc * i }));
+  }
+  function marcar(cs) {
+    celdas.forEach(d => d.classList.remove("sel"));
+    (cs || []).forEach(p => celda(p.r, p.c).classList.add("sel"));
+  }
+  function comprobar(a, b) {
+    marcar(null);
+    const p = colocadas.find(p => !p.hallada &&
+      ((p.r === a.r && p.c === a.c && p.er === b.r && p.ec === b.c) || (p.r === b.r && p.c === b.c && p.er === a.r && p.ec === a.c)));
+    if (!p) return;
+    p.hallada = true; encontradas++;
+    linea(a, b).forEach(q => { const d = celda(q.r, q.c); d.classList.add("found"); d.style.background = "var(" + p.color + ")"; });
+    const li = $("wordList").querySelector('[data-i="' + PALABRAS.findIndex(x => x.txt === p.txt) + '"]');
+    li.classList.add("done"); li.querySelector("i").style.background = "var(" + p.color + ")";
+    $("sopaCount").textContent = encontradas;
+    if (encontradas === PALABRAS.length) {
+      $("sopaWin").textContent = "¡Lo lograste! Encontraste las 5 palabras en " + relojSopa.stop() + ".";
+      $("sopaWin").classList.add("show");
+    }
+  }
+  const desde = e => {
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    return el && el.classList.contains("cell") ? { r: +el.dataset.r, c: +el.dataset.c } : null;
+  };
+  const g = $("grid");
+  g.addEventListener("pointerdown", e => {
+    const p = desde(e); if (!p) return;
+    e.preventDefault(); relojSopa.start(); inicio = p; marcar([p]);
+  });
+  g.addEventListener("pointermove", e => {
+    if (!inicio) return;
+    const p = desde(e); if (p) marcar(linea(inicio, p) || [inicio]);
+  });
+  addEventListener("pointerup", e => {
+    if (!inicio) return;
+    const p = desde(e) || inicio, a = inicio; inicio = null;
+    if (ancla) celda(ancla.r, ancla.c).classList.remove("anchor");
+    if (p.r === a.r && p.c === a.c) {
+      // Toque sin arrastrar: primera letra queda marcada, la segunda cierra la selección
+      if (ancla && (ancla.r !== a.r || ancla.c !== a.c) && linea(ancla, a)) { comprobar(ancla, a); ancla = null; }
+      else { ancla = a; celda(a.r, a.c).classList.add("anchor"); marcar(null); }
+    } else { ancla = null; if (linea(a, p)) comprobar(a, p); else marcar(null); }
+  });
+  $("sopaNew").onclick = nuevaSopa;
+  nuevaSopa();
+
+  /* ============ MEMORICE ============ */
+  const FICHAS = [
+    { id: "4i5i", nombre: "SIRT1", sub: "PDB 4I5I", tipo: "prot", info: "Desacetilasa asociada a la longevidad que regula a p53. Es la <b>diana deseada</b> del estudio." },
+    { id: "1tup", nombre: "p53", sub: "PDB 1TUP", tipo: "prot", info: "El \"guardián del genoma\": activa el arresto celular ante daño en el ADN. Es la <b>diana a evitar</b>." },
+    { id: "5b6n", nombre: "PRX6", sub: "PDB 5B6N", tipo: "prot", info: "Peroxirredoxina 6, una enzima antioxidante. Es la <b>diana de referencia</b>." },
+    { id: "apigenina", nombre: "Apigenina", sub: "Flavonoide", tipo: "lig", info: "Flavonoide de <i>Deschampsia antarctica</i>. Índice de selectividad: <b>1,61</b>." },
+    { id: "luteolina", nombre: "Luteolina", sub: "Flavonoide", tipo: "lig", info: "Flavonoide de <i>Deschampsia antarctica</i> y el mejor candidato: índice de selectividad <b>1,66</b>." },
+    { id: "quercetina", nombre: "Quercetina", sub: "Flavonoide", tipo: "lig", info: "Flavonoide, una de las dos mitades del senolítico de referencia D+Q. Índice de selectividad: <b>1,47</b>." },
+    { id: "dasatinib", nombre: "Dasatinib", sub: "Antineoplásico", tipo: "lig", info: "Inhibidor de quinasas, la otra mitad de D+Q. El único no selectivo: índice <b>0,93</b>." }
+  ];
+  const DORSO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="17" r="2.2"/><path d="M8 8l2.8 7M16 8l-2.8 7M8.2 7h7.6"/></svg>';
+  let abiertas = [], parejas = 0, intentos = 0, bloqueo = false;
+  const relojMemo = cronometro($("memoTime"));
+
+  function nuevoMemo() {
+    abiertas = []; parejas = 0; intentos = 0; bloqueo = false;
+    relojMemo.reset(); $("memoPairs").textContent = 0; $("memoMoves").textContent = 0;
+    $("memoWin").classList.remove("show");
+    $("memoInfo").innerHTML = "Da vuelta dos cartas. Si son iguales, ¡pareja!";
+    const grid = $("memoGrid"); grid.innerHTML = "";
+    shuffle(FICHAS.flatMap(f => [f, f])).forEach(f => {
+      const b = document.createElement("button");
+      b.className = "card"; b.dataset.id = f.id; b.setAttribute("aria-label", "Carta oculta");
+      b.innerHTML = '<div class="in"><div class="face back">' + DORSO + '</div>' +
+        '<div class="face front"><span class="kind ' + f.tipo + '">' + (f.tipo === "prot" ? "Proteína" : "Ligando") + '</span>' +
+        '<img src="img/' + f.id + '.png" alt="Estructura 3D de ' + f.nombre + '">' +
+        '<div class="lbl"><b>' + f.nombre + '</b><small>' + f.sub + '</small></div></div></div>';
+      b.onclick = () => voltear(b, f);
+      grid.appendChild(b);
+    });
+  }
+
+  function voltear(b, f) {
+    if (bloqueo || b.classList.contains("up") || b.classList.contains("ok")) return;
+    relojMemo.start();
+    b.classList.add("up"); b.setAttribute("aria-label", f.nombre);
+    abiertas.push(b);
+    if (abiertas.length < 2) return;
+    intentos++; $("memoMoves").textContent = intentos;
+    const [x, y] = abiertas; abiertas = [];
+    if (x.dataset.id === y.dataset.id) {
+      [x, y].forEach(c => { c.classList.remove("up"); c.classList.add("ok"); c.disabled = true; });
+      parejas++; $("memoPairs").textContent = parejas;
+      $("memoInfo").innerHTML = "<b>¡Pareja! " + f.nombre + "</b> (" + f.sub + "): " + f.info;
+      if (parejas === FICHAS.length) {
+        $("memoWin").textContent = "¡Completaste el memorice en " + intentos + " intentos y " + relojMemo.stop() + "!";
+        $("memoWin").classList.add("show");
+      }
+    } else {
+      bloqueo = true;
+      setTimeout(() => {
+        [x, y].forEach(c => { c.classList.remove("up"); c.setAttribute("aria-label", "Carta oculta"); });
+        bloqueo = false;
+      }, 1000);
+    }
+  }
+  $("memoNew").onclick = nuevoMemo;
+  nuevoMemo();
+})();
+</script>
+</body>
+</html>
