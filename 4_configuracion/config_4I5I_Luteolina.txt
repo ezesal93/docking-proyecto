@@ -1,0 +1,16 @@
+receptor = ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+out = ..\5_resultados_docking\4I5I_Luteolina_out.pdbqt
+
+
+center_x = 42.96
+center_y = -21.41
+center_z = 18.53
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0

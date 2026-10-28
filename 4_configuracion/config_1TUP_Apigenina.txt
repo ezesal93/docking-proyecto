@@ -1,0 +1,15 @@
+receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+out = ..\5_resultados_docking\1TUP_Apigenina_out.pdbqt
+
+center_x = 57.77
+center_y = 23.34
+center_z = 56.99
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0

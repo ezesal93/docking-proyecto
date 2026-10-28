@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitácora de Docking</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; color: #111; background: #fff;
+         max-width: 820px; margin: 0 auto; padding: 24px 16px; line-height: 1.5; }
+  h1 { font-size: 1.7em; margin-bottom: 0; }
+  .sub { color: #555; margin-top: 4px; }
+  h2 { border-bottom: 2px solid #111; padding-bottom: 4px; margin-top: 2em; }
+  h3 { margin-top: 1.5em; }
+  h4 { margin: 0 0 4px; font-family: Consolas, monospace; font-size: .95em; }
+  .doc { margin: 14px 0 20px; break-inside: avoid; page-break-inside: avoid; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 10.5px; line-height: 1.3;
+         background: #f5f5f5; border: 1px solid #ccc; padding: 8px; margin: 0;
+         white-space: pre; overflow-x: auto; }
+  .more { font-size: .85em; color: #444; margin: 4px 0 0; }
+  a { color: #0645ad; word-break: break-all; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #999; padding: 4px 8px; text-align: left; }
+  td.num { text-align: right; font-family: Consolas, monospace; }
+  .page { page-break-before: always; break-before: page; }
+  @media print {
+    body { max-width: none; padding: 0; }
+    pre { background: none; overflow: visible; white-space: pre-wrap; }
+    a { color: #111; text-decoration: none; }
+    h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  }
+  @page { margin: 18mm 15mm; }
+</style>
+</head>
+<body>
+
+<h1>Bitácora de investigación: acoplamiento molecular (docking)</h1>
+<p class="sub">Proteínas 1TUP, 4I5I y 5B6N frente a Apigenina, Dasatinib, Luteolina y Quercetina · AutoDock Vina 1.2.7</p>
+
+<h2>1. Obtención de las estructuras</h2>
+<p>Se descargaron los archivos PDB de las proteínas desde <strong>Protein Data Bank</strong> (carpeta <code>1_proteinas_PDB</code>)
+y los archivos de los ligandos desde <strong>PubChem</strong> (carpeta <code>2_ligandos_SDF</code>).</p>
+
+<h2>2. Preparación de archivos PDBQT</h2>
+<p>Las proteínas y los ligandos se convirtieron a formato PDBQT para usarlos en AutoDock Vina.
+Por su extensión, de cada archivo se muestran solo las primeras 20 líneas; el documento completo está en el enlace.</p>
+<h3>2.1 Proteínas</h3>
+<div class="doc"><h4>1TUP.pdbqt</h4><pre>ATOM      1 O3&#x27;  DT  E1001      27.888   8.691  79.993  1.00  0.00    -0.303 OA
+ATOM      2 C3&#x27;  DT  E1001      26.967   9.318  80.881  1.00  0.00     0.168 C 
+ATOM      3 C2&#x27;  DT  E1001      26.577  10.716  80.386  1.00  0.00     0.094 C 
+ATOM      4 C4&#x27;  DT  E1001      25.637   8.573  80.994  1.00  0.00     0.181 C 
+ATOM      5 C1&#x27;  DT  E1001      25.059  10.737  80.490  1.00  0.00     0.232 C 
+ATOM      6 C5&#x27;  DT  E1001      25.549   7.533  82.107  1.00  0.00     0.195 C 
+ATOM      7 O4&#x27;  DT  E1001      24.711   9.640  81.304  1.00  0.00    -0.339 OA
+ATOM      8  N1  DT  E1001      24.493  12.029  81.032  1.00  0.00    -0.266 N 
+ATOM      9 O5&#x27;  DT  E1001      25.930   6.224  81.661  1.00  0.00    -0.382 OA
+ATOM     10  C2  DT  E1001      24.076  12.975  80.106  1.00  0.00     0.339 A 
+ATOM     11  C6  DT  E1001      24.407  12.266  82.393  1.00  0.00     0.105 A 
+ATOM     12 H74  DT  E1001      26.099   5.644  82.446  1.00  0.00     0.216 HD
+ATOM     13  O2  DT  E1001      24.139  12.819  78.896  1.00  0.00    -0.241 OA
+ATOM     14  N3  DT  E1001      23.578  14.127  80.651  1.00  0.00    -0.266 N 
+ATOM     15  C5  DT  E1001      23.915  13.403  82.911  1.00  0.00     0.032 A 
+ATOM     16  H3  DT  E1001      23.255  14.846  79.988  1.00  0.00     0.180 HD
+ATOM     17  C4  DT  E1001      23.461  14.430  81.994  1.00  0.00     0.263 A 
+ATOM     18  C7  DT  E1001      23.835  13.622  84.396  1.00  0.00     0.053 C 
+ATOM     19  O4  DT  E1001      22.989  15.515  82.319  1.00  0.00    -0.261 OA
+ATOM     20 O3&#x27;  DT  E1002      29.987  13.109  74.942  1.00  0.00    -0.312 OA</pre><p class="more">Se muestran 20 de 6628 líneas. Documento completo: <a href="3-preparacion/proteinas_PDBQT/1TUP.pdbqt">3-preparacion/proteinas_PDBQT/1TUP.pdbqt</a></p></div><div class="doc"><h4>4I5I.pdbqt</h4><pre>ATOM      1  C   ASN A 241      51.249 -48.290  30.272  1.00  0.00     0.242 C 
+ATOM      2  O   ASN A 241      52.004 -48.145  29.305  1.00  0.00    -0.273 OA
+ATOM      3  CA  ASN A 241      51.518 -47.571  31.603  1.00  0.00     0.180 C 
+ATOM      4  N   ASN A 241      51.187 -48.419  32.786  1.00  0.00    -0.342 N 
+ATOM      5  CB  ASN A 241      52.972 -47.081  31.686  1.00  0.00     0.134 C 
+ATOM      6  CG  ASN A 241      53.185 -45.732  31.009  1.00  0.00     0.220 C 
+ATOM      7 OD1  ASN A 241      52.575 -45.424  29.981  1.00  0.00    -0.275 OA
+ATOM      8 ND2  ASN A 241      54.066 -44.921  31.585  1.00  0.00    -0.368 N 
+ATOM      9 HD22 ASN A 241      54.256 -43.994  31.177  1.00  0.00     0.159 HD
+ATOM     10 HD21 ASN A 241      54.559 -45.219  32.439  1.00  0.00     0.159 HD
+ATOM     11  H   ASN A 241      51.443 -49.118  33.498  1.00  0.00     0.164 HD
+ATOM     12  C   THR A 242      48.321 -49.308  28.628  1.00  0.00     0.245 C 
+ATOM     13  O   THR A 242      47.616 -48.682  29.426  1.00  0.00    -0.273 OA
+ATOM     14  CA  THR A 242      49.725 -49.758  29.022  1.00  0.00     0.199 C 
+ATOM     15  N   THR A 242      50.165 -49.064  30.237  1.00  0.00    -0.341 N 
+ATOM     16  CB  THR A 242      49.726 -51.292  29.202  1.00  0.00     0.143 C 
+ATOM     17 CG2  THR A 242      51.151 -51.834  29.292  1.00  0.00     0.041 C 
+ATOM     18 OG1  THR A 242      49.009 -51.637  30.394  1.00  0.00    -0.389 OA
+ATOM     19 HG1  THR A 242      49.543 -51.380  31.187  1.00  0.00     0.211 HD
+ATOM     20  H   THR A 242      49.613 -49.180  31.099  1.00  0.00     0.164 HD</pre><p class="more">Se muestran 20 de 5068 líneas. Documento completo: <a href="3-preparacion/proteinas_PDBQT/4I5I.pdbqt">3-preparacion/proteinas_PDBQT/4I5I.pdbqt</a></p></div><div class="doc"><h4>5B6N.pdbqt</h4><pre>ATOM      1  C   GLY A   4     -21.507  24.597 -27.383  1.00  0.00     0.239 C 
+ATOM      2  O   GLY A   4     -22.048  24.140 -28.393  1.00  0.00    -0.273 OA
+ATOM      3  CA  GLY A   4     -22.269  25.528 -26.441  1.00  0.00     0.216 C 
+ATOM      4  N   GLY A   4     -22.727  24.935 -25.195  1.00  0.00    -0.346 N 
+ATOM      5  H   GLY A   4     -23.693  25.143 -24.903  1.00  0.00     0.164 HD
+ATOM      6  C   LEU A   5     -18.557  22.546 -27.065  1.00  0.00     0.243 C 
+ATOM      7  O   LEU A   5     -18.099  22.967 -26.000  1.00  0.00    -0.272 OA
+ATOM      8  CA  LEU A   5     -19.448  23.431 -27.918  1.00  0.00     0.172 C 
+ATOM      9  N   LEU A   5     -20.242  24.327 -27.079  1.00  0.00    -0.345 N 
+ATOM     10  CB  LEU A   5     -18.595  24.222 -28.913  1.00  0.00     0.038 C 
+ATOM     11  CG  LEU A   5     -18.105  23.431 -30.124  1.00  0.00    -0.015 C 
+ATOM     12 CD1  LEU A   5     -19.233  22.592 -30.626  1.00  0.00     0.007 C 
+ATOM     13 CD2  LEU A   5     -17.635  24.362 -31.226  1.00  0.00     0.007 C 
+ATOM     14  H   LEU A   5     -19.816  24.753 -26.244  1.00  0.00     0.165 HD
+ATOM     15  C   LEU A   6     -16.450  19.585 -27.672  1.00  0.00     0.243 C 
+ATOM     16  O   LEU A   6     -16.645  19.446 -28.869  1.00  0.00    -0.272 OA
+ATOM     17  CA  LEU A   6     -17.383  20.459 -26.793  1.00  0.00     0.172 C 
+ATOM     18  N   LEU A   6     -18.322  21.316 -27.515  1.00  0.00    -0.345 N 
+ATOM     19  CB  LEU A   6     -18.066  19.706 -25.627  1.00  0.00     0.038 C 
+ATOM     20  CG  LEU A   6     -19.229  18.731 -25.795  1.00  0.00    -0.015 C </pre><p class="more">Se muestran 20 de 12553 líneas. Documento completo: <a href="3-preparacion/proteinas_PDBQT/5B6N.pdbqt">3-preparacion/proteinas_PDBQT/5B6N.pdbqt</a></p></div>
+<h3>2.2 Ligandos</h3>
+<div class="doc"><h4>Apigenina.pdbqt</h4><pre>REMARK SMILES O=c1cc(-c2ccc(O)cc2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 12 1 1 2 20 3 13 4 4 5 2 6 3 7 18 8 14 9 15 10 17 11 5 12
+REMARK SMILES IDX 6 13 11 14 7 15 10 16 8 17 9 18 19 20 16 22
+REMARK H PARENT 9 19 19 21 16 23
+ROOT
+ATOM      1  O   UNL     1      -0.068   0.780  -0.048  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      -1.726  -2.934   0.183  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      -2.065  -0.600   0.035  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      -1.433   0.639  -0.043  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1       0.714  -0.362   0.037  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      -1.239  -1.815   0.115  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1       0.224  -1.610   0.109  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      -3.459  -0.683   0.035  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      -2.193   1.806  -0.122  1.00  0.00     0.094 A 
+ATOM     10  C   UNL     1      -3.586   1.728  -0.122  1.00  0.00     0.123 A 
+ATOM     11  C   UNL     1      -4.218   0.485  -0.043  1.00  0.00     0.093 A 
+ENDROOT
+BRANCH   5  12
+ATOM     12  C   UNL     1       2.166  -0.097   0.018  1.00  0.00     0.018 A 
+ATOM     13  C   UNL     1       3.043  -1.034  -0.536  1.00  0.00     0.016 A </pre><p class="more">Se muestran 20 de 38 líneas. Documento completo: <a href="3-preparacion/ligandos_PDBQT/Apigenina.pdbqt">3-preparacion/ligandos_PDBQT/Apigenina.pdbqt</a></p></div><div class="doc"><h4>Dasatinib.pdbqt</h4><pre>REMARK SMILES Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1
+REMARK SMILES IDX 33 1 3 2 23 3 22 4 4 5 2 6 1 7 5 8 6 10 9 11 21 12 8 13 7 14
+REMARK SMILES IDX 10 15 12 16 11 17 13 19 19 20 18 21 14 22 17 23 16 24 20 25
+REMARK SMILES IDX 15 26 24 27 25 28 32 29 26 30 31 31 27 32 28 33 29 34 30 35
+REMARK H PARENT 5 9 12 18 30 36
+ROOT
+ATOM      1  N   UNL     1      -3.748   2.007  -0.194  1.00  0.00    -0.216 NA
+ATOM      2  N   UNL     1      -1.370   1.669   0.002  1.00  0.00    -0.216 NA
+ATOM      3  C   UNL     1      -3.941   0.659  -0.082  1.00  0.00     0.134 A 
+ATOM      4  C   UNL     1      -2.865  -0.216   0.074  1.00  0.00     0.094 A 
+ATOM      5  C   UNL     1      -1.604   0.345   0.110  1.00  0.00     0.137 A 
+ATOM      6  C   UNL     1      -2.471   2.431  -0.145  1.00  0.00     0.130 A 
+ATOM      7  C   UNL     1      -2.252   3.901  -0.267  1.00  0.00     0.090 C 
+ENDROOT
+BRANCH   5   8
+ATOM      8  N   UNL     1      -0.504  -0.532   0.268  1.00  0.00    -0.316 N 
+ATOM      9  H   UNL     1      -0.778  -1.506   0.379  1.00  0.00     0.170 HD
+BRANCH   8  10
+ATOM     10  C   UNL     1       0.835  -0.273   0.215  1.00  0.00     0.189 A 
+ATOM     11  C   UNL     1       3.231  -0.456   0.160  1.00  0.00     0.114 A </pre><p class="more">Se muestran 20 de 60 líneas. Documento completo: <a href="3-preparacion/ligandos_PDBQT/Dasatinib.pdbqt">3-preparacion/ligandos_PDBQT/Dasatinib.pdbqt</a></p></div><div class="doc"><h4>Luteolina.pdbqt</h4><pre>REMARK SMILES O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 13 1 1 2 21 3 14 4 4 5 2 6 3 7 19 8 15 9 16 10 18 11 5 12
+REMARK SMILES IDX 12 13 6 14 10 15 7 16 8 17 11 18 9 20 20 22 17 24
+REMARK H PARENT 11 19 9 21 20 23 17 25
+ROOT
+ATOM      1  O   UNL     1      -0.248   0.671  -0.129  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      -2.109  -2.925   0.329  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      -2.317  -0.586   0.062  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      -1.618   0.610  -0.093  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1       0.470  -0.508   0.003  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      -1.560  -1.840   0.193  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1      -0.088  -1.720   0.151  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      -3.714  -0.588   0.091  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      -2.312   1.812  -0.221  1.00  0.00     0.094 A 
+ATOM     10  C   UNL     1      -3.707   1.814  -0.193  1.00  0.00     0.123 A 
+ATOM     11  C   UNL     1      -4.406   0.617  -0.037  1.00  0.00     0.093 A 
+ENDROOT
+BRANCH   5  12
+ATOM     12  C   UNL     1       1.935  -0.329  -0.055  1.00  0.00     0.021 A 
+ATOM     13  C   UNL     1       2.516   0.854   0.407  1.00  0.00     0.062 A </pre><p class="more">Se muestran 20 de 42 líneas. Documento completo: <a href="3-preparacion/ligandos_PDBQT/Luteolina.pdbqt">3-preparacion/ligandos_PDBQT/Luteolina.pdbqt</a></p></div><div class="doc"><h4>Quercetina.pdbqt</h4><pre>REMARK SMILES O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 14 1 1 2 22 3 15 4 5 5 3 6 2 7 20 8 16 9 17 10 19 11 6 12
+REMARK SMILES IDX 13 13 7 14 11 15 8 16 9 17 12 18 10 20 4 22 21 24 18 26
+REMARK H PARENT 12 19 10 21 4 23 21 25 18 27
+ROOT
+ATOM      1  O   UNL     1      -0.326  -0.866  -0.125  1.00  0.00    -0.452 OA
+ATOM      2  O   UNL     1      -2.041   2.825   0.085  1.00  0.00    -0.285 OA
+ATOM      3  C   UNL     1      -2.336   0.486   0.023  1.00  0.00     0.111 A 
+ATOM      4  C   UNL     1      -1.689  -0.746  -0.052  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1       0.442   0.288  -0.110  1.00  0.00     0.180 A 
+ATOM      6  C   UNL     1      -0.058   1.536  -0.049  1.00  0.00     0.208 A 
+ATOM      7  C   UNL     1      -1.528   1.715   0.026  1.00  0.00     0.238 A 
+ATOM      8  C   UNL     1      -3.730   0.547   0.094  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      -2.433  -1.926  -0.059  1.00  0.00     0.094 A 
+ATOM     10  C   UNL     1      -3.826  -1.869   0.012  1.00  0.00     0.123 A 
+ATOM     11  C   UNL     1      -4.472  -0.634   0.088  1.00  0.00     0.093 A 
+ENDROOT
+BRANCH   5  12
+ATOM     12  C   UNL     1       1.888   0.018  -0.193  1.00  0.00     0.025 A 
+ATOM     13  C   UNL     1       2.636  -0.143   0.973  1.00  0.00     0.062 A </pre><p class="more">Se muestran 20 de 46 líneas. Documento completo: <a href="3-preparacion/ligandos_PDBQT/Quercetina.pdbqt">3-preparacion/ligandos_PDBQT/Quercetina.pdbqt</a></p></div>
+
+<h2 class="page">3. Archivos de configuración</h2>
+<p>Para cada combinación proteína–ligando se definió el centro y tamaño de la caja de búsqueda y los parámetros del docking.
+Se muestran completos.</p>
+<div class="doc"><h4>config_1TUP_Apigenina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+out = ..\5_resultados_docking\1TUP_Apigenina_out.pdbqt
+
+center_x = 57.77
+center_y = 23.34
+center_z = 56.99
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_1TUP_Apigenina.txt">4_configuracion/config_1TUP_Apigenina.txt</a></p></div><div class="doc"><h4>config_1TUP_Dasatinib.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+out = ..\5_resultados_docking\1TUP_Dasatinib_out.pdbqt
+
+
+center_x = 57.77
+center_y = 23.34
+center_z = 56.99
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_1TUP_Dasatinib.txt">4_configuracion/config_1TUP_Dasatinib.txt</a></p></div><div class="doc"><h4>config_1TUP_Luteolina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+out = ..\5_resultados_docking\1TUP_Luteolina_out.pdbqt
+
+
+center_x = 57.77
+center_y = 23.34
+center_z = 56.99
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_1TUP_Luteolina.txt">4_configuracion/config_1TUP_Luteolina.txt</a></p></div><div class="doc"><h4>config_1TUP_Quercetina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+out = ..\5_resultados_docking\1TUP_Quercetina_out.pdbqt
+
+
+center_x = 57.77
+center_y = 23.34
+center_z = 56.99
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_1TUP_Quercetina.txt">4_configuracion/config_1TUP_Quercetina.txt</a></p></div><div class="doc"><h4>config_4I5I_Apigenina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+out = ..\5_resultados_docking\4I5I_Apigenina_out.pdbqt
+
+
+center_x = 42.96
+center_y = -21.41
+center_z = 18.53
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_4I5I_Apigenina.txt">4_configuracion/config_4I5I_Apigenina.txt</a></p></div><div class="doc"><h4>config_4I5I_Dasatinib.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+out = ..\5_resultados_docking\4I5I_Dasatinib_out.pdbqt
+
+
+center_x = 42.96
+center_y = -21.41
+center_z = 18.53
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_4I5I_Dasatinib.txt">4_configuracion/config_4I5I_Dasatinib.txt</a></p></div><div class="doc"><h4>config_4I5I_Luteolina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+out = ..\5_resultados_docking\4I5I_Luteolina_out.pdbqt
+
+
+center_x = 42.96
+center_y = -21.41
+center_z = 18.53
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_4I5I_Luteolina.txt">4_configuracion/config_4I5I_Luteolina.txt</a></p></div><div class="doc"><h4>config_4I5I_Quercetina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+out = ..\5_resultados_docking\4I5I_Quercetina_out.pdbqt
+
+
+center_x = 42.96
+center_y = -21.41
+center_z = 18.53
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_4I5I_Quercetina.txt">4_configuracion/config_4I5I_Quercetina.txt</a></p></div><div class="doc"><h4>config_5B6N_Apigenina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+out = ..\5_resultados_docking\5B6N_Apigenina_out.pdbqt
+
+
+center_x = -13.13
+center_y = 43.65
+center_z = -26.81
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_5B6N_Apigenina.txt">4_configuracion/config_5B6N_Apigenina.txt</a></p></div><div class="doc"><h4>config_5B6N_Dasatinib.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+out = ..\5_resultados_docking\5B6N_Dasatinib_out.pdbqt
+
+
+center_x = -13.13
+center_y = 43.65
+center_z = -26.81
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_5B6N_Dasatinib.txt">4_configuracion/config_5B6N_Dasatinib.txt</a></p></div><div class="doc"><h4>config_5B6N_Luteolina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+out = ..\5_resultados_docking\5B6N_Luteolina_out.pdbqt
+
+
+center_x = -13.13
+center_y = 43.65
+center_z = -26.81
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_5B6N_Luteolina.txt">4_configuracion/config_5B6N_Luteolina.txt</a></p></div><div class="doc"><h4>config_5B6N_Quercetina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+ligand = ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+out = ..\5_resultados_docking\5B6N_Quercetina_out.pdbqt
+
+
+center_x = -13.13
+center_y = 43.65
+center_z = -26.81
+
+size_x = 20
+size_y = 20
+size_z = 20
+
+exhaustiveness = 32
+num_modes = 9
+energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_5B6N_Quercetina.txt">4_configuracion/config_5B6N_Quercetina.txt</a></p></div>
+
+<h2 class="page">4. Resultados del docking</h2>
+<h3>4.1 Resumen: mejor afinidad (modo 1)</h3>
+<table><thead><tr><th>Proteína</th><th>Ligando</th><th>Afinidad (kcal/mol)</th></tr></thead>
+<tbody><tr><td>1TUP</td><td>Apigenina</td><td class='num'>-5.635</td></tr><tr><td>1TUP</td><td>Dasatinib</td><td class='num'>-6.124</td></tr><tr><td>1TUP</td><td>Luteolina</td><td class='num'>-5.458</td></tr><tr><td>1TUP</td><td>Quercetina</td><td class='num'>-5.672</td></tr><tr><td>4I5I</td><td>Apigenina</td><td class='num'>-10.14</td></tr><tr><td>4I5I</td><td>Dasatinib</td><td class='num'>-6.021</td></tr><tr><td>4I5I</td><td>Luteolina</td><td class='num'>-10.41</td></tr><tr><td>4I5I</td><td>Quercetina</td><td class='num'>-9.327</td></tr><tr><td>5B6N</td><td>Apigenina</td><td class='num'>-6.953</td></tr><tr><td>5B6N</td><td>Dasatinib</td><td class='num'>-6.806</td></tr><tr><td>5B6N</td><td>Luteolina</td><td class='num'>-7.068</td></tr><tr><td>5B6N</td><td>Quercetina</td><td class='num'>-7.045</td></tr></tbody></table>
+<h3>4.2 Registros de AutoDock Vina (.log)</h3>
+<div class="doc"><h4>1TUP_Apigenina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+Grid center: X 57.77 Y 23.34 Z 56.99
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -803981585) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.635          0          0
+   2       -5.083      1.574      2.903
+   3       -4.862      9.098      10.96
+   4       -4.823      1.807      6.853
+   5       -4.758      1.612      2.367
+   6        -4.75      9.367      13.21
+   7       -4.725      8.193      11.24
+   8       -4.708        5.7      10.53
+   9       -4.702      9.708      13.21</pre><p class="more">Archivo: <a href="5_resultados_docking/1TUP_Apigenina_out.log">5_resultados_docking/1TUP_Apigenina_out.log</a></p></div><div class="doc"><h4>1TUP_Dasatinib_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+Grid center: X 57.77 Y 23.34 Z 56.99
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -1070217176) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.124          0          0
+   2       -6.072     0.9919      1.551
+   3       -6.058      1.963        2.3
+   4       -5.997      1.746      1.923
+   5       -5.903      3.845      11.27
+   6       -5.823       3.73      11.23
+   7       -5.811      4.125      8.751
+   8       -5.508      4.407      10.41
+   9       -5.457      3.799      9.373</pre><p class="more">Archivo: <a href="5_resultados_docking/1TUP_Dasatinib_out.log">5_resultados_docking/1TUP_Dasatinib_out.log</a></p></div><div class="doc"><h4>1TUP_Luteolina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+Grid center: X 57.77 Y 23.34 Z 56.99
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 794834099) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.458          0          0
+   2       -5.142      1.439      1.868
+   3       -5.111      1.485      2.938
+   4       -5.071      9.124      11.09
+   5       -5.051      9.979      11.08
+   6       -4.964      1.966      7.033
+   7       -4.917      1.543      7.025
+   8       -4.888       9.45      13.05
+   9       -4.832      1.383      7.171</pre><p class="more">Archivo: <a href="5_resultados_docking/1TUP_Luteolina_out.log">5_resultados_docking/1TUP_Luteolina_out.log</a></p></div><div class="doc"><h4>1TUP_Quercetina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+Grid center: X 57.77 Y 23.34 Z 56.99
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 507912617) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.672          0          0
+   2       -5.098       1.61      6.807
+   3       -4.955      1.572      2.408
+   4       -4.942      1.727      3.646
+   5       -4.867      2.388      3.235
+   6       -4.835      10.24      11.37
+   7       -4.818      1.655      3.465
+   8        -4.73      1.751      2.974
+   9       -4.728      8.398      10.05</pre><p class="more">Archivo: <a href="5_resultados_docking/1TUP_Quercetina_out.log">5_resultados_docking/1TUP_Quercetina_out.log</a></p></div><div class="doc"><h4>4I5I_Apigenina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+Grid center: X 42.96 Y -21.41 Z 18.53
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1810258944) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -10.14          0          0
+   2       -9.998      1.668       6.97
+   3       -9.847      1.699      6.922
+   4       -8.206      1.741      2.822
+   5       -7.921      3.122      7.233
+   6       -7.864      1.344      3.016
+   7       -7.674      3.828      8.304
+   8       -6.872      2.508      6.856
+   9       -6.021      4.047      6.343</pre><p class="more">Archivo: <a href="5_resultados_docking/4I5I_Apigenina_out.log">5_resultados_docking/4I5I_Apigenina_out.log</a></p></div><div class="doc"><h4>4I5I_Dasatinib_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+Grid center: X 42.96 Y -21.41 Z 18.53
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -1131737380) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.021          0          0
+   2        -5.41      2.983      11.96
+   3       -5.219      1.646       2.14
+   4       -5.127      3.232      12.06
+   5       -2.441      2.689      4.613
+   6       -2.408      2.842      4.859
+   7       -1.848      3.905      11.46
+   8       -1.837        3.5       11.5
+   9         9.38      2.998      4.598</pre><p class="more">Archivo: <a href="5_resultados_docking/4I5I_Dasatinib_out.log">5_resultados_docking/4I5I_Dasatinib_out.log</a></p></div><div class="doc"><h4>4I5I_Luteolina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+Grid center: X 42.96 Y -21.41 Z 18.53
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -816418508) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -10.41          0          0
+   2        -10.3      1.395      7.045
+   3       -10.22      1.201      2.727
+   4       -8.443      1.806      7.311
+   5       -8.281      3.178      5.349
+   6       -8.168      4.316      6.662
+   7       -8.129      1.539      7.014
+   8       -7.957      2.223      7.729
+   9       -7.409       2.34      3.938</pre><p class="more">Archivo: <a href="5_resultados_docking/4I5I_Luteolina_out.log">5_resultados_docking/4I5I_Luteolina_out.log</a></p></div><div class="doc"><h4>4I5I_Quercetina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\4I5I.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+Grid center: X 42.96 Y -21.41 Z 18.53
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1518277599) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -9.327          0          0
+   2       -9.072       1.84      3.666
+   3       -8.971      1.415      2.976
+   4       -7.534      1.504      6.949
+   5       -7.214       2.22        7.7
+   6       -6.843       2.39      4.196
+   7       -6.438      3.553      6.095
+   8       -5.676      1.646      6.854
+   9       -5.311      2.185      7.405</pre><p class="more">Archivo: <a href="5_resultados_docking/4I5I_Quercetina_out.log">5_resultados_docking/4I5I_Quercetina_out.log</a></p></div><div class="doc"><h4>5B6N_Apigenina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Apigenina.pdbqt
+Grid center: X -13.13 Y 43.65 Z -26.81
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1332330040) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.953          0          0
+   2       -6.605      4.069      6.712
+   3       -6.484      1.478       3.03
+   4       -6.437      3.475      6.873
+   5         -5.7       6.01      9.254
+   6       -5.419      4.266      6.864
+   7       -5.323      1.925          7
+   8       -5.277      1.317      2.865
+   9       -5.019      2.478      4.346</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Apigenina_out.log">5_resultados_docking/5B6N_Apigenina_out.log</a></p></div><div class="doc"><h4>5B6N_Dasatinib_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Dasatinib.pdbqt
+Grid center: X -13.13 Y 43.65 Z -26.81
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -1662734006) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.806          0          0
+   2       -6.402      3.166      3.718
+   3       -6.001      3.545      4.363
+   4       -5.868      3.405      11.25
+   5       -5.635      4.022      11.26
+   6       -5.213      3.416      9.811
+   7       -4.755      2.898      4.129
+   8       -4.732      3.279      11.16
+   9       -4.679      4.509      5.385</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Dasatinib_out.log">5_resultados_docking/5B6N_Dasatinib_out.log</a></p></div><div class="doc"><h4>5B6N_Luteolina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Luteolina.pdbqt
+Grid center: X -13.13 Y 43.65 Z -26.81
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -1369201025) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.068          0          0
+   2       -6.936      4.158      6.832
+   3       -6.508      1.565      7.156
+   4       -6.496      2.715      5.186
+   5       -6.385       2.85      5.631
+   6       -5.852       1.73      2.043
+   7       -5.508      2.083      2.629
+   8       -5.335      3.037      7.335
+   9       -5.226      3.589      7.462</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Luteolina_out.log">5_resultados_docking/5B6N_Luteolina_out.log</a></p></div><div class="doc"><h4>5B6N_Quercetina_out.log</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: ..\3-preparacion\proteinas_PDBQT\5B6N.pdbqt
+Ligand: ..\3-preparacion\ligandos_PDBQT\Quercetina.pdbqt
+Grid center: X -13.13 Y 43.65 Z -26.81
+Grid size  : X 20 Y 20 Z 20
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -727052051) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.045          0          0
+   2       -6.972     0.5803      1.444
+   3       -6.655      1.643       7.05
+   4       -6.549      2.723      5.033
+   5       -5.463      4.406      6.999
+   6       -5.416      2.239      2.783
+   7       -5.132      4.734      7.314
+   8       -4.888      4.327      7.534
+   9       -4.732      3.635      5.047</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Quercetina_out.log">5_resultados_docking/5B6N_Quercetina_out.log</a></p></div>
+<h3 class="page">4.3 Poses generadas (_out.pdbqt)</h3>
+<p>Se muestran las primeras 20 líneas de cada archivo; el documento completo está en el enlace.</p>
+<div class="doc"><h4>1TUP_Apigenina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -5.635      0.000      0.000
+REMARK INTER + INTRA:          -6.732
+REMARK INTER:                  -6.458
+REMARK INTRA:                  -0.273
+REMARK UNBOUND:                -0.273
+REMARK SMILES O=c1cc(-c2ccc(O)cc2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 12 1 1 2 20 3 13 4 4 5 2 6 3 7 18 8 14 9 15 10 17 11 5 12
+REMARK SMILES IDX 6 13 11 14 7 15 10 16 8 17 9 18 19 20 16 22
+REMARK H PARENT 9 19 19 21 16 23
+ROOT
+ATOM      1  O   UNL     1      53.067  23.192  57.892  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      52.571  26.053  60.748  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      53.127  25.540  58.509  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      53.277  24.512  57.582  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      52.696  22.869  59.188  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      52.724  25.203  59.884  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1      52.512  23.769  60.168  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      53.353  26.866  58.137  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      53.656  24.805  56.271  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 414 líneas. Documento completo: <a href="5_resultados_docking/1TUP_Apigenina_out.pdbqt">5_resultados_docking/1TUP_Apigenina_out.pdbqt</a></p></div><div class="doc"><h4>1TUP_Dasatinib_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -6.124      0.000      0.000
+REMARK INTER + INTRA:          -9.772
+REMARK INTER:                  -8.809
+REMARK INTRA:                  -0.964
+REMARK UNBOUND:                -0.964
+REMARK SMILES Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1
+REMARK SMILES IDX 33 1 3 2 23 3 22 4 4 5 2 6 1 7 5 8 6 10 9 11 21 12 8 13 7 14
+REMARK SMILES IDX 10 15 12 16 11 17 13 19 19 20 18 21 14 22 17 23 16 24 20 25
+REMARK SMILES IDX 15 26 24 27 25 28 32 29 26 30 31 31 27 32 28 33 29 34 30 35
+REMARK H PARENT 5 9 12 18 30 36
+ROOT
+ATOM      1  N   UNL     1      55.963  31.653  54.553  1.00  0.00    -0.216 NA
+ATOM      2  N   UNL     1      54.361  31.099  56.266  1.00  0.00    -0.216 NA
+ATOM      3  C   UNL     1      55.337  30.789  53.699  1.00  0.00     0.134 A 
+ATOM      4  C   UNL     1      54.215  30.061  54.099  1.00  0.00     0.094 A 
+ATOM      5  C   UNL     1      53.772  30.258  55.392  1.00  0.00     0.137 A 
+ATOM      6  C   UNL     1      55.436  31.756  55.787  1.00  0.00     0.130 A 
+ATOM      7  C   UNL     1      56.114  32.696  56.725  1.00  0.00     0.090 C 
+ENDROOT</pre><p class="more">Se muestran 20 de 612 líneas. Documento completo: <a href="5_resultados_docking/1TUP_Dasatinib_out.pdbqt">5_resultados_docking/1TUP_Dasatinib_out.pdbqt</a></p></div><div class="doc"><h4>1TUP_Luteolina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -5.458      0.000      0.000
+REMARK INTER + INTRA:          -6.691
+REMARK INTER:                  -6.415
+REMARK INTRA:                  -0.276
+REMARK UNBOUND:                -0.276
+REMARK SMILES O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 13 1 1 2 21 3 14 4 4 5 2 6 3 7 19 8 15 9 16 10 18 11 5 12
+REMARK SMILES IDX 12 13 6 14 10 15 7 16 8 17 11 18 9 20 20 22 17 24
+REMARK H PARENT 11 19 9 21 20 23 17 25
+ROOT
+ATOM      1  O   UNL     1      52.774  23.470  57.552  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      52.564  26.003  60.737  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      53.042  25.714  58.441  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      53.092  24.795  57.394  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      52.395  23.026  58.811  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      52.632  25.250  59.775  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1      52.303  23.815  59.893  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      53.377  27.052  58.221  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      53.475  25.209  56.120  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 450 líneas. Documento completo: <a href="5_resultados_docking/1TUP_Luteolina_out.pdbqt">5_resultados_docking/1TUP_Luteolina_out.pdbqt</a></p></div><div class="doc"><h4>1TUP_Quercetina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -5.672      0.000      0.000
+REMARK INTER + INTRA:          -7.099
+REMARK INTER:                  -6.832
+REMARK INTRA:                  -0.267
+REMARK UNBOUND:                -0.267
+REMARK SMILES O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 14 1 1 2 22 3 15 4 5 5 3 6 2 7 20 8 16 9 17 10 19 11 6 12
+REMARK SMILES IDX 13 13 7 14 11 15 8 16 9 17 12 18 10 20 4 22 21 24 18 26
+REMARK H PARENT 12 19 10 21 4 23 21 25 18 27
+ROOT
+ATOM      1  O   UNL     1      53.075  23.177  57.902  1.00  0.00    -0.452 OA
+ATOM      2  O   UNL     1      52.605  26.065  60.739  1.00  0.00    -0.285 OA
+ATOM      3  C   UNL     1      53.141  25.526  58.507  1.00  0.00     0.111 A 
+ATOM      4  C   UNL     1      53.286  24.492  57.584  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      52.687  22.863  59.196  1.00  0.00     0.180 A 
+ATOM      6  C   UNL     1      52.520  23.764  60.182  1.00  0.00     0.208 A 
+ATOM      7  C   UNL     1      52.743  25.199  59.884  1.00  0.00     0.238 A 
+ATOM      8  C   UNL     1      53.372  26.850  58.124  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      53.666  24.776  56.271  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 486 líneas. Documento completo: <a href="5_resultados_docking/1TUP_Quercetina_out.pdbqt">5_resultados_docking/1TUP_Quercetina_out.pdbqt</a></p></div><div class="doc"><h4>4I5I_Apigenina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:   -10.145      0.000      0.000
+REMARK INTER + INTRA:         -11.921
+REMARK INTER:                 -11.628
+REMARK INTRA:                  -0.293
+REMARK UNBOUND:                -0.293
+REMARK SMILES O=c1cc(-c2ccc(O)cc2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 12 1 1 2 20 3 13 4 4 5 2 6 3 7 18 8 14 9 15 10 17 11 5 12
+REMARK SMILES IDX 6 13 11 14 7 15 10 16 8 17 9 18 19 20 16 22
+REMARK H PARENT 9 19 19 21 16 23
+ROOT
+ATOM      1  O   UNL     1      48.104 -22.159  23.299  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      44.903 -23.965  21.542  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      46.917 -24.207  22.755  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      47.984 -23.525  23.336  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      47.123 -21.427  22.646  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      45.868 -23.434  22.071  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1      46.045 -21.967  22.056  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      46.846 -25.600  22.825  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      48.990 -24.234  23.992  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 414 líneas. Documento completo: <a href="5_resultados_docking/4I5I_Apigenina_out.pdbqt">5_resultados_docking/4I5I_Apigenina_out.pdbqt</a></p></div><div class="doc"><h4>4I5I_Dasatinib_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -6.021      0.000      0.000
+REMARK INTER + INTRA:          -9.288
+REMARK INTER:                  -8.660
+REMARK INTRA:                  -0.628
+REMARK UNBOUND:                -0.628
+REMARK SMILES Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1
+REMARK SMILES IDX 33 1 3 2 23 3 22 4 4 5 2 6 1 7 5 8 6 10 9 11 21 12 8 13 7 14
+REMARK SMILES IDX 10 15 12 16 11 17 13 19 19 20 18 21 14 22 17 23 16 24 20 25
+REMARK SMILES IDX 15 26 24 27 25 28 32 29 26 30 31 31 27 32 28 33 29 34 30 35
+REMARK H PARENT 5 9 12 18 30 36
+ROOT
+ATOM      1  N   UNL     1      48.474 -19.372  22.976  1.00  0.00    -0.216 NA
+ATOM      2  N   UNL     1      48.456 -21.579  22.009  1.00  0.00    -0.216 NA
+ATOM      3  C   UNL     1      47.698 -19.826  24.005  1.00  0.00     0.134 A 
+ATOM      4  C   UNL     1      47.282 -21.157  24.067  1.00  0.00     0.094 A 
+ATOM      5  C   UNL     1      47.692 -21.987  23.043  1.00  0.00     0.137 A 
+ATOM      6  C   UNL     1      48.807 -20.279  22.038  1.00  0.00     0.130 A 
+ATOM      7  C   UNL     1      49.653 -19.792  20.911  1.00  0.00     0.090 C 
+ENDROOT</pre><p class="more">Se muestran 20 de 544 líneas. Documento completo: <a href="5_resultados_docking/4I5I_Dasatinib_out.pdbqt">5_resultados_docking/4I5I_Dasatinib_out.pdbqt</a></p></div><div class="doc"><h4>4I5I_Luteolina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:   -10.410      0.000      0.000
+REMARK INTER + INTRA:         -12.511
+REMARK INTER:                 -12.236
+REMARK INTRA:                  -0.275
+REMARK UNBOUND:                -0.275
+REMARK SMILES O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 13 1 1 2 21 3 14 4 4 5 2 6 3 7 19 8 15 9 16 10 18 11 5 12
+REMARK SMILES IDX 12 13 6 14 10 15 7 16 8 17 11 18 9 20 20 22 17 24
+REMARK H PARENT 11 19 9 21 20 23 17 25
+ROOT
+ATOM      1  O   UNL     1      47.270 -21.150  23.647  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1      49.395 -19.182  20.780  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1      48.092 -19.050  22.748  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1      47.382 -19.784  23.696  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      47.884 -21.827  22.604  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1      48.753 -19.764  21.645  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1      48.600 -21.233  21.636  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1      48.172 -17.658  22.848  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      46.748 -19.131  24.752  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 450 líneas. Documento completo: <a href="5_resultados_docking/4I5I_Luteolina_out.pdbqt">5_resultados_docking/4I5I_Luteolina_out.pdbqt</a></p></div><div class="doc"><h4>4I5I_Quercetina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -9.327      0.000      0.000
+REMARK INTER + INTRA:         -11.572
+REMARK INTER:                 -11.236
+REMARK INTRA:                  -0.336
+REMARK UNBOUND:                -0.336
+REMARK SMILES O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 14 1 1 2 22 3 15 4 5 5 3 6 2 7 20 8 16 9 17 10 19 11 6 12
+REMARK SMILES IDX 13 13 7 14 11 15 8 16 9 17 12 18 10 20 4 22 21 24 18 26
+REMARK H PARENT 12 19 10 21 4 23 21 25 18 27
+ROOT
+ATOM      1  O   UNL     1      47.216 -21.079  23.841  1.00  0.00    -0.452 OA
+ATOM      2  O   UNL     1      49.490 -19.027  21.153  1.00  0.00    -0.285 OA
+ATOM      3  C   UNL     1      48.068 -18.955  23.033  1.00  0.00     0.111 A 
+ATOM      4  C   UNL     1      47.307 -19.714  23.920  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1      47.924 -21.733  22.844  1.00  0.00     0.180 A 
+ATOM      6  C   UNL     1      48.687 -21.118  21.922  1.00  0.00     0.208 A 
+ATOM      7  C   UNL     1      48.810 -19.641  21.964  1.00  0.00     0.238 A 
+ATOM      8  C   UNL     1      48.121 -17.565  23.161  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1      46.591 -19.087  24.940  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 486 líneas. Documento completo: <a href="5_resultados_docking/4I5I_Quercetina_out.pdbqt">5_resultados_docking/4I5I_Quercetina_out.pdbqt</a></p></div><div class="doc"><h4>5B6N_Apigenina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -6.953      0.000      0.000
+REMARK INTER + INTRA:          -8.274
+REMARK INTER:                  -7.969
+REMARK INTRA:                  -0.305
+REMARK UNBOUND:                -0.305
+REMARK SMILES O=c1cc(-c2ccc(O)cc2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 12 1 1 2 20 3 13 4 4 5 2 6 3 7 18 8 14 9 15 10 17 11 5 12
+REMARK SMILES IDX 6 13 11 14 7 15 10 16 8 17 9 18 19 20 16 22
+REMARK H PARENT 9 19 19 21 16 23
+ROOT
+ATOM      1  O   UNL     1     -19.021  47.775 -22.310  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1     -19.507  49.392 -26.017  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1     -20.401  49.038 -23.858  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1     -20.170  48.462 -22.611  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1     -18.053  47.642 -23.294  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1     -19.372  48.909 -24.902  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1     -18.156  48.158 -24.529  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1     -21.590  49.727 -24.108  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1     -21.128  48.571 -21.604  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 414 líneas. Documento completo: <a href="5_resultados_docking/5B6N_Apigenina_out.pdbqt">5_resultados_docking/5B6N_Apigenina_out.pdbqt</a></p></div><div class="doc"><h4>5B6N_Dasatinib_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -6.806      0.000      0.000
+REMARK INTER + INTRA:         -10.742
+REMARK INTER:                  -9.790
+REMARK INTRA:                  -0.952
+REMARK UNBOUND:                -0.952
+REMARK SMILES Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1
+REMARK SMILES IDX 33 1 3 2 23 3 22 4 4 5 2 6 1 7 5 8 6 10 9 11 21 12 8 13 7 14
+REMARK SMILES IDX 10 15 12 16 11 17 13 19 19 20 18 21 14 22 17 23 16 24 20 25
+REMARK SMILES IDX 15 26 24 27 25 28 32 29 26 30 31 31 27 32 28 33 29 34 30 35
+REMARK H PARENT 5 9 12 18 30 36
+ROOT
+ATOM      1  N   UNL     1     -21.505  49.581 -18.024  1.00  0.00    -0.216 NA
+ATOM      2  N   UNL     1     -22.901  50.221 -19.880  1.00  0.00    -0.216 NA
+ATOM      3  C   UNL     1     -20.950  48.595 -18.791  1.00  0.00     0.134 A 
+ATOM      4  C   UNL     1     -21.351  48.395 -20.112  1.00  0.00     0.094 A 
+ATOM      5  C   UNL     1     -22.328  49.238 -20.604  1.00  0.00     0.137 A 
+ATOM      6  C   UNL     1     -22.449  50.336 -18.617  1.00  0.00     0.130 A 
+ATOM      7  C   UNL     1     -23.059  51.413 -17.786  1.00  0.00     0.090 C 
+ENDROOT</pre><p class="more">Se muestran 20 de 612 líneas. Documento completo: <a href="5_resultados_docking/5B6N_Dasatinib_out.pdbqt">5_resultados_docking/5B6N_Dasatinib_out.pdbqt</a></p></div><div class="doc"><h4>5B6N_Luteolina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.068      0.000      0.000
+REMARK INTER + INTRA:          -8.584
+REMARK INTER:                  -8.308
+REMARK INTRA:                  -0.276
+REMARK UNBOUND:                -0.276
+REMARK SMILES O=c1cc(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 13 1 1 2 21 3 14 4 4 5 2 6 3 7 19 8 15 9 16 10 18 11 5 12
+REMARK SMILES IDX 12 13 6 14 10 15 7 16 8 17 11 18 9 20 20 22 17 24
+REMARK H PARENT 11 19 9 21 20 23 17 25
+ROOT
+ATOM      1  O   UNL     1     -19.619  50.130 -27.210  1.00  0.00    -0.456 OA
+ATOM      2  O   UNL     1     -17.210  53.404 -26.930  1.00  0.00    -0.289 OA
+ATOM      3  C   UNL     1     -18.488  51.975 -28.312  1.00  0.00     0.107 A 
+ATOM      4  C   UNL     1     -19.307  50.847 -28.337  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1     -19.089  50.542 -25.996  1.00  0.00     0.138 A 
+ATOM      6  C   UNL     1     -17.932  52.422 -27.025  1.00  0.00     0.197 A 
+ATOM      7  C   UNL     1     -18.296  51.614 -25.843  1.00  0.00     0.100 A 
+ATOM      8  C   UNL     1     -18.205  52.668 -29.492  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1     -19.847  50.405 -29.543  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 450 líneas. Documento completo: <a href="5_resultados_docking/5B6N_Luteolina_out.pdbqt">5_resultados_docking/5B6N_Luteolina_out.pdbqt</a></p></div><div class="doc"><h4>5B6N_Quercetina_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.045      0.000      0.000
+REMARK INTER + INTRA:          -8.767
+REMARK INTER:                  -8.487
+REMARK INTRA:                  -0.280
+REMARK UNBOUND:                -0.280
+REMARK SMILES O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12
+REMARK SMILES IDX 14 1 1 2 22 3 15 4 5 5 3 6 2 7 20 8 16 9 17 10 19 11 6 12
+REMARK SMILES IDX 13 13 7 14 11 15 8 16 9 17 12 18 10 20 4 22 21 24 18 26
+REMARK H PARENT 12 19 10 21 4 23 21 25 18 27
+ROOT
+ATOM      1  O   UNL     1     -19.539  50.022 -27.375  1.00  0.00    -0.452 OA
+ATOM      2  O   UNL     1     -17.533  53.565 -27.194  1.00  0.00    -0.285 OA
+ATOM      3  C   UNL     1     -18.578  51.927 -28.531  1.00  0.00     0.111 A 
+ATOM      4  C   UNL     1     -19.259  50.711 -28.526  1.00  0.00     0.146 A 
+ATOM      5  C   UNL     1     -19.139  50.565 -26.164  1.00  0.00     0.180 A 
+ATOM      6  C   UNL     1     -18.469  51.725 -26.032  1.00  0.00     0.208 A 
+ATOM      7  C   UNL     1     -18.139  52.503 -27.251  1.00  0.00     0.238 A 
+ATOM      8  C   UNL     1     -18.319  52.585 -29.736  1.00  0.00     0.134 A 
+ATOM      9  C   UNL     1     -19.683  50.144 -29.727  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 486 líneas. Documento completo: <a href="5_resultados_docking/5B6N_Quercetina_out.pdbqt">5_resultados_docking/5B6N_Quercetina_out.pdbqt</a></p></div>
+
+</body>
+</html>
