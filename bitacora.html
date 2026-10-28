@@ -29,6 +29,17 @@
   #visor { position: relative; width: 100%; height: 480px; border: 1px solid #999; background: #fff; }
   #estado { font-family: system-ui, sans-serif; font-size: .9em; color: #333; margin: 6px 0; min-height: 1.4em; }
   .solo-print { display: none; }
+  html { scroll-behavior: smooth; scroll-padding-top: 56px; }
+  .menu { position: sticky; top: 0; z-index: 10; display: flex; gap: 2px; overflow-x: auto;
+           margin: -24px -16px 16px; padding: 8px 16px; background: #111;
+           font-family: system-ui, sans-serif; font-size: .85em; white-space: nowrap; }
+  .menu a { color: #ddd; text-decoration: none; padding: 5px 10px; border-radius: 4px; word-break: normal; }
+  .menu a:hover { background: #333; color: #fff; }
+  .menu a.activa { background: #fff; color: #111; }
+  .arriba { position: fixed; right: 16px; bottom: 16px; width: 40px; height: 40px; border-radius: 50%;
+             background: #111; color: #fff; text-align: center; line-height: 40px; font-size: 20px;
+             text-decoration: none; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .arriba.visible { opacity: .85; pointer-events: auto; }
   .tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid #111; margin-top: 10px; }
   .tabs button { font: inherit; font-family: system-ui, sans-serif; font-size: .9em; padding: 6px 14px;
                   border: 1px solid #999; border-bottom: none; background: #eee; color: #111; cursor: pointer; margin-right: 4px; }
@@ -46,6 +57,16 @@
 </style>
 </head>
 <body>
+<nav class="menu solo-pantalla" aria-label="Secciones">
+  <a href="#visor3d">Visor 3D</a>
+  <a href="#obtencion">1. Obtención</a>
+  <a href="#preparacion">2. Preparación PDBQT</a>
+  <a href="#configuracion">3. Configuración</a>
+  <a href="#resultados">4. Resultados</a>
+  <a href="#registros">Registros .log</a>
+  <a href="#poses">Poses</a>
+</nav>
+<a href="#" class="arriba solo-pantalla" aria-label="Volver arriba">↑</a>
 
 <h1>Bitácora de investigación: acoplamiento molecular (docking)</h1>
 <p class="sub">Proteínas 1TUP, 4I5I y 5B6N frente a Apigenina, Dasatinib, Luteolina y Quercetina · AutoDock Vina 1.2.7</p>
@@ -86,11 +107,11 @@ y cada complejo proteína–ligando: <a href="https://ezesal93.github.io/docking
   <div id="visor"></div>
 </div>
 
-<h2>1. Obtención de las estructuras</h2>
+<h2 id="obtencion">1. Obtención de las estructuras</h2>
 <p>Se descargaron los archivos PDB de las proteínas desde <strong>Protein Data Bank</strong> (carpeta <code>1_proteinas_PDB</code>)
 y los archivos de los ligandos desde <strong>PubChem</strong> (carpeta <code>2_ligandos_SDF</code>).</p>
 
-<h2>2. Preparación de archivos PDBQT</h2>
+<h2 id="preparacion">2. Preparación de archivos PDBQT</h2>
 <p>Las proteínas y los ligandos se convirtieron a formato PDBQT para usarlos en AutoDock Vina.
 Por su extensión, de cada archivo se muestran solo las primeras 20 líneas; el documento completo está en el enlace.</p>
 <h3>2.1 Proteínas</h3>
@@ -231,7 +252,7 @@ BRANCH   5  12
 ATOM     12  C   UNL     1       1.888   0.018  -0.193  1.00  0.00     0.025 A 
 ATOM     13  C   UNL     1       2.636  -0.143   0.973  1.00  0.00     0.062 A </pre><p class="more">Se muestran 20 de 46 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/3-preparacion/ligandos_PDBQT/Quercetina.pdbqt">https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/3-preparacion/ligandos_PDBQT/Quercetina.pdbqt</a></p></div>
 
-<h2 class="page">3. Archivos de configuración</h2>
+<h2 id="configuracion" class="page">3. Archivos de configuración</h2>
 <p>Para cada combinación proteína–ligando se definió el centro y tamaño de la caja de búsqueda y los parámetros del docking.
 Se muestran completos.</p>
 <div class="doc"><h4>config_1TUP_Apigenina.txt</h4><pre>receptor = ..\3-preparacion\proteinas_PDBQT\1TUP.pdbqt
@@ -415,13 +436,13 @@ exhaustiveness = 32
 num_modes = 9
 energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config_5B6N_Quercetina.txt">4_configuracion/config_5B6N_Quercetina.txt</a></p></div>
 
-<h2 class="page">4. Resultados del docking</h2>
-<h3>4.1 Resumen: mejor afinidad (modo 1)</h3>
+<h2 id="resultados" class="page">4. Resultados del docking</h2>
+<h3 id="resumen">4.1 Resumen: mejor afinidad (modo 1)</h3>
 <table><thead><tr><th>Proteína</th><th>Ligando</th><th>Afinidad (kcal/mol)</th></tr></thead>
 <tbody><tr data-p='1TUP' data-l='Apigenina'><td>1TUP</td><td>Apigenina</td><td class='num'>-5.635</td></tr><tr data-p='1TUP' data-l='Dasatinib'><td>1TUP</td><td>Dasatinib</td><td class='num'>-6.124</td></tr><tr data-p='1TUP' data-l='Luteolina'><td>1TUP</td><td>Luteolina</td><td class='num'>-5.458</td></tr><tr data-p='1TUP' data-l='Quercetina'><td>1TUP</td><td>Quercetina</td><td class='num'>-5.672</td></tr><tr data-p='4I5I' data-l='Apigenina'><td>4I5I</td><td>Apigenina</td><td class='num'>-10.14</td></tr><tr data-p='4I5I' data-l='Dasatinib'><td>4I5I</td><td>Dasatinib</td><td class='num'>-6.021</td></tr><tr data-p='4I5I' data-l='Luteolina'><td>4I5I</td><td>Luteolina</td><td class='num'>-10.41</td></tr><tr data-p='4I5I' data-l='Quercetina'><td>4I5I</td><td>Quercetina</td><td class='num'>-9.327</td></tr><tr data-p='5B6N' data-l='Apigenina'><td>5B6N</td><td>Apigenina</td><td class='num'>-6.953</td></tr><tr data-p='5B6N' data-l='Dasatinib'><td>5B6N</td><td>Dasatinib</td><td class='num'>-6.806</td></tr><tr data-p='5B6N' data-l='Luteolina'><td>5B6N</td><td>Luteolina</td><td class='num'>-7.068</td></tr><tr data-p='5B6N' data-l='Quercetina'><td>5B6N</td><td>Quercetina</td><td class='num'>-7.045</td></tr></tbody></table>
 <p class="solo-pantalla more">Haz clic en una fila para verla en el visor 3D (al inicio de la página).</p>
 
-<h3>4.2 Registros de AutoDock Vina (.log)</h3>
+<h3 id="registros">4.2 Registros de AutoDock Vina (.log)</h3>
 <div class="doc"><h4>1TUP_Apigenina_out.log</h4><pre>AutoDock Vina v1.2.7
 #################################################################
 # If you used AutoDock Vina in your work, please cite:          #
@@ -975,7 +996,7 @@ mode |   affinity | dist from best mode
    7       -5.132      4.734      7.314
    8       -4.888      4.327      7.534
    9       -4.732      3.635      5.047</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Quercetina_out.log">5_resultados_docking/5B6N_Quercetina_out.log</a></p></div>
-<h3 class="page">4.3 Poses generadas (_out.pdbqt)</h3>
+<h3 id="poses" class="page">4.3 Poses generadas (_out.pdbqt)</h3>
 <p>Se muestran las primeras 20 líneas de cada archivo; el documento completo está en el enlace.</p>
 <div class="doc"><h4>1TUP_Apigenina_out.pdbqt</h4><pre>MODEL 1
 REMARK VINA RESULT:    -5.635      0.000      0.000
@@ -1207,6 +1228,23 @@ ATOM      7  C   UNL     1     -18.139  52.503 -27.251  1.00  0.00     0.238 A
 ATOM      8  C   UNL     1     -18.319  52.585 -29.736  1.00  0.00     0.134 A 
 ATOM      9  C   UNL     1     -19.683  50.144 -29.727  1.00  0.00     0.094 A </pre><p class="more">Se muestran 20 de 486 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/5_resultados_docking/5B6N_Quercetina_out.pdbqt">https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/5_resultados_docking/5B6N_Quercetina_out.pdbqt</a></p></div>
 
+<script>
+// Menú: resalta la sección visible y muestra el botón "volver arriba"
+(function () {
+  const enlaces = [...document.querySelectorAll(".menu a")];
+  const secciones = enlaces.map(a => document.querySelector(a.getAttribute("href")));
+  function actualizar() {
+    let i = 0;
+    secciones.forEach((s, j) => { if (s.getBoundingClientRect().top < 80) i = j; });
+    enlaces.forEach((a, j) => a.classList.toggle("activa", j === i));
+    const activa = enlaces[i];
+    activa.parentNode.scrollLeft = activa.offsetLeft - 16;
+    document.querySelector(".arriba").classList.toggle("visible", scrollY > 600);
+  }
+  addEventListener("scroll", actualizar, { passive: true });
+  actualizar();
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.0/3Dmol-min.js"></script>
 <script>
 (function () {
