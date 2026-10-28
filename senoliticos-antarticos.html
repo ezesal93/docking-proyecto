@@ -1,0 +1,754 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Senolíticos Antárticos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: guía de estudio navegable por secciones; lectura central angosta + rejillas de tarjetas.
+   Identidad: Antártida + biología molecular. Frío (teal/azul hielo) con acento cálido (flavonoide/ámbar);
+   datos en monoespaciada (evoca el log del docking). */
+:root{
+  --bg:#eef2f3; --surface:#ffffff; --surface-2:#e7edef; --surface-3:#f4f7f8;
+  --fg:#15242b; --muted:#56696f; --faint:#7d8f95; --border:#d7e0e2;
+  --accent:#0d7c8b; --accent-ink:#0a5e6a; --accent-soft:rgba(13,124,139,.12);
+  --warm:#b0720f; --warm-soft:rgba(176,114,15,.12);
+  --good:#2e8c58; --good-soft:rgba(46,140,88,.14);
+  --warn:#bd820f; --warn-soft:rgba(189,130,15,.14);
+  --crit:#bb443a; --crit-soft:rgba(187,68,58,.14);
+  --c-g1:#0d7c8b; --c-s:#2f6fae; --c-g2:#7a5bb0; --c-m:#b0720f; --c-g0:#5d7d6c;
+  --shadow:0 1px 2px rgba(20,40,48,.05),0 6px 18px rgba(20,40,48,.06);
+  --font-ui:"Libre Franklin",system-ui,-apple-system,Segoe UI,sans-serif;
+  --font-body:"Spectral",Georgia,"Times New Roman",serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1518; --surface:#132026; --surface-2:#1a2a31; --surface-3:#0f1b20;
+  --fg:#e7eef0; --muted:#9fb2b8; --faint:#7a8e94; --border:#26393f;
+  --accent:#36b9cb; --accent-ink:#5fcede; --accent-soft:rgba(54,185,203,.15);
+  --warm:#e0a53a; --warm-soft:rgba(224,165,58,.15);
+  --good:#4fba7e; --good-soft:rgba(79,186,126,.16);
+  --warn:#e0a53a; --warn-soft:rgba(224,165,58,.16);
+  --crit:#e37a6e; --crit-soft:rgba(227,122,110,.16);
+  --c-g1:#36b9cb; --c-s:#6097dc; --c-g2:#a98cd8; --c-m:#e0a53a; --c-g0:#82ab92;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0c1518; --surface:#132026; --surface-2:#1a2a31; --surface-3:#0f1b20;
+  --fg:#e7eef0; --muted:#9fb2b8; --faint:#7a8e94; --border:#26393f;
+  --accent:#36b9cb; --accent-ink:#5fcede; --accent-soft:rgba(54,185,203,.15);
+  --warm:#e0a53a; --warm-soft:rgba(224,165,58,.15);
+  --good:#4fba7e; --good-soft:rgba(79,186,126,.16);
+  --warn:#e0a53a; --warn-soft:rgba(224,165,58,.16);
+  --crit:#e37a6e; --crit-soft:rgba(227,122,110,.16);
+  --c-g1:#36b9cb; --c-s:#6097dc; --c-g2:#a98cd8; --c-m:#e0a53a; --c-g0:#82ab92;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+h1,h2,h3,h4,.ui{font-family:var(--font-ui)}
+h2{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;line-height:1.15;text-wrap:balance;margin:0 0 .2em}
+h3{font-size:1.12rem;font-weight:700;line-height:1.25;text-wrap:balance;margin:1.7em 0 .4em;color:var(--fg)}
+h4{font-size:.98rem;font-weight:700;margin:0 0 .3em}
+p{margin:.7em 0}
+a{color:var(--accent-ink)}
+strong{font-weight:600}
+em{font-style:italic}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.cite{color:var(--faint);font-style:italic}
+
+/* ---- header / nav ---- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
+.top-inner{max-width:1040px;margin:0 auto;padding-block:.6rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:.6rem;justify-content:space-between}
+.brand .name{font-family:var(--font-ui);font-weight:800;font-size:1.02rem;letter-spacing:-.01em;display:flex;align-items:center;gap:.5rem}
+.brand .leaf{width:1.6rem;height:1.6rem;flex:none;color:var(--accent)}
+.theme-btn{font-family:var(--font-ui);font-size:.8rem;border:1px solid var(--border);background:var(--surface-2);color:var(--fg);border-radius:999px;padding:.32rem .7rem;cursor:pointer;display:inline-flex;gap:.4rem;align-items:center}
+.theme-btn:hover{border-color:var(--accent)}
+.theme-btn svg{width:.95rem;height:.95rem}
+nav.tabs{margin-top:.55rem;display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+nav.tabs::-webkit-scrollbar{display:none}
+.pill{font-family:var(--font-ui);font-size:.86rem;font-weight:600;white-space:nowrap;text-decoration:none;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:999px;padding:.4rem .8rem;cursor:pointer;transition:background .15s,color .15s}
+.pill:hover{color:var(--fg);background:var(--surface-2)}
+.pill[aria-current="true"]{color:#fff;background:var(--accent)}
+:root[data-theme="dark"] .pill[aria-current="true"]{color:#07171b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill[aria-current="true"]{color:#07171b}}
+
+/* ---- layout ---- */
+main{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:1.6rem 3rem}
+.read{max-width:730px}
+section[hidden]{display:none!important}
+section{animation:fade .25s ease}
+@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){section{animation:none}}
+.sec-head{margin-bottom:1.1rem}
+.sec-head .eyebrow{display:block;margin-bottom:.35rem}
+.lede{font-size:1.08rem;color:var(--muted)}
+
+/* ---- cards / callouts ---- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;box-shadow:var(--shadow)}
+.grid{display:grid;gap:.9rem}
+.cols-2{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.cols-3{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.cols-4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+
+.callout{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:.85rem 1rem;margin:1.1rem 0}
+.callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+.callout.crit{border-color:var(--crit);background:var(--crit-soft)}
+.callout.good{border-color:var(--good);background:var(--good-soft)}
+.callout h4{font-family:var(--font-ui)}
+.callout p:last-child{margin-bottom:0}
+.callout p:first-child{margin-top:0}
+.formula{font-family:var(--font-mono);font-size:.9rem;text-align:center;background:var(--surface-3);border:1px solid var(--border);border-radius:12px;padding:1rem;margin:1rem 0;overflow-x:auto}
+
+/* big-number tiles (IS) */
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:var(--shadow);min-width:0}
+.tile .lig{font-family:var(--font-ui);font-weight:700;font-size:.95rem}
+.tile .is{font-family:var(--font-mono);font-weight:500;font-size:2.1rem;line-height:1;margin:.35rem 0 .3rem;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-ui);font-size:.72rem;font-weight:600;padding:.18rem .5rem;border-radius:999px;letter-spacing:.01em}
+.tag.good{color:var(--good);background:var(--good-soft)}
+.tag.warn{color:var(--warn);background:var(--warn-soft)}
+.tag.crit{color:var(--crit);background:var(--crit-soft)}
+.tile .sub{font-size:.82rem;color:var(--faint);font-family:var(--font-ui);margin-top:.35rem}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:420px}
+th,td{padding:.6rem .8rem;text-align:left;border-bottom:1px solid var(--border)}
+thead th{font-family:var(--font-ui);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--surface-2)}
+tbody td.num,tbody td.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+.hl{color:var(--accent-ink);font-weight:600}
+
+/* lists */
+ul.clean{list-style:none;padding:0;margin:.6em 0;display:grid;gap:.5rem}
+ul.clean li{padding-left:1.4rem;position:relative}
+ul.clean li::before{content:"";position:absolute;left:.1rem;top:.62em;width:.5rem;height:.5rem;border-radius:50%;background:var(--accent)}
+
+/* ---- ciclo celular ---- */
+.cycle{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:1.6rem;align-items:start}
+@media (max-width:640px){.cycle{grid-template-columns:1fr}}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.ring-legend{display:flex;flex-wrap:wrap;gap:.5rem .9rem;justify-content:center;font-family:var(--font-ui);font-size:.8rem}
+.ring-legend span{display:inline-flex;align-items:center;gap:.35rem}
+.dot{width:.7rem;height:.7rem;border-radius:3px;flex:none}
+.phase{border:1px solid var(--border);border-left:4px solid var(--pc,var(--accent));border-radius:0 10px 10px 0;background:var(--surface);padding:.7rem .9rem}
+.phase .ph-h{font-family:var(--font-ui);font-weight:700;display:flex;align-items:baseline;gap:.5rem}
+.phase .ph-h .code{font-family:var(--font-mono);color:var(--pc,var(--accent));font-weight:500}
+.phase p{margin:.3em 0 0;font-size:.95rem}
+
+/* ---- cascada molecular ---- */
+.cascade-wrap{margin:1rem 0}
+.cascade{display:flex;align-items:center;gap:.5rem;overflow-x:auto;padding:.5rem .1rem .9rem;scrollbar-width:thin}
+.cnode{flex:none;font-family:var(--font-ui);font-weight:600;font-size:.84rem;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:.5rem .7rem;white-space:nowrap}
+.cnode small{color:var(--muted);font-weight:400}
+.cnode.sirt{border-color:var(--accent);color:var(--accent-ink)}
+.cnode.stop{border-color:var(--warn);color:var(--warn)}
+.cnode.sen{border-color:var(--crit);color:var(--crit)}
+.carr{flex:none;font-family:var(--font-mono);color:var(--muted);font-size:1.05rem}
+.carr.inh{color:var(--crit);font-weight:700}
+.sirt-reg{font-family:var(--font-ui);font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.2rem}
+.casc-legend{display:flex;gap:1.1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--faint);margin-top:.6rem}
+.casc-legend .inh{color:var(--crit)}
+
+/* ---- guiones ---- */
+.switch{display:inline-flex;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.25rem;gap:.25rem;margin-bottom:1.1rem}
+.switch button{font-family:var(--font-ui);font-weight:600;font-size:.88rem;border:none;background:transparent;color:var(--muted);border-radius:999px;padding:.4rem .9rem;cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
+.script-step{margin:.95rem 0;padding-left:1rem;border-left:3px solid var(--accent-soft)}
+.script-step .role{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.script-step p{margin:.25em 0 0;font-size:1.02rem}
+.ted p{font-size:1.06rem;line-height:1.7}
+.ted .beat{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:block;margin:1.3rem 0 .1rem}
+
+/* ---- glosario ---- */
+.search{width:100%;font-family:var(--font-ui);font-size:.95rem;padding:.7rem 1rem;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--fg);margin-bottom:.4rem}
+.search:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0 1rem}
+.chip{font-family:var(--font-ui);font-size:.78rem;font-weight:600;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:.28rem .7rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#07171b}
+.gloss-grid{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.term{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem .9rem}
+.term h4{font-family:var(--font-ui);font-size:.98rem;margin:0}
+.term .cat{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);float:right;margin-top:.2rem}
+.term p{margin:.3em 0 0;font-size:.9rem;color:var(--muted)}
+.nomatch{color:var(--faint);font-family:var(--font-ui);padding:1rem 0}
+
+/* ---- preguntas ---- */
+details.qa{border:1px solid var(--border);border-radius:12px;background:var(--surface);margin:.6rem 0;overflow:hidden}
+details.qa>summary{list-style:none;cursor:pointer;padding:.85rem 1rem;font-family:var(--font-ui);font-weight:600;font-size:.98rem;display:flex;gap:.7rem;align-items:flex-start}
+details.qa>summary::-webkit-details-marker{display:none}
+details.qa>summary::after{content:"+";margin-left:auto;font-weight:400;color:var(--accent);font-size:1.3rem;line-height:1}
+details.qa[open]>summary::after{content:"–"}
+details.qa>summary:hover{color:var(--accent-ink)}
+.qa .ans{padding:0 1rem 1rem;border-top:1px solid var(--border);margin-top:.2rem;padding-top:.7rem;color:var(--fg)}
+.qa.hard>summary{color:var(--crit)}
+.qa-note{font-size:.85rem;color:var(--muted);font-style:italic;margin-bottom:.8rem}
+.badge-diff{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;color:var(--crit);border:1px solid var(--crit);border-radius:4px;padding:.05rem .3rem;margin-left:.4rem;white-space:nowrap}
+
+/* ---- checklist ---- */
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem .9rem;border:1px solid var(--border);border-radius:10px;background:var(--surface);margin:.5rem 0;cursor:pointer}
+.check input{margin-top:.25rem;width:1.1rem;height:1.1rem;accent-color:var(--accent);flex:none}
+.check span{font-family:var(--font-ui);font-size:.95rem}
+.check input:checked+span{color:var(--faint);text-decoration:line-through}
+
+.footer{max-width:1040px;margin:2rem auto 0;padding:1.4rem 1rem 0;color:var(--faint);font-family:var(--font-ui);font-size:.8rem;border-top:1px solid var(--border)}
+
+/* ---- teléfono ---- */
+@media (max-width:560px){
+  body{font-size:15.5px;line-height:1.6}
+  h2{font-size:1.3rem}
+  h3{font-size:1.05rem;margin-top:1.5em}
+  .lede{font-size:1rem}
+  main{padding-block:1.2rem 2.4rem}
+  .card{padding:.9rem 1rem;border-radius:12px}
+  .grid{gap:.7rem}
+  .tile{padding:.85rem}
+  .tile .is{font-size:1.75rem}
+  .cols-4{grid-template-columns:repeat(auto-fit,minmax(128px,1fr))}
+  .cols-2,.cols-3{grid-template-columns:1fr}
+  .gloss-grid{grid-template-columns:1fr}
+  .formula{font-size:.76rem;padding:.8rem .6rem}
+  .switch{display:flex;width:100%}
+  .switch button{flex:1;padding:.45rem .4rem;font-size:.82rem}
+  .ted p{font-size:1rem;line-height:1.62}
+  .script-step{padding-left:.8rem}
+  .script-step p{font-size:.97rem}
+  details.qa>summary{font-size:.92rem;padding:.75rem .85rem;gap:.5rem}
+  .qa .ans{padding-left:.85rem;padding-right:.85rem;font-size:.95rem}
+  .brand .name{font-size:.94rem}
+  .brand .leaf{width:1.4rem;height:1.4rem}
+  .theme-btn{font-size:.74rem;padding:.3rem .6rem}
+  .callout{padding:.8rem .9rem}
+  table{font-size:.88rem}
+  th,td{padding:.5rem .65rem}
+  .term .cat{float:none;display:block;margin:0 0 .15rem}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="name">
+        <svg class="leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20C6 20 4 15 4 11c0-4 2-7 7-7 0 4-2 6-5 7 0 0 5 1 8-3"/><path d="M11 20c0-5 2-9 6-11"/></svg>
+        Senolíticos Antárticos
+      </span>
+      <button class="theme-btn ui" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg>
+        Tema
+      </button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Secciones">
+      <a class="pill" href="#resumen">Resumen</a>
+      <a class="pill" href="#marco">Marco teórico</a>
+      <a class="pill" href="#ciclo">Ciclo celular</a>
+      <a class="pill" href="#glosario">Glosario</a>
+      <a class="pill" href="#guiones">Guiones</a>
+      <a class="pill" href="#preguntas">Preguntas</a>
+      <a class="pill" href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ RESUMEN ============ -->
+<section id="resumen">
+  <div class="sec-head read">
+    <span class="eyebrow">Expo Ciencias Nacional · Escuela Alemana de Paillaco</span>
+    <h2>Lo esencial que todos deben manejar</h2>
+    <p class="lede">Francisca González · Amanda Toledo · Ezequiel Saldivia. Una guía para defender el proyecto mañana, tanto ante el público del stand como ante la comisión evaluadora.</p>
+  </div>
+
+  <div class="card read" style="margin-bottom:1.2rem">
+    <h4 class="ui">El proyecto en tres frases</h4>
+    <p style="margin-bottom:0">El envejecimiento se asocia a la acumulación de células senescentes, que dejan de dividirse pero permanecen activas y sostienen un estado inflamatorio dañino. El régimen senolítico de referencia las elimina combinando dasatinib y quercetina (D+Q), pero el dasatinib es un antineoplásico inhibidor de múltiples quinasas, con efectos adversos documentados en clínica. Mediante docking molecular comparamos dos flavonoides de <em>Deschampsia antarctica</em> con ambos compuestos de referencia, y encontramos que in silico los flavonoides discriminan mejor la diana de interés, SIRT1.</p>
+  </div>
+
+  <h3 style="margin-top:0">El resultado, de un vistazo</h3>
+  <p class="read" style="margin-top:.2rem">El índice de selectividad (IS) ordena a los candidatos: mientras más alto, mejor distingue la diana correcta. <span class="hl">Un IS mayor que 1 indica selectividad.</span></p>
+  <div class="grid cols-4" style="margin:1rem 0">
+    <div class="tile"><div class="lig">Luteolina</div><div class="is">1,66</div><span class="tag good">Muy selectivo</span><div class="sub">SIRT1 −10,41 kcal/mol</div></div>
+    <div class="tile"><div class="lig">Apigenina</div><div class="is">1,61</div><span class="tag good">Muy selectivo</span><div class="sub">SIRT1 −10,14 kcal/mol</div></div>
+    <div class="tile"><div class="lig">Quercetina</div><div class="is">1,47</div><span class="tag warn">Selectivo</span><div class="sub">SIRT1 −9,33 kcal/mol</div></div>
+    <div class="tile"><div class="lig">Dasatinib</div><div class="is">0,93</div><span class="tag crit">No selectivo</span><div class="sub">SIRT1 −6,02 kcal/mol</div></div>
+  </div>
+
+  <h3>Las tres ideas centrales</h3>
+  <ul class="clean read">
+    <li>El régimen senolítico de referencia combina dasatinib y quercetina (D+Q). El dasatinib es un antineoplásico inhibidor de múltiples quinasas, con efectos adversos documentados.</li>
+    <li>Los flavonoides de una planta extremófila antártica, <em>Deschampsia antarctica</em>, ofrecen una alternativa natural de mayor especificidad potencial.</li>
+    <li>Los flavonoides antárticos (1,61 y 1,66) igualan a la quercetina (1,47), que también es un flavonoide, y superan con claridad al dasatinib (0,93), el único con un índice menor que 1.</li>
+  </ul>
+
+  <h3>Energías de unión (kcal/mol, modo 1)</h3>
+  <p class="read" style="margin-top:.2rem">Un valor más negativo corresponde a una unión más fuerte. Lo relevante es el contraste: los flavonoides se unen con fuerza solo a SIRT1, mientras que el dasatinib se une de forma pareja a las tres proteínas.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Ligando</th><th>SIRT1 <span style="font-weight:400;text-transform:none">(diana deseada)</span></th><th>p53 <span style="font-weight:400;text-transform:none">(a evitar)</span></th><th>PRX6 <span style="font-weight:400;text-transform:none">(referencia)</span></th><th>IS</th></tr></thead>
+      <tbody>
+        <tr><td>Luteolina</td><td class="num hl">−10,41</td><td class="num">−5,46</td><td class="num">−7,07</td><td class="num">1,66</td></tr>
+        <tr><td>Apigenina</td><td class="num hl">−10,14</td><td class="num">−5,64</td><td class="num">−6,95</td><td class="num">1,61</td></tr>
+        <tr><td>Quercetina</td><td class="num">−9,33</td><td class="num">−5,67</td><td class="num">−7,05</td><td class="num">1,47</td></tr>
+        <tr><td>Dasatinib</td><td class="num">−6,02</td><td class="num">−6,12</td><td class="num">−6,81</td><td class="num">0,93</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ MARCO TEÓRICO ============ -->
+<section id="marco" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Fundamentación científica</span>
+    <h2>Marco teórico</h2>
+    <p class="lede">Redactado en registro académico, para leer y estudiar. Da el sustento conceptual del proyecto, del envejecimiento celular al significado del índice de selectividad.</p>
+  </div>
+  <div class="read">
+    <h3>Envejecimiento y senescencia celular</h3>
+    <p>El envejecimiento poblacional conlleva un incremento sostenido de las enfermedades crónicas asociadas a la edad, como la diabetes, las patologías cardiovasculares, el cáncer y las demencias <span class="cite">(Piña Morán et al., 2022)</span>. A escala celular, uno de los mecanismos centrales de este proceso es la senescencia: un estado en que la célula pierde de manera irreversible su capacidad proliferativa en respuesta a distintos estímulos de estrés, entre ellos el daño en el ADN, el acortamiento telomérico, el estrés oxidativo, la disfunción mitocondrial o la activación de oncogenes, sin que ello implique su muerte <span class="cite">(Witham et al., 2023)</span>.</p>
+    <p>En su origen, la senescencia constituye un mecanismo protector, dado que la detención proliferativa de una célula dañada previene su transformación tumoral. Su acumulación progresiva a lo largo de la vida, en cambio, adquiere un carácter deletéreo: las células senescentes permanecen metabólicamente activas y comprometen la función de los tejidos circundantes.</p>
+
+    <h3>El fenotipo secretor asociado a la senescencia</h3>
+    <p>Las células senescentes secretan de forma sostenida un conjunto de citoquinas proinflamatorias, quimioquinas y proteasas que se denomina fenotipo secretor asociado a la senescencia, abreviado SASP. Este secretoma induce inflamación crónica de bajo grado, deteriora la matriz y la función del tejido, y puede propagar el estado senescente a las células vecinas <span class="cite">(Witham et al., 2023)</span>. La inflamación persistente que resulta de ello subyace a numerosas enfermedades asociadas a la edad.</p>
+
+    <h3>Bases moleculares de la detención del ciclo celular</h3>
+    <p>La inducción de la senescencia converge sobre la maquinaria de control del ciclo celular. Frente al daño en el ADN, la proteína p53 se estabiliza y transactiva al inhibidor p21; en paralelo, la vía de p16<sup>INK4a</sup> refuerza la señal. Ambos inhibidores bloquean a los complejos CDK4/6, lo que impide la fosforilación de la proteína del retinoblastoma (Rb). La forma hipofosforilada, activa, de Rb retiene a los factores de transcripción E2F, de modo que la célula queda detenida en la fase G1 del ciclo. Cuando esta detención se torna persistente, se establece el programa senescente <span class="cite">(esquema adaptado de McHugh y Gil, 2018)</span>.</p>
+    <p>En este circuito, SIRT1, una desacetilasa dependiente de NAD<sup>+</sup>, cumple un papel regulador: entre sus sustratos se encuentra p53, cuya desacetilación atenúa su actividad transcripcional. SIRT1 participa así en el ajuste fino de la respuesta p53/p21 y de las defensas frente al estrés oxidativo, lo que fundamenta su consideración como diana de interés en las estrategias antienvejecimiento <span class="cite">(Haigis y Sinclair, 2010)</span>. Este eje regulador motiva el perfil de selectividad buscado en el presente trabajo.</p>
+
+    <h3>El eje SIRT1-p53 y su doble filo</h3>
+    <p>Conviene precisar las consecuencias celulares de un aumento en la actividad de SIRT1. Al desacetilar a p53 con mayor frecuencia, SIRT1 lo mantiene en una conformación de baja actividad transcripcional. Ello reduce la señal que induce la apoptosis y atenúa la entrada en senescencia, de modo que la célula prioriza la supervivencia, la reparación del daño y el mantenimiento metabólico. Este mecanismo permite explicar que la restauración de SIRT1 protegiera a los fibroblastos en el estudio de Ortiz-Espín et al. (2017).</p>
+    <p>Ahora bien, p53 es también el denominado guardián del genoma, lo que confiere a este eje un carácter de doble filo. Frente a estrés leve o condiciones normales, atenuar moderadamente su actividad evita la pérdida celular innecesaria y prolonga la funcionalidad del tejido. Ante un daño masivo en el ADN, en cambio, una inhibición excesiva de p53 permitiría que una célula gravemente dañada sobreviviera y se dividiera, con el consiguiente riesgo de acumulación de mutaciones y transformación tumoral.</p>
+    <p>La modulación de SIRT1 como estrategia antienvejecimiento persigue, por tanto, un equilibrio: sostener células resistentes al estrés conservando su capacidad de respuesta ante un daño genético grave. Esta consideración respalda el criterio de selectividad adoptado en el presente trabajo, esto es, alta afinidad por SIRT1 y baja afinidad por p53, puesto que un ligando que se uniera indistintamente a ambas proteínas interferiría de manera impredecible en un circuito que requiere regulación fina.</p>
+
+    <h3>Senolíticos y el estándar de referencia</h3>
+    <p>Dado el carácter patogénico de la acumulación de células senescentes, su eliminación selectiva ha emergido como estrategia terapéutica. Los senolíticos son compuestos capaces de inducir la muerte de células senescentes, habitualmente mediante la interferencia con sus redes de supervivencia <span class="cite">(McHugh y Gil, 2018)</span>. La combinación de dasatinib y quercetina (D+Q) constituye el régimen más estudiado: en un ensayo de primera fase en humanos con fibrosis pulmonar idiopática mostró mejoras en parámetros de función física <span class="cite">(Justice et al., 2019)</span>. El dasatinib, inhibidor de múltiples tirosina-quinasas, exhibe sin embargo una selectividad limitada y efectos adversos, al actuar sobre dianas ajenas a las células de interés. De ahí la relevancia de explorar fuentes alternativas de mayor especificidad.</p>
+    <p>Cabe precisar que la promiscuidad de unión no es exclusiva del dasatinib: la quercetina es un flavonoide con múltiples dianas descritas, rasgo frecuente en este grupo de compuestos. La diferencia clínicamente relevante radica en el perfil de toxicidad, dado que el dasatinib es un antineoplásico con efectos adversos documentados, mientras que la quercetina es un flavonoide presente en la dieta. En el presente estudio, por lo demás, la comparación de selectividad se restringe a las tres proteínas evaluadas.</p>
+
+    <h3>Deschampsia antarctica como fuente de flavonoides bioactivos</h3>
+    <p>La búsqueda de senolíticos naturales y más selectivos motiva la bioprospección de organismos extremófilos <span class="cite">(Ramírez et al., 2024)</span>. <em>Deschampsia antarctica</em>, una de las dos únicas plantas vasculares nativas de la Antártida, sintetiza compuestos bioactivos como mecanismo de defensa frente al estrés abiótico extremo; su extracto contiene flavonoides como la apigenina y la luteolina <span class="cite">(Mataix et al., 2020)</span>. Ortiz-Espín et al. (2017) demostraron que dicho extracto protege a fibroblastos humanos de la senescencia inducida por peróxido de hidrógeno y restaura la expresión de SIRT1.</p>
+    <p>Este antecedente determina la elección de la planta y, en particular, de la apigenina y la luteolina como moléculas a evaluar. El presente trabajo busca aportar una explicación mecanística, de nivel molecular, a la protección descrita por Ortiz-Espín et al. (2017), examinando si esos flavonoides se unen de forma preferente a SIRT1.</p>
+
+    <h3>Las dianas moleculares evaluadas</h3>
+    <p>Se seleccionaron tres proteínas con roles diferenciados dentro del circuito de la senescencia. SIRT1 (PDB 4I5I) se definió como la diana deseada, por su papel regulador y su asociación con la protección frente al envejecimiento. p53 (PDB 1TUP) se consideró la diana a evitar, dado que su sobreactivación refuerza la cascada de arresto y acelera el envejecimiento. PRX6 (PDB 5B6N), una peroxirredoxina antioxidante, se incorporó como diana de referencia para evaluar la discriminación. Un perfil favorable corresponde a una afinidad elevada por SIRT1 y reducida por p53 y PRX6.</p>
+
+    <h3>El docking molecular como herramienta de cribado</h3>
+    <p>El acoplamiento molecular o docking es una técnica computacional consolidada en el descubrimiento de fármacos, que predice el modo y la energía de unión entre un ligando y una proteína <span class="cite">(Trott y Olson, 2010; Eberhardt et al., 2021)</span>. Constituye una etapa de cribado virtual que antecede al trabajo experimental y lo orienta: permite jerarquizar candidatos, formular hipótesis mecanísticas y dirigir los ensayos posteriores, con el consiguiente ahorro de tiempo y recursos. Su carácter reproducible y de bajo costo, sustentado en software libre (AutoDock Vina) y bases de datos públicas (PDB, PubChem), lo vuelve una aproximación rigurosa y accesible aun sin infraestructura de laboratorio húmedo. El aporte del presente trabajo reside en aplicar esta herramienta estándar a una pregunta todavía abierta en la literatura: la comparación directa de la selectividad de los flavonoides antárticos frente a los senolíticos de referencia, bajo condiciones homologables.</p>
+
+    <h3>Preparación de las estructuras y formato PDBQT</h3>
+    <p>El docking no opera sobre los archivos tal como se descargan. Las proteínas, obtenidas del PDB, se depuraron en UCSF Chimera eliminando moléculas de agua, iones metálicos, cofactores y todo componente no proteico, de modo de conservar únicamente la cadena de aminoácidos; los ligandos se obtuvieron de PubChem. Receptores y ligandos se convirtieron luego al formato PDBQT, que es el formato de entrada que exige AutoDock Vina.</p>
+    <p>La sigla resume lo que se añade: a las coordenadas atómicas de un PDB se incorporan las cargas parciales (Q) y los tipos de átomo de AutoDock (T). Esta información resulta imprescindible, porque la función de puntaje de Vina requiere el tipo de cada átomo y la distribución de carga para estimar las interacciones, datos que un archivo PDB corriente no contiene. El PDBQT del ligando codifica además sus enlaces rotables, el llamado árbol de torsiones, lo que le permite explorar distintas conformaciones durante el acoplamiento, mientras el receptor se mantiene rígido.</p>
+    <p>La conversión se realizó con las utilidades de Meeko, el conjunto de preparación recomendado para AutoDock Vina 1.2 <span class="cite">(Eberhardt et al., 2021)</span>. La herramienta <span class="mono">mk_prepare_ligand</span> prepara cada ligando: agrega hidrógenos, asigna cargas y tipos de átomo y define los enlaces rotables. La herramienta <span class="mono">mk_prepare_receptor</span> hace lo propio con la proteína ya depurada. El producto son los archivos PDBQT que Vina acopla dentro de la caja de búsqueda centrada en el sitio de unión.</p>
+
+    <h3>Cómo funciona AutoDock Vina</h3>
+    <p>Con los archivos PDBQT listos, Vina resuelve dos problemas simultáneos: dónde y cómo se acomoda el ligando en la proteína, que corresponde a la búsqueda de conformaciones, y qué tan favorable resulta cada acomodación, que corresponde a la evaluación energética.</p>
+    <p>La evaluación recae en una función de puntaje semiempírica que estima la energía de unión en kcal/mol, combinando términos de interacción estérica, hidrofóbica y de puentes de hidrógeno, y penalizando la flexibilidad del ligando según su número de enlaces rotables <span class="cite">(Trott y Olson, 2010)</span>. Un valor más negativo corresponde a una unión predicha más favorable.</p>
+    <p>La búsqueda, por su parte, es un proceso estocástico, es decir, con un componente aleatorio. Vina parte de una semilla aleatoria y aplica una optimización global iterativa: alterna perturbaciones al azar de la posición, la orientación y las torsiones del ligando con una optimización local basada en gradientes, y acepta o descarta cada cambio según un criterio probabilístico. El parámetro exhaustiveness fija cuán a fondo se busca; en este trabajo se empleó 32, un valor alto, para reducir la variabilidad y disminuir el riesgo de no hallar el óptimo. Debido a esta naturaleza estocástica, corridas distintas pueden arrojar resultados ligeramente diferentes, lo que se controla elevando el exhaustiveness o fijando la semilla.</p>
+    <p>Para cada acoplamiento, Vina entrega hasta nueve modos de unión ordenados por afinidad. Se seleccionó el de mayor afinidad, el modo 1, como valor representativo.</p>
+
+    <h3>El índice de selectividad</h3>
+    <p>Para cuantificar la preferencia de cada ligando por la diana deseada se definió un índice de selectividad (IS) de carácter operacional, como el cociente entre la afinidad por SIRT1 y el promedio de las afinidades por las dianas no deseadas, p53 y PRX6, en valores absolutos:</p>
+    <div class="formula">IS = |afinidad(SIRT1)| ÷ promedio( |afinidad(p53)| , |afinidad(PRX6)| )</div>
+    <p>Un IS superior a la unidad indica preferencia por SIRT1; un valor próximo a 1 refleja ausencia de discriminación entre la diana y los blancos no deseados. Cabe precisar que el docking estima afinidad de unión y no modulación funcional, por lo que los resultados se interpretan como una predicción comparativa que orienta la experimentación futura. Los alcances de esta distinción se desarrollan en la sección de preguntas.</p>
+  </div>
+</section>
+
+<!-- ============ CICLO CELULAR ============ -->
+<section id="ciclo" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Fundamentos · el diagrama del póster</span>
+    <h2>El ciclo celular y la cascada de la senescencia</h2>
+    <p class="lede">Para entender la senescencia primero hay que saber cómo una célula se divide normalmente y en qué momento deja de hacerlo. Aquí qué es G1, S, G2, M y G0, y la cascada molecular que conecta todo con la afinidad de unión.</p>
+  </div>
+
+  <div class="cycle">
+    <div class="ring-wrap">
+      <svg id="cycleRing" viewBox="0 0 340 340" width="100%" style="max-width:320px" role="img" aria-label="Diagrama del ciclo celular con sus fases G1, S, G2, M y el punto de reposo G0"></svg>
+      <div class="ring-legend" id="cycleLegend"></div>
+    </div>
+    <div class="grid" style="gap:.7rem">
+      <div class="phase" style="--pc:var(--c-g1)"><div class="ph-h"><span class="code">G1</span> Crecimiento</div><p>La célula crece y sintetiza proteínas, preparándose para replicar su ADN. Es la fase más larga y aquí se verifica que las condiciones sean adecuadas. También es donde ocurre el arresto que interesa a este trabajo.</p></div>
+      <div class="phase" style="--pc:var(--c-s)"><div class="ph-h"><span class="code">S</span> Síntesis</div><p>La célula replica todo su ADN, de modo que cada célula hija reciba una copia completa.</p></div>
+      <div class="phase" style="--pc:var(--c-g2)"><div class="ph-h"><span class="code">G2</span> Preparación</div><p>Último control antes de dividirse: se verifica que la replicación del ADN haya sido correcta.</p></div>
+      <div class="phase" style="--pc:var(--c-m)"><div class="ph-h"><span class="code">M</span> Mitosis</div><p>La célula se divide en dos células hijas idénticas. Concluida la mitosis, el ciclo se reinicia.</p></div>
+      <div class="phase" style="--pc:var(--c-g0)"><div class="ph-h"><span class="code">G0</span> Reposo</div><p>Una salida del ciclo: la célula deja de dividirse, de forma temporal o permanente. La senescencia es una salida permanente.</p></div>
+    </div>
+  </div>
+
+  <h3>La cascada molecular</h3>
+  <p class="read">Esta es la lógica del diagrama del póster. Frente al daño en el ADN se activa p53, que induce a p21; junto con p16, ambos inhiben a los complejos CDK4/6. Al no fosforilarse, la proteína Rb permanece activa y detiene el ciclo en G1. Si la detención persiste, se instala la senescencia.</p>
+  <div class="cascade-wrap">
+    <div class="cascade">
+      <div class="cnode">Daño al ADN</div>
+      <span class="carr" title="activa">→</span>
+      <div class="cnode">p53</div>
+      <span class="carr" title="activa">→</span>
+      <div class="cnode">p21 <small>+ p16</small></div>
+      <span class="carr inh" title="inhiben">⊣</span>
+      <div class="cnode">CDK4/6</div>
+      <span class="carr" title="mantiene activa">→</span>
+      <div class="cnode">Rb activa</div>
+      <span class="carr" title="detiene">→</span>
+      <div class="cnode stop">Arresto en G1</div>
+      <span class="carr" title="si persiste">→</span>
+      <div class="cnode sen">Senescencia</div>
+    </div>
+    <div class="sirt-reg"><span class="cnode sirt">SIRT1</span><span class="carr inh">⊣</span> regula a p53, al desacetilarlo y atenuar su actividad</div>
+    <div class="casc-legend"><span>→ activa / conduce a</span><span class="inh">⊣ inhibe</span></div>
+  </div>
+
+  <div class="callout read">
+    <h4>Cómo se conecta con la afinidad de unión</h4>
+    <p>SIRT1 regula a p53 y, con ello, el ritmo de toda esta cascada. De ahí el perfil que se busca en el docking: ligandos con alta afinidad por SIRT1, para favorecer la regulación del circuito, y baja afinidad por p53, para evitar que se refuerce en exceso la vía de arresto, que sobreactivada acelera el envejecimiento.</p>
+    <p>Eso es lo que miden las energías de unión. Los flavonoides se unen con fuerza a SIRT1 (−10,4 kcal/mol) y débilmente a p53 (alrededor de −5,5), que es el perfil deseado; el dasatinib se une de forma similar a ambas. Conviene recordar que el docking indica que el ligando se une a SIRT1, sin establecer si la activa o la inhibe.</p>
+    <p style="margin-bottom:0">El doble filo: atenuar p53 mediante SIRT1 protege del envejecimiento, pero p53 es el guardián del genoma. Si se inhibe en exceso, una célula con daño grave en el ADN podría sobrevivir y dividirse. La estrategia busca un equilibrio, y por eso importa que el ligando distinga entre ambas proteínas.</p>
+  </div>
+</section>
+
+<!-- ============ GLOSARIO ============ -->
+<section id="glosario" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Para las alumnas · busca cualquier palabra</span>
+    <h2>Glosario</h2>
+    <p class="lede">Todos los términos del proyecto, en una línea cada uno. Escribe para filtrar o toca una categoría.</p>
+  </div>
+  <input type="text" class="search" id="glossSearch" placeholder="Buscar término (por ejemplo: SASP, docking, G1)" aria-label="Buscar término">
+  <div class="filters" id="glossFilters">
+    <button class="chip" data-cat="all" aria-pressed="true">Todos</button>
+    <button class="chip" data-cat="bio" aria-pressed="false">Biología</button>
+    <button class="chip" data-cat="farma" aria-pressed="false">Fármacos</button>
+    <button class="chip" data-cat="prot" aria-pressed="false">Proteínas</button>
+    <button class="chip" data-cat="metodo" aria-pressed="false">Método</button>
+    <button class="chip" data-cat="ciclo" aria-pressed="false">Ciclo celular</button>
+  </div>
+  <div class="gloss-grid" id="glossGrid"></div>
+  <p class="nomatch" id="glossEmpty" hidden>No hay términos que coincidan con la búsqueda.</p>
+</section>
+
+<!-- ============ GUIONES ============ -->
+<section id="guiones" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Qué decir en el stand</span>
+    <h2>Guiones</h2>
+    <p class="lede">Dos registros del mismo proyecto. Léanle a la audiencia y cambien de nivel según quién se acerque.</p>
+  </div>
+
+  <div class="switch" role="tablist" aria-label="Elegir guion">
+    <button id="btnPub" aria-pressed="true">Público general</button>
+    <button id="btnCom" aria-pressed="false">Comisión evaluadora</button>
+  </div>
+
+  <div id="guionPub" class="read ted">
+    <p class="qa-note">Alrededor de un minuto, pensado para decirlo de corrido. Lenguaje sencillo, sin tecnicismos. Si la persona se engancha, ahí recién se entra en detalle.</p>
+    <span class="beat">El problema</span>
+    <p>Cuando una célula sufre un daño grave toma una decisión definitiva: deja de dividirse para siempre. Así evita convertirse en un cáncer. El problema es que tampoco se muere. Se queda ahí, y empieza a soltar señales que inflaman todo el tejido de alrededor. Con los años se van acumulando, y esa inflamación constante es hoy uno de los motores del envejecimiento. A esas células las llamamos senescentes.</p>
+    <span class="beat">Lo que ya existe</span>
+    <p>Ya hay remedios capaces de eliminarlas, los senolíticos, y el más estudiado combina dos compuestos. Pero uno de ellos es un fármaco contra el cáncer que, además de las células dañadas, golpea también a las sanas. Así que nos preguntamos si no habría algo más preciso.</p>
+    <span class="beat">Dónde buscamos</span>
+    <p>Y fuimos a buscarlo bastante lejos: a la Antártida. Ahí crece una de las dos únicas plantas con flores de todo el continente. Para aguantar el frío y la radiación fabrica unas moléculas de defensa, los flavonoides, y esas eran las que nos interesaban. Con el computador simulamos cómo se acoplan a las proteínas del cuerpo, que es exactamente lo que hacen las farmacéuticas cuando eligen qué candidatos probar.</p>
+    <span class="beat">Lo que encontramos</span>
+    <p>Y lo que vimos fue que las moléculas de la planta se pegan fuerte a la proteína que nos interesa, y flojo a las que conviene no tocar. Es decir, apuntan mejor que el remedio que se usa hoy. Todavía falta comprobarlo en un laboratorio, pero como primer paso es bien prometedor.</p>
+    <div class="callout" style="margin-top:1.4rem"><h4>Versión de 20 segundos</h4><p style="margin-bottom:0">Buscamos en una planta de la Antártida moléculas capaces de eliminar células envejecidas con más precisión que los remedios actuales. Las probamos en el computador y apuntaron mejor que el fármaco de referencia. Es un primer paso, pero bien prometedor.</p></div>
+  </div>
+
+  <div id="guionCom" class="read" hidden>
+    <p class="qa-note">Alrededor de 2 minutos, siguiendo el orden del póster. Tono de feria: natural y claro, apoyándose en la Figura 1 y en la Tabla 1. La profundidad se despliega al responder preguntas, no en la exposición.</p>
+    <div class="script-step"><span class="role">0 · Presentación</span><p>"Buenas tardes. Somos [nombres], de la Escuela Alemana de Paillaco. Nuestro proyecto evalúa, con simulación por computador, si dos flavonoides de una planta antártica son más selectivos que los senolíticos de referencia. Les voy a ir mostrando el póster."</p></div>
+    <div class="script-step"><span class="role">1 · Introducción <span style="text-transform:none;letter-spacing:0">(apuntar la Figura 1)</span></span><p>"Al envejecer se acumulan células senescentes: células que dejan de dividirse pero no mueren, y que liberan señales inflamatorias que dañan el tejido. En esta figura mostramos cómo ocurre. Distintos factores, como el daño al ADN o el estrés oxidativo, activan las vías de p53/p21 y de p16, que inhiben a CDK4/6; eso mantiene activa a Rb y detiene el ciclo en G1. Si la detención persiste, la célula queda senescente. Acá está SIRT1, que regula a p53 desacetiándolo, y acá PRX6: esas son las tres proteínas que usamos."</p></div>
+    <div class="script-step"><span class="role">2 · Problema de investigación</span><p>"Los senolíticos eliminan esas células, y el régimen más estudiado hasta hoy es dasatinib más quercetina. El punto es que el dasatinib es un fármaco oncológico con efectos adversos documentados. De ahí nuestra pregunta: ¿tienen la apigenina y la luteolina de <em>Deschampsia antarctica</em> un índice de selectividad mayor que el de dasatinib y quercetina?"</p></div>
+    <div class="script-step"><span class="role">3 · Hipótesis</span><p>"Planteamos que sí: que estos dos flavonoides presentan un índice de selectividad senolítica in silico mayor que el de dasatinib y quercetina. Llegamos a ellos por Ortiz-Espín (2017), que demostró que el extracto de esta planta protege a los fibroblastos y restaura SIRT1."</p></div>
+    <div class="script-step"><span class="role">4 · Objetivos</span><p>"El objetivo general fue comparar esa selectividad por docking contra SIRT1, p53 y PRX6. Y los específicos fueron tres: determinar las energías de unión, calcular el índice de selectividad de cada ligando y comparar el de los flavonoides antárticos con el de los de referencia."</p></div>
+    <div class="script-step"><span class="role">5 · Metodología <span style="text-transform:none;letter-spacing:0">(seguir el esquema)</span></span><p>"Acá está el flujo completo. Bajamos las tres proteínas del PDB y los cuatro ligandos de PubChem, en formato SDF. Las proteínas las limpiamos en Chimera, sacando aguas, iones y todo lo que no fuera proteína. Después convertimos proteínas y ligandos a PDBQT, que es el formato que pide Vina: agrega las cargas parciales y los tipos de átomo, y define qué enlaces del ligando pueden girar. Configuramos la grid box de forma manual sobre el sitio de unión, de 20×20×20 Å, y corrimos el docking en AutoDock Vina 1.2.7 con exhaustiveness 32. Vina entrega hasta nueve modos y tomamos el de mejor afinidad."</p></div>
+    <div class="script-step"><span class="role">6 · Resultados <span style="text-transform:none;letter-spacing:0">(apuntar la Tabla 1)</span></span><p>"Esta es la tabla. Lo primero que se ve es el contraste: la luteolina marcó −10,41 en SIRT1 y la apigenina −10,14, pero ambas quedaron alrededor de −5,5 en p53. Es decir, discriminan. El dasatinib, en cambio, dio −6,02, −6,12 y −6,81: casi lo mismo en las tres. Al calcular el índice: luteolina 1,66, apigenina 1,61, quercetina 1,47 y dasatinib 0,93, el único bajo 1."</p></div>
+    <div class="script-step"><span class="role">7 · Discusión y conclusiones</span><p>"Nuestros flavonoides mostraron una selectividad predicha mayor que la del dasatinib, lo que concuerda con su baja especificidad descrita en la literatura. Y coincide con Ortiz-Espín: acá aportamos una posible base mecanística in silico de ese efecto protector. Eso sí, la hipótesis se cumple solo parcialmente, porque frente a la quercetina, que también es un flavonoide, la diferencia es marginal. Como proyección queremos evaluar la unión de estos flavonoides en el sitio de acción específico del dasatinib y la quercetina, y hacer ensayos experimentales que midan la selectividad biológica."</p></div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS ============ -->
+<section id="preguntas" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Anticipa y responde</span>
+    <h2>Banco de preguntas</h2>
+    <p class="lede">Toca cada pregunta para ver una respuesta sugerida. Las marcadas en rojo son las difíciles de la comisión.</p>
+  </div>
+
+  <div class="read">
+    <h3 style="margin-top:0">Aspectos generales</h3>
+    <details class="qa"><summary>¿Por qué eligieron esta planta y no otra?</summary><div class="ans">Por el trabajo previo de Ortiz-Espín et al. (2017), que demostró experimentalmente que el extracto de <em>Deschampsia antarctica</em> protege a fibroblastos de la senescencia y restaura SIRT1. Esa observación nos llevó a elegir esta planta y, en particular, a evaluar sus flavonoides apigenina y luteolina, presentes en el extracto según Mataix et al. (2020). Quisimos poner a prueba in silico si esas moléculas explican el efecto por su unión preferente a SIRT1. Partimos de un antecedente experimental concreto.</div></details>
+    <details class="qa"><summary>¿Qué significa que algo sea selectivo?</summary><div class="ans">Que actúa sobre la diana de interés sin afectar a las demás. Un fármaco selectivo tiende a provocar menos efectos adversos.</div></details>
+    <details class="qa"><summary>¿Por qué SIRT1 como diana deseada?</summary><div class="ans">Es una desacetilasa asociada a la longevidad y a la protección frente a la senescencia; su activación se considera una estrategia antienvejecimiento (Haigis y Sinclair, 2010), y el extracto de la planta restaura su expresión.</div></details>
+    <details class="qa"><summary>¿Qué es el docking molecular?</summary><div class="ans">Una técnica computacional que predice cómo se acopla una molécula a una proteína y estima la fuerza de esa unión, expresada como energía de unión en kcal/mol.</div></details>
+    <details class="qa"><summary>¿Por qué usar docking y no un laboratorio? ¿No le resta valor al trabajo?<span class="badge-diff">MÉTODO</span></summary><div class="ans">Al contrario: el docking es una técnica estándar de cribado virtual en el descubrimiento de fármacos. Antecede al experimento y lo orienta, al jerarquizar candidatos de forma reproducible y a bajo costo antes de invertir recursos en el laboratorio. Es además una herramienta rigurosa y accesible sin infraestructura de laboratorio húmedo, lo que la hace idónea para una investigación escolar seria. Nuestro valor está en haberla aplicado a una comparación que todavía no se había hecho.</div></details>
+    <details class="qa"><summary>¿Cuál fue el mejor candidato?</summary><div class="ans">La luteolina: mayor afinidad por SIRT1, con −10,41 kcal/mol, y mayor índice de selectividad, 1,66.</div></details>
+    <details class="qa"><summary>¿Para qué serviría esto en la práctica?</summary><div class="ans">A largo plazo, para orientar el diseño de senolíticos naturales más selectivos. En lo inmediato, es un primer filtro que prioriza qué moléculas conviene llevar a ensayos de laboratorio.</div></details>
+
+    <h3>Debilidades del proyecto <span style="font-weight:400;font-size:.9rem;color:var(--muted)">(las difíciles)</span></h3>
+    <p class="qa-note">Regla de oro: nunca defender lo indefendible. Reconocer la limitación, explicar por qué el resultado sigue siendo válido en su contexto y mostrar cómo se resolvería a futuro.</p>
+    <details class="qa hard"><summary>Usan el término senolítico, pero el mecanismo que describen, restaurar y proteger SIRT1, es más bien senomórfico. ¿No es una contradicción?<span class="badge-diff">ALCANCE</span></summary><div class="ans"><p style="margin-top:0">"Es una observación muy pertinente y la asumimos con claridad. Un senolítico elimina la célula senescente; un senomórfico la protege o silencia su SASP. Adoptamos el marco senolítico porque nuestro punto de comparación es el régimen D+Q, que es senolítico. La evidencia que nos sustenta, en cambio, describe un efecto protector vía restauración de SIRT1 (Ortiz-Espín et al., 2017), que corresponde más a un perfil senomórfico.</p><p style="margin-bottom:0">Por eso el trabajo gira, en el fondo, en torno a la protección: evaluamos la afinidad por SIRT1, una proteína reguladora. Determinar si el efecto final es eliminar o proteger células requiere ensayos funcionales, que es lo que proponemos validar. Reconocerlo delimita con honestidad el alcance del estudio."</p></div></details>
+    <details class="qa hard"><summary>El docking mide unión, no función. ¿Cómo saben que unirse a SIRT1 la activa y no la inhibe?</summary><div class="ans">"Tienen razón: el docking entrega afinidad, sin establecer la activación. Una molécula podría unirse con fuerza y, aun así, inhibir la proteína. Nuestro índice mide preferencia de unión por la diana, no el efecto funcional. La dirección de ese efecto sobre SIRT1 debe resolverse experimentalmente en la etapa siguiente. Lo que sí aporta el docking es una hipótesis mecanística priorizada y comprobable."</div></details>
+    <details class="qa hard"><summary>¿Cómo justifican que SIRT1 sea la diana deseada a partir de la cascada molecular?<span class="badge-diff">MECANISMO</span></summary><div class="ans">"SIRT1 regula a p53, que encabeza la cascada de arresto: p53 activa p21, que con p16 inhibe a CDK4/6, lo que mantiene activa a Rb y detiene el ciclo en G1. Una sobreactivación sostenida de esa vía acelera el envejecimiento. De ahí el perfil deseado: alta afinidad por SIRT1, su regulador, y baja por p53, para no reforzar el arresto. Las energías de unión muestran ese patrón en los flavonoides y el patrón opuesto en el dasatinib."</div></details>
+    <details class="qa hard"><summary>Si SIRT1 inhibe a p53, que es el guardián del genoma, ¿no estarían favoreciendo el riesgo de cáncer?<span class="badge-diff">MECANISMO</span></summary><div class="ans"><p style="margin-top:0">"Es el doble filo de este eje y lo tenemos presente. Al desacetilar p53, SIRT1 lo mantiene en baja actividad: eso reduce la señal de apoptosis y atenúa la senescencia, de modo que la célula prioriza la reparación y la supervivencia. Es el mecanismo que permite explicar el efecto protector que describió Ortiz-Espín.</p><p>Ahora bien, p53 es el guardián del genoma. Ante un daño leve, atenuarlo evita la pérdida celular innecesaria; ante un daño masivo del ADN, inhibirlo en exceso dejaría sobrevivir y dividirse a una célula gravemente dañada, con riesgo de mutaciones y transformación tumoral.</p><p style="margin-bottom:0">Por eso la estrategia busca un equilibrio, conservando la capacidad de respuesta de p53. Y eso mismo respalda nuestro criterio de selectividad: buscamos un ligando con alta afinidad por SIRT1 y baja por p53, que distinga entre ambas y no interfiera de forma impredecible en un circuito que requiere regulación fina. Verificar ese equilibrio en una célula real exige ensayos funcionales."</p></div></details>
+    <details class="qa hard"><summary>Su índice de selectividad no es el clásico de farmacología, y dividir energías de unión no tiene un significado físico limpio. ¿Cómo lo justifican?<span class="badge-diff">ÍNDICE</span></summary><div class="ans">"Correcto, y lo asumimos: es un índice operacional definido por nosotros para comparar discriminación entre dianas, distinto del índice clásico (CC₅₀/IC₅₀). Lo termodinámicamente más riguroso sería emplear la diferencia de energías (ΔΔG) en lugar del cociente. Lo usamos como herramienta de ranking entre candidatos bajo las mismas condiciones, que es su propósito en este estudio exploratorio."</div></details>
+    <details class="qa hard"><summary>¿Validaron el protocolo? ¿Hicieron re-docking de un ligando conocido?</summary><div class="ans">"No en esta etapa, y es una mejora pendiente. La validación por re-docking, comprobando un RMSD menor a 2 Å, aumentaría la confianza en las poses. Queda incorporada a las etapas siguientes junto con la dinámica molecular."</div></details>
+    <details class="qa hard"><summary>¿Por qué p53 y PRX6 como dianas no deseadas? ¿No es arbitrario?</summary><div class="ans">"p53 es clara: su sobreactivación acelera el envejecimiento, de modo que no queremos interferir ahí. PRX6 se incorporó como segunda diana de referencia para medir discriminación. Reconocemos que elegir otras proteínas podría cambiar el valor absoluto del índice; por eso lo relevante es la comparación relativa entre ligandos más que el número en sí."</div></details>
+    <details class="qa hard"><summary>Compararon moléculas de tamaños muy distintos. ¿El puntaje de Vina no favorece a unas?</summary><div class="ans">"Es una limitación conocida: las funciones de puntaje pueden correlacionar con el tamaño molecular. Por eso no leemos solo la afinidad bruta, sino el índice relativo, es decir, cómo discrimina cada molécula entre sus propias dianas, lo que normaliza en parte ese efecto."</div></details>
+    <details class="qa hard"><summary>Usaron receptor rígido y una sola corrida. ¿No afecta la fiabilidad?</summary><div class="ans">"Sí, el docking rígido no modela el ajuste inducido. Usamos exhaustiveness 32, relativamente alto, para mejorar el muestreo. Replicar las corridas y pasar a docking flexible o dinámica molecular daría mayor robustez, y está contemplado para la etapa siguiente."</div></details>
+    <details class="qa hard"><summary>Probaron los flavonoides puros, pero la planta tiene un extracto mezcla. ¿Pueden concluir sobre el extracto?</summary><div class="ans">"Buena precisión: nuestras conclusiones son sobre los dos flavonoides aislados y no sobre el extracto completo, que contiene otros compuestos y presenta aspectos de biodisponibilidad. Hablamos de la planta como fuente de estas moléculas."</div></details>
+    <details class="qa hard"><summary>¿Por qué compararon con D+Q y no con otros senolíticos, como la fisetina?<span class="badge-diff">COMPARADORES</span></summary><div class="ans"><p style="margin-top:0">"Elegimos dasatinib y quercetina porque constituyen el régimen senolítico de referencia: es el más estudiado y el primero que llegó a ensayos clínicos en humanos (Justice et al., 2019), lo que lo vuelve el patrón de comparación natural para un estudio como el nuestro.</p><p style="margin-bottom:0">Reconocemos que no es el único candidato en desarrollo: la fisetina, que además es un flavonoide, y el navitoclax, entre otros, también se investigan como senolíticos. Incorporar la fisetina sería un comparador muy pertinente, precisamente por pertenecer a la misma familia química que nuestros candidatos, y es una extensión directa de este trabajo. Nuestra elección responde a que buscábamos contrastar con el estándar establecido y no con el conjunto completo de candidatos."</p></div></details>
+    <details class="qa hard"><summary>¿Y la quercetina no actúa también sobre muchas dianas? ¿Por qué señalan solo al dasatinib?<span class="badge-diff">PRECISIÓN</span></summary><div class="ans"><p style="margin-top:0">"Es una precisión justa y la aceptamos. La quercetina es un flavonoide con múltiples dianas descritas, y la promiscuidad de unión es frecuente en este grupo de compuestos, de modo que no es un rasgo exclusivo del dasatinib.</p><p>Lo que distinguimos es otra cosa. En nuestros propios resultados, el dasatinib no discriminó entre las tres proteínas evaluadas, con un índice de 0,93, mientras que la quercetina sí lo hizo, con 1,47. Esa afirmación vale para esas tres proteínas y no constituye un juicio general sobre cuántas dianas tiene cada compuesto.</p><p style="margin-bottom:0">En clínica, además, la diferencia está en el perfil de toxicidad: el dasatinib es un antineoplásico con efectos adversos documentados, mientras que la quercetina es un flavonoide presente en la dieta. Por eso la literatura concentra la preocupación en el componente dasatinib del régimen."</p></div></details>
+    <details class="qa hard"><summary>La diferencia entre los flavonoides (1,61 y 1,66) y la quercetina (1,47) es pequeña. ¿Es significativa?<span class="badge-diff">ÍNDICE</span></summary><div class="ans">"Exacto, y por eso sostenemos que la hipótesis se cumple de manera parcial. Frente al dasatinib la diferencia es amplia; frente a la quercetina es marginal y ambas clasifican como selectivas. Conviene leerlo en contexto: nuestro punto de comparación es el régimen de referencia D+Q, formado por dasatinib y quercetina. La quercetina es además un flavonoide, de modo que su selectividad comparable refuerza nuestra premisa, en lugar de contradecirla: los flavonoides, como grupo, tienden a ser selectivos. Y frente al dasatinib, el componente de baja selectividad y con efectos adversos, la diferencia es clara."</div></details>
+    <details class="qa hard"><summary>¿Hicieron análisis estadístico?</summary><div class="ans">"No en esta etapa; trabajamos con el modo de mayor afinidad por acoplamiento. Un análisis más robusto repetiría las corridas y aplicaría estadística sobre las réplicas. Es una limitación que reconocemos."</div></details>
+
+    <h3>Del público general <span style="font-weight:400;font-size:.9rem;color:var(--muted)">(respuestas de bolsillo)</span></h3>
+    <details class="qa"><summary>¿Esto ya es un remedio?</summary><div class="ans">Todavía no. Es una predicción computacional, el primer paso de un proceso más largo.</div></details>
+    <details class="qa"><summary>¿Se puede comer la planta y rejuvenecer?</summary><div class="ans">No funciona así. Estudiamos en el computador moléculas específicas de la planta, no el consumo de la planta.</div></details>
+    <details class="qa"><summary>¿Usaron inteligencia artificial?</summary><div class="ans">Usamos simulación molecular por computador: es cálculo físico-químico de cómo encajan las moléculas, no un modelo de lenguaje.</div></details>
+    <details class="qa"><summary>¿Por qué la Antártida?</summary><div class="ans">Porque las plantas que sobreviven a ese ambiente extremo producen moléculas defensoras especialmente potentes.</div></details>
+  </div>
+</section>
+
+<!-- ============ CHECKLIST ============ -->
+<section id="checklist" hidden>
+  <div class="sec-head read">
+    <span class="eyebrow">Antes de salir al stand</span>
+    <h2>Checklist y consejos</h2>
+    <p class="lede">Se guarda solo en este dispositivo: marca lo que ya tienen listo.</p>
+  </div>
+  <div class="read" id="checkList"></div>
+
+  <h3>Consejos de stand</h3>
+  <div class="grid cols-2 read" style="max-width:none">
+    <div class="card"><h4 class="ui">Repartan roles, pero todos saben todo</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">Una abre, otra lleva el método, otra los resultados. Si llega la comisión, lidera quien esté más firme en lo técnico.</p></div>
+    <div class="card"><h4 class="ui">Lean a la audiencia</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">Público general: guion divulgativo. Comisión: fundamento mecanístico, método y su valor, índice de selectividad.</p></div>
+    <div class="card"><h4 class="ui">Tengan a mano el número central</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">Luteolina, IS <span class="mono">1,66</span>. Y el contraste: dasatinib <span class="mono">0,93</span>.</p></div>
+    <div class="card"><h4 class="ui">Reivindiquen el método</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">El docking es cribado virtual estándar que antecede al experimento y lo orienta, no un reemplazo por falta de laboratorio.</p></div>
+    <div class="card"><h4 class="ui">Si no saben algo</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">Es preferible decir "no lo evaluamos en este estudio, pero sería un buen siguiente paso" antes que inventar.</p></div>
+    <div class="card"><h4 class="ui">Lenguaje</h4><p style="margin-bottom:0;font-size:.95rem;color:var(--muted)">Siempre condicional: "sería", "predice", "sugiere". Nunca "demostramos que cura".</p></div>
+  </div>
+  <div class="callout good read" style="margin-top:1.4rem"><h4>Frase de cierre para la comisión</h4><p style="margin-bottom:0">"Es un estudio exploratorio in silico, con limitaciones que reconocemos, pero que entrega una hipótesis mecanística comprobable y respalda seguir explorando la biodiversidad antártica como fuente de fármacos."</p></div>
+</section>
+
+</main>
+
+<div class="footer">Guía de estudio · Expo Ciencias Nacional Chile 2026 · Pensada para usarse en el celular durante el stand.</div>
+
+<script>
+(function(){
+  "use strict";
+  var sections=["resumen","marco","ciclo","glosario","guiones","preguntas","checklist"];
+  var pills=Array.prototype.slice.call(document.querySelectorAll(".pill"));
+  function show(id){
+    if(sections.indexOf(id)<0)id="resumen";
+    sections.forEach(function(s){var el=document.getElementById(s);if(el)el.hidden=(s!==id);});
+    pills.forEach(function(p){p.setAttribute("aria-current", p.getAttribute("href")==="#"+id ? "true":"false");});
+    window.scrollTo({top:0,behavior:"auto"});
+  }
+  window.addEventListener("hashchange",function(){show((location.hash||"#resumen").slice(1));});
+  show((location.hash||"#resumen").slice(1));
+
+  /* tema */
+  var tb=document.getElementById("themeBtn");
+  function stored(){try{return localStorage.getItem("sa-theme");}catch(e){return null;}}
+  if(stored())document.documentElement.setAttribute("data-theme",stored());
+  tb.addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var isDark = cur ? cur==="dark" : window.matchMedia("(prefers-color-scheme:dark)").matches;
+    var next=isDark?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    try{localStorage.setItem("sa-theme",next);}catch(e){}
+  });
+
+  /* ciclo celular (SVG) */
+  var phases=[
+    {k:"G1",label:"G1 · Crecimiento",frac:0.42,color:"--c-g1"},
+    {k:"S", label:"S · Síntesis",    frac:0.26,color:"--c-s"},
+    {k:"G2",label:"G2 · Preparación",frac:0.17,color:"--c-g2"},
+    {k:"M", label:"M · Mitosis",     frac:0.15,color:"--c-m"}
+  ];
+  function arc(cx,cy,ro,ri,a0,a1){
+    var p=function(r,a){return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+    var large=(a1-a0)>Math.PI?1:0;
+    var o0=p(ro,a0),o1=p(ro,a1),i1=p(ri,a1),i0=p(ri,a0);
+    return "M "+o0[0].toFixed(2)+" "+o0[1].toFixed(2)+
+           " A "+ro+" "+ro+" 0 "+large+" 1 "+o1[0].toFixed(2)+" "+o1[1].toFixed(2)+
+           " L "+i1[0].toFixed(2)+" "+i1[1].toFixed(2)+
+           " A "+ri+" "+ri+" 0 "+large+" 0 "+i0[0].toFixed(2)+" "+i0[1].toFixed(2)+" Z";
+  }
+  (function ring(){
+    var svg=document.getElementById("cycleRing");if(!svg)return;
+    var NS="http://www.w3.org/2000/svg",cx=170,cy=170,ro=120,ri=72,gap=0.045;
+    var a=-Math.PI/2;
+    phases.forEach(function(ph){
+      var span=ph.frac*Math.PI*2, a0=a+gap/2, a1=a+span-gap/2;
+      var path=document.createElementNS(NS,"path");
+      path.setAttribute("d",arc(cx,cy,ro,ri,a0,a1));
+      path.setAttribute("fill","var("+ph.color+")");
+      svg.appendChild(path);
+      var mid=a+span/2, lr=(ro+ri)/2, lx=cx+lr*Math.cos(mid), ly=cy+lr*Math.sin(mid);
+      var t=document.createElementNS(NS,"text");
+      t.setAttribute("x",lx.toFixed(1));t.setAttribute("y",(ly+5).toFixed(1));
+      t.setAttribute("text-anchor","middle");
+      t.setAttribute("font-family","IBM Plex Mono, monospace");
+      t.setAttribute("font-size","16");t.setAttribute("font-weight","500");
+      t.setAttribute("fill","#fff");t.textContent=ph.k;
+      svg.appendChild(t);
+      a+=span;
+    });
+    var c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",cx);c.setAttribute("cy",cy);c.setAttribute("r",ri-10);
+    c.setAttribute("fill","var(--surface-2)");c.setAttribute("stroke","var(--border)");
+    svg.appendChild(c);
+    var ct1=document.createElementNS(NS,"text");
+    ct1.setAttribute("x",cx);ct1.setAttribute("y",cy-4);ct1.setAttribute("text-anchor","middle");
+    ct1.setAttribute("font-family","Libre Franklin, sans-serif");ct1.setAttribute("font-size","13");
+    ct1.setAttribute("font-weight","700");ct1.setAttribute("fill","var(--fg)");ct1.textContent="Ciclo";
+    svg.appendChild(ct1);
+    var ct2=document.createElementNS(NS,"text");
+    ct2.setAttribute("x",cx);ct2.setAttribute("y",cy+13);ct2.setAttribute("text-anchor","middle");
+    ct2.setAttribute("font-family","Libre Franklin, sans-serif");ct2.setAttribute("font-size","13");
+    ct2.setAttribute("font-weight","700");ct2.setAttribute("fill","var(--fg)");ct2.textContent="celular";
+    svg.appendChild(ct2);
+    var mA=-Math.PI/2+phases[0].frac*Math.PI*2*0.5;
+    var mx=cx+(ro+14)*Math.cos(mA), my=cy+(ro+14)*Math.sin(mA);
+    var star=document.createElementNS(NS,"circle");
+    star.setAttribute("cx",mx.toFixed(1));star.setAttribute("cy",my.toFixed(1));star.setAttribute("r","6");
+    star.setAttribute("fill","var(--crit)");svg.appendChild(star);
+    var g0t=document.createElementNS(NS,"text");
+    g0t.setAttribute("x",mx.toFixed(1));g0t.setAttribute("y",(my-12).toFixed(1));g0t.setAttribute("text-anchor","middle");
+    g0t.setAttribute("font-family","IBM Plex Mono, monospace");g0t.setAttribute("font-size","11");
+    g0t.setAttribute("fill","var(--crit)");g0t.textContent="arresto→G0";
+    svg.appendChild(g0t);
+    var leg=document.getElementById("cycleLegend");
+    var items=phases.concat([{k:"G0",label:"G0 · Reposo / senescencia",color:"--c-g0"}]);
+    items.forEach(function(it){
+      var s=document.createElement("span");
+      s.innerHTML='<i class="dot" style="background:var('+it.color+')"></i>'+it.label;
+      leg.appendChild(s);
+    });
+  })();
+
+  /* glosario */
+  var terms=[
+    {t:"Senescencia celular",c:"bio",d:"Estado en que una célula deja de dividirse de forma permanente pero permanece viva y activa."},
+    {t:"SASP",c:"bio",d:"Fenotipo secretor asociado a la senescencia: señales inflamatorias que las células senescentes liberan y que dañan los tejidos vecinos."},
+    {t:"Apoptosis",c:"bio",d:"Muerte celular programada; la autodestrucción ordenada de una célula. Los senolíticos empujan a las senescentes hacia ella."},
+    {t:"Inflamación crónica (inflammaging)",c:"bio",d:"Inflamación persistente y de bajo grado asociada al envejecimiento."},
+    {t:"Telómeros",c:"bio",d:"Extremos protectores de los cromosomas; se acortan con cada división y su desgaste puede gatillar senescencia."},
+    {t:"ROS / estrés oxidativo",c:"bio",d:"Moléculas reactivas que dañan a la célula cuando se acumulan."},
+    {t:"Fibroblasto",c:"bio",d:"Célula del tejido conectivo; es la que protege el extracto en el estudio de Ortiz-Espín et al. (2017)."},
+    {t:"Senolítico",c:"farma",d:"Compuesto que elimina de forma selectiva las células senescentes, induciendo su muerte."},
+    {t:"Senomórfico / senoprotector",c:"farma",d:"No elimina la célula: atenúa su SASP o evita que entre en senescencia."},
+    {t:"Flavonoide",c:"farma",d:"Familia de compuestos vegetales con actividad antioxidante. Apigenina, luteolina y quercetina lo son."},
+    {t:"Apigenina y luteolina",c:"farma",d:"Flavonoides del extracto de Deschampsia antarctica; los candidatos del estudio."},
+    {t:"Quercetina",c:"farma",d:"Flavonoide y una de las dos mitades del senolítico de referencia D+Q."},
+    {t:"Dasatinib",c:"farma",d:"Inhibidor de múltiples tirosina-quinasas; la otra mitad de D+Q. Su selectividad es limitada."},
+    {t:"D+Q",c:"farma",d:"Combinación dasatinib + quercetina, el régimen senolítico más estudiado en humanos."},
+    {t:"Extremófilo",c:"farma",d:"Organismo que vive en ambientes extremos de frío, calor o radiación."},
+    {t:"Bioprospección",c:"farma",d:"Búsqueda sistemática de moléculas útiles en la biodiversidad."},
+    {t:"SIRT1",c:"prot",d:"Desacetilasa dependiente de NAD+ asociada a la longevidad; la diana deseada del estudio. Regula a p53."},
+    {t:"Sirtuina",c:"prot",d:"Familia de enzimas dependientes de NAD+ que regulan el envejecimiento y la respuesta al estrés."},
+    {t:"NAD+",c:"prot",d:"Cofactor que las sirtuinas necesitan para funcionar."},
+    {t:"p53",c:"prot",d:"Supresor tumoral, llamado guardián del genoma: activa el arresto y la apoptosis ante el daño del ADN. Su exceso acelera el envejecimiento, pero inhibirlo demasiado eleva el riesgo tumoral. Diana a evitar."},
+    {t:"Eje SIRT1-p53 (doble filo)",c:"prot",d:"SIRT1 desacetila p53 y baja su actividad: se reduce la apoptosis y la senescencia, y la célula prioriza reparación y supervivencia. En exceso dejaría sobrevivir células muy dañadas; se busca equilibrio."},
+    {t:"PRX6 (peroxirredoxina 6)",c:"prot",d:"Enzima antioxidante; diana de referencia en el cálculo del índice de selectividad."},
+    {t:"p21",c:"prot",d:"Inhibidor de CDK activado por p53; frena el ciclo celular."},
+    {t:"p16 (INK4a)",c:"prot",d:"Inhibidor de CDK4/6; refuerza la vía de arresto hacia la senescencia."},
+    {t:"CDK4/6",c:"prot",d:"Quinasas que impulsan a la célula a avanzar en el ciclo; los inhibidores las bloquean."},
+    {t:"Rb (retinoblastoma)",c:"prot",d:"Proteína que, en su forma activa o hipofosforilada, mantiene a la célula detenida en G1."},
+    {t:"Desacetilación",c:"prot",d:"Retiro de grupos acetilo de una proteína; así SIRT1 modula la actividad de p53."},
+    {t:"In silico",c:"metodo",d:"Realizado por computador, mediante simulación. Se distingue de in vitro, en células o tubo, e in vivo, en organismo."},
+    {t:"Docking molecular",c:"metodo",d:"Técnica que predice cómo y con qué fuerza se acopla una molécula a una proteína."},
+    {t:"Cribado virtual",c:"metodo",d:"Uso de cálculo computacional para jerarquizar candidatos antes del ensayo experimental."},
+    {t:"Ligando",c:"metodo",d:"La molécula pequeña que se acopla a la proteína."},
+    {t:"Afinidad de unión",c:"metodo",d:"Fuerza con que ligando y proteína se unen; se mide en kcal/mol, y un valor más negativo indica unión más fuerte."},
+    {t:"Pose",c:"metodo",d:"Posición y orientación en que el ligando encaja en la proteína."},
+    {t:"Índice de selectividad (IS)",c:"metodo",d:"Afinidad por SIRT1 dividida por el promedio de afinidades por p53 y PRX6, en valor absoluto. Un IS mayor que 1 indica selectividad."},
+    {t:"PDB (Protein Data Bank)",c:"metodo",d:"Base de datos pública de estructuras tridimensionales de proteínas."},
+    {t:"PubChem",c:"metodo",d:"Base de datos pública de estructuras de moléculas pequeñas."},
+    {t:"PDBQT",c:"metodo",d:"Formato de entrada de AutoDock Vina: coordenadas del PDB más cargas parciales (Q) y tipos de átomo (T), además de los enlaces rotables del ligando."},
+    {t:"Meeko",c:"metodo",d:"Conjunto de herramientas que prepara ligandos y receptores para Vina 1.2; incluye mk_prepare_ligand y mk_prepare_receptor."},
+    {t:"mk_prepare_ligand",c:"metodo",d:"Comando de Meeko que convierte el ligando a PDBQT: añade hidrógenos, cargas y tipos de átomo, y define sus enlaces rotables."},
+    {t:"mk_prepare_receptor",c:"metodo",d:"Comando de Meeko que convierte la proteína ya depurada a PDBQT, con cargas y tipos de átomo; el receptor queda rígido."},
+    {t:"Cargas parciales",c:"metodo",d:"Distribución de carga eléctrica sobre los átomos; Vina las necesita para estimar las interacciones de unión."},
+    {t:"Enlaces rotables (torsiones)",c:"metodo",d:"Enlaces en torno a los cuales el ligando puede girar; definen cuántas conformaciones explora el docking."},
+    {t:"Receptor rígido",c:"metodo",d:"Condición en que la proteína no cambia de forma durante el docking; es una limitación habitual del método."},
+    {t:"AutoDock Vina",c:"metodo",d:"Programa de docking usado en el estudio, versión 1.2.7. Combina una función de puntaje con una búsqueda estocástica."},
+    {t:"Función de puntaje (scoring)",c:"metodo",d:"Ecuación semiempírica con que Vina estima la energía de unión en kcal/mol a partir de las interacciones entre ligando y proteína."},
+    {t:"Método estocástico",c:"metodo",d:"Procedimiento con componente aleatorio; por eso corridas distintas de Vina pueden dar resultados algo diferentes."},
+    {t:"Semilla aleatoria (seed)",c:"metodo",d:"Número que inicia la parte aleatoria de la búsqueda; fijarla hace reproducible el resultado."},
+    {t:"Modo de unión",c:"metodo",d:"Cada conformación que Vina propone, hasta nueve, ordenadas por afinidad; el modo 1 es la de mayor afinidad."},
+    {t:"Exhaustiveness",c:"metodo",d:"Parámetro de Vina que controla la profundidad de la búsqueda de poses; en este trabajo se usó 32."},
+    {t:"UCSF Chimera",c:"metodo",d:"Programa para depurar y visualizar las proteínas antes del docking: quita aguas, iones y componentes no proteicos."},
+    {t:"Kd / IC50",c:"metodo",d:"Medidas experimentales de afinidad y potencia. El docking no las entrega."},
+    {t:"ΔG / ΔΔG",c:"metodo",d:"Energía de unión y diferencia de energías; esta última es lo riguroso para comparar selectividad."},
+    {t:"Dinámica molecular",c:"metodo",d:"Simulación que evalúa la estabilidad de la unión a lo largo del tiempo; es una de las etapas propuestas."},
+    {t:"G1 (Gap 1)",c:"ciclo",d:"Fase de crecimiento y control; la más larga. Aquí ocurre el arresto que conduce a la senescencia."},
+    {t:"S (síntesis)",c:"ciclo",d:"La célula replica todo su ADN."},
+    {t:"G2 (Gap 2)",c:"ciclo",d:"Último control y preparación antes de dividirse."},
+    {t:"M (mitosis)",c:"ciclo",d:"La célula se divide en dos células hijas idénticas."},
+    {t:"G0 (reposo)",c:"ciclo",d:"Salida del ciclo: la célula deja de dividirse, de forma temporal o permanente."}
+  ];
+  var catNames={bio:"Biología",farma:"Fármacos",prot:"Proteínas",metodo:"Método",ciclo:"Ciclo"};
+  var grid=document.getElementById("glossGrid"), empty=document.getElementById("glossEmpty");
+  terms.sort(function(a,b){return a.t.localeCompare(b.t,"es");});
+  terms.forEach(function(x){
+    var d=document.createElement("div");d.className="term";d.dataset.cat=x.c;
+    d.dataset.txt=(x.t+" "+x.d).toLowerCase();
+    d.innerHTML='<span class="cat">'+catNames[x.c]+'</span><h4>'+x.t+'</h4><p>'+x.d+'</p>';
+    grid.appendChild(d);
+  });
+  var curCat="all", q="";
+  function applyGloss(){
+    var n=0, cards=grid.children;
+    for(var i=0;i<cards.length;i++){
+      var el=cards[i];
+      var okCat=(curCat==="all"||el.dataset.cat===curCat);
+      var okQ=(!q||el.dataset.txt.indexOf(q)>=0);
+      var vis=okCat&&okQ; el.hidden=!vis; if(vis)n++;
+    }
+    empty.hidden=n>0;
+  }
+  document.getElementById("glossSearch").addEventListener("input",function(e){q=e.target.value.toLowerCase().trim();applyGloss();});
+  document.getElementById("glossFilters").addEventListener("click",function(e){
+    var b=e.target.closest(".chip");if(!b)return;
+    curCat=b.dataset.cat;
+    this.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed",c===b?"true":"false");});
+    applyGloss();
+  });
+
+  /* guiones */
+  var bp=document.getElementById("btnPub"),bc=document.getElementById("btnCom");
+  var gp=document.getElementById("guionPub"),gc=document.getElementById("guionCom");
+  function guion(pub){bp.setAttribute("aria-pressed",pub);bc.setAttribute("aria-pressed",!pub);gp.hidden=!pub;gc.hidden=pub;}
+  bp.addEventListener("click",function(){guion(true);});
+  bc.addEventListener("click",function(){guion(false);});
+
+  /* checklist */
+  var checks=[
+    "Todos dicen que la hipótesis se cumple de manera parcial.",
+    "Memorizados los cuatro valores de IS y el pareo correcto entre luteolina y apigenina.",
+    "Dominada la cascada molecular (p53 → p21 + p16 ⊣ CDK4/6 → Rb → arresto en G1) y el rol regulador de SIRT1.",
+    "Lista la defensa del método: el docking como cribado virtual que antecede al experimento.",
+    "Respuesta acordada para la distinción entre senolítico y senomórfico.",
+    "Decir siempre dasatinib y Deschampsia antarctica.",
+    "Guion de público (60 s) y de comisión (2 min) ensayados en voz alta.",
+    "Roles repartidos: quién abre, quién lleva el método, quién los resultados."
+  ];
+  var cl=document.getElementById("checkList");
+  var saved={};try{saved=JSON.parse(localStorage.getItem("sa-checks")||"{}");}catch(e){}
+  checks.forEach(function(txt,i){
+    var id="chk"+i;
+    var lab=document.createElement("label");lab.className="check";
+    var inp=document.createElement("input");inp.type="checkbox";inp.id=id;inp.checked=!!saved[id];
+    var sp=document.createElement("span");sp.textContent=txt;
+    inp.addEventListener("change",function(){saved[id]=inp.checked;try{localStorage.setItem("sa-checks",JSON.stringify(saved));}catch(e){}});
+    lab.appendChild(inp);lab.appendChild(sp);cl.appendChild(lab);
+  });
+})();
+</script>
+
+</body></html>
