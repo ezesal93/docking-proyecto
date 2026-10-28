@@ -29,6 +29,10 @@
   #visor { position: relative; width: 100%; height: 480px; border: 1px solid #999; background: #fff; }
   #estado { font-family: system-ui, sans-serif; font-size: .9em; color: #333; margin: 6px 0; min-height: 1.4em; }
   .solo-print { display: none; }
+  .tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid #111; margin-top: 10px; }
+  .tabs button { font: inherit; font-family: system-ui, sans-serif; font-size: .9em; padding: 6px 14px;
+                  border: 1px solid #999; border-bottom: none; background: #eee; color: #111; cursor: pointer; margin-right: 4px; }
+  .tabs button[aria-selected="true"] { background: #111; color: #fff; border-color: #111; }
   @media print {
     .solo-pantalla { display: none !important; }
     .solo-print { display: block; }
@@ -45,6 +49,42 @@
 
 <h1>Bitácora de investigación: acoplamiento molecular (docking)</h1>
 <p class="sub">Proteínas 1TUP, 4I5I y 5B6N frente a Apigenina, Dasatinib, Luteolina y Quercetina · AutoDock Vina 1.2.7</p>
+
+<h2 id="visor3d">Visualización 3D interactiva</h2>
+<p class="solo-print">En la versión en línea de esta bitácora hay un visor 3D interactivo de las proteínas, los ligandos
+y cada complejo proteína–ligando: <a href="https://ezesal93.github.io/docking-proyecto/">https://ezesal93.github.io/docking-proyecto/</a></p>
+<div class="solo-pantalla">
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="complejos" aria-selected="true">Complejos proteína–ligando</button>
+    <button role="tab" data-tab="proteinas" aria-selected="false">Proteínas</button>
+    <button role="tab" data-tab="ligandos" aria-selected="false">Ligandos</button>
+  </div>
+  <div class="panel" data-panel="complejos">
+    <p>La proteína se muestra como cinta gris, el ligando en barras verdes y los residuos a menos de 5 Å del ligando en barras finas.</p>
+    <div class="controls">
+      <label>Proteína <select id="selP"><option>1TUP</option><option>4I5I</option><option>5B6N</option></select></label>
+      <label>Ligando <select id="selL"><option>Apigenina</option><option>Dasatinib</option><option>Luteolina</option><option>Quercetina</option></select></label>
+      <label>Pose <select id="selM"></select></label>
+      <label><input type="checkbox" id="chkSup"> Superficie</label>
+    </div>
+  </div>
+  <div class="panel" data-panel="proteinas" hidden>
+    <p>Proteína preparada (PDBQT) en cinta, coloreada del extremo N-terminal (azul) al C-terminal (rojo).</p>
+    <div class="controls">
+      <label>Proteína <select id="selP2"><option>1TUP</option><option>4I5I</option><option>5B6N</option></select></label>
+      <label><input type="checkbox" id="chkSup2"> Superficie</label>
+    </div>
+  </div>
+  <div class="panel" data-panel="ligandos" hidden>
+    <p>Ligando preparado (PDBQT) en barras: carbono gris, oxígeno rojo, nitrógeno azul, azufre amarillo, cloro verde.</p>
+    <div class="controls">
+      <label>Ligando <select id="selL2"><option>Apigenina</option><option>Dasatinib</option><option>Luteolina</option><option>Quercetina</option></select></label>
+    </div>
+  </div>
+  <p class="more">Arrastra para girar, rueda del ratón para acercar.</p>
+  <div id="estado"></div>
+  <div id="visor"></div>
+</div>
 
 <h2>1. Obtención de las estructuras</h2>
 <p>Se descargaron los archivos PDB de las proteínas desde <strong>Protein Data Bank</strong> (carpeta <code>1_proteinas_PDB</code>)
@@ -379,25 +419,9 @@ energy_range = 5.0</pre><p class="more">Archivo: <a href="4_configuracion/config
 <h3>4.1 Resumen: mejor afinidad (modo 1)</h3>
 <table><thead><tr><th>Proteína</th><th>Ligando</th><th>Afinidad (kcal/mol)</th></tr></thead>
 <tbody><tr data-p='1TUP' data-l='Apigenina'><td>1TUP</td><td>Apigenina</td><td class='num'>-5.635</td></tr><tr data-p='1TUP' data-l='Dasatinib'><td>1TUP</td><td>Dasatinib</td><td class='num'>-6.124</td></tr><tr data-p='1TUP' data-l='Luteolina'><td>1TUP</td><td>Luteolina</td><td class='num'>-5.458</td></tr><tr data-p='1TUP' data-l='Quercetina'><td>1TUP</td><td>Quercetina</td><td class='num'>-5.672</td></tr><tr data-p='4I5I' data-l='Apigenina'><td>4I5I</td><td>Apigenina</td><td class='num'>-10.14</td></tr><tr data-p='4I5I' data-l='Dasatinib'><td>4I5I</td><td>Dasatinib</td><td class='num'>-6.021</td></tr><tr data-p='4I5I' data-l='Luteolina'><td>4I5I</td><td>Luteolina</td><td class='num'>-10.41</td></tr><tr data-p='4I5I' data-l='Quercetina'><td>4I5I</td><td>Quercetina</td><td class='num'>-9.327</td></tr><tr data-p='5B6N' data-l='Apigenina'><td>5B6N</td><td>Apigenina</td><td class='num'>-6.953</td></tr><tr data-p='5B6N' data-l='Dasatinib'><td>5B6N</td><td>Dasatinib</td><td class='num'>-6.806</td></tr><tr data-p='5B6N' data-l='Luteolina'><td>5B6N</td><td>Luteolina</td><td class='num'>-7.068</td></tr><tr data-p='5B6N' data-l='Quercetina'><td>5B6N</td><td>Quercetina</td><td class='num'>-7.045</td></tr></tbody></table>
-<p class="solo-pantalla more">Haz clic en una fila para verla en el visor 3D.</p>
+<p class="solo-pantalla more">Haz clic en una fila para verla en el visor 3D (al inicio de la página).</p>
 
-<h3>4.2 Visualización 3D interactiva</h3>
-<p class="solo-print">En la versión en línea de esta bitácora hay un visor 3D interactivo de cada complejo
-proteína–ligando: <a href="https://ezesal93.github.io/docking-proyecto/">https://ezesal93.github.io/docking-proyecto/</a></p>
-<div class="solo-pantalla">
-  <p>La proteína se muestra como cinta gris, el ligando en barras verdes y los residuos a menos de 5 Å del ligando en líneas.
-  Arrastra para girar, rueda del ratón para acercar.</p>
-  <div class="controls">
-    <label>Proteína <select id="selP"><option>1TUP</option><option>4I5I</option><option>5B6N</option></select></label>
-    <label>Ligando <select id="selL"><option>Apigenina</option><option>Dasatinib</option><option>Luteolina</option><option>Quercetina</option></select></label>
-    <label>Pose <select id="selM"></select></label>
-    <label><input type="checkbox" id="chkSup"> Superficie</label>
-  </div>
-  <div id="estado"></div>
-  <div id="visor"></div>
-</div>
-
-<h3>4.3 Registros de AutoDock Vina (.log)</h3>
+<h3>4.2 Registros de AutoDock Vina (.log)</h3>
 <div class="doc"><h4>1TUP_Apigenina_out.log</h4><pre>AutoDock Vina v1.2.7
 #################################################################
 # If you used AutoDock Vina in your work, please cite:          #
@@ -951,7 +975,7 @@ mode |   affinity | dist from best mode
    7       -5.132      4.734      7.314
    8       -4.888      4.327      7.534
    9       -4.732      3.635      5.047</pre><p class="more">Archivo: <a href="5_resultados_docking/5B6N_Quercetina_out.log">5_resultados_docking/5B6N_Quercetina_out.log</a></p></div>
-<h3 class="page">4.4 Poses generadas (_out.pdbqt)</h3>
+<h3 class="page">4.3 Poses generadas (_out.pdbqt)</h3>
 <p>Se muestran las primeras 20 líneas de cada archivo; el documento completo está en el enlace.</p>
 <div class="doc"><h4>1TUP_Apigenina_out.pdbqt</h4><pre>MODEL 1
 REMARK VINA RESULT:    -5.635      0.000      0.000
@@ -1206,15 +1230,60 @@ ATOM      9  C   UNL     1     -19.683  50.144 -29.727  1.00  0.00     0.094 A <
   function separarPoses(txt) {
     return txt.split(/^ENDMDL.*$/m).filter(b => /ATOM|HETATM/.test(b)).map((b, i) => {
       const m = b.match(/REMARK VINA RESULT:\s+(-?[\d.]+)/);
-      // 3Dmol deja de leer en ENDROOT/ENDBRANCH, así que se conservan solo los átomos
-      const atomos = b.split("\n").filter(l => /^(ATOM|HETATM)/.test(l)).map(l => l.replace(/^ATOM  /, "HETATM"));
-      return { n: i + 1, afinidad: m ? m[1] : "?", texto: atomos.join("\n") };
+      return { n: i + 1, afinidad: m ? m[1] : "?", texto: soloAtomos(b) };
     });
   }
 
+  // 3Dmol deja de leer en ENDROOT/ENDBRANCH, así que de los ligandos se conservan solo los átomos
+  function soloAtomos(txt) {
+    return txt.split("\n").filter(l => /^(ATOM|HETATM)/.test(l)).map(l => l.replace(/^ATOM  /, "HETATM")).join("\n");
+  }
+
+  function limpiar() { viewer.removeAllModels(); viewer.removeAllSurfaces(); viewer.removeAllLabels(); }
+
+  async function verProteina() {
+    const p = $("selP2").value;
+    estado.textContent = "Cargando " + p + "…";
+    try { var t = await texto("3-preparacion/proteinas_PDBQT/" + p + ".pdbqt"); }
+    catch (e) { estado.textContent = errorLectura; return; }
+    limpiar();
+    const m = viewer.addModel(t, "pdbqt");
+    m.setStyle({}, { cartoon: { color: "spectrum" } });
+    if ($("chkSup2").checked)
+      viewer.addSurface($3Dmol.SurfaceType.VDW, { opacity: 0.5, color: "white" }, { model: m });
+    viewer.zoomTo(); viewer.render();
+    const res = new Set(m.selectedAtoms({}).map(a => a.chain + a.resi));
+    estado.textContent = p + " — " + res.size + " residuos";
+  }
+
+  async function verLigando() {
+    const l = $("selL2").value;
+    estado.textContent = "Cargando " + l + "…";
+    try { var t = await texto("3-preparacion/ligandos_PDBQT/" + l + ".pdbqt"); }
+    catch (e) { estado.textContent = errorLectura; return; }
+    limpiar();
+    const m = viewer.addModel(soloAtomos(t), "pdbqt");
+    m.setStyle({}, { stick: { radius: 0.2 }, sphere: { scale: 0.25 } });
+    viewer.zoomTo(); viewer.render();
+    estado.textContent = l + " — " + m.selectedAtoms({}).length + " átomos";
+  }
+
+  const errorLectura = "No se pudieron leer los archivos. El visor funciona en la versión en línea: https://ezesal93.github.io/docking-proyecto/";
+  let pestana = "complejos";
+  const vistas = { complejos: () => cargar(), proteinas: verProteina, ligandos: verLigando };
+  function abrir(nombre) {
+    pestana = nombre;
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === nombre));
+    document.querySelectorAll(".panel").forEach(p => p.hidden = p.dataset.panel !== nombre);
+    vistas[nombre]();
+  }
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => abrir(b.dataset.tab));
+  $("selP2").onchange = $("chkSup2").onchange = verProteina;
+  $("selL2").onchange = verLigando;
+
   function dibujar() {
     const pose = poses[$("selM").selectedIndex];
-    viewer.removeAllModels(); viewer.removeAllSurfaces();
+    limpiar();
     const prot = viewer.addModel(cache.protActual, "pdbqt");
     prot.setStyle({}, { cartoon: { color: "#c8c8c8" } });
     const lig = viewer.addModel(pose.texto, "pdbqt");
@@ -1241,7 +1310,7 @@ ATOM      9  C   UNL     1     -19.683  50.144 -29.727  1.00  0.00     0.094 A <
       cache.protActual = await texto("3-preparacion/proteinas_PDBQT/" + p + ".pdbqt");
       poses = separarPoses(await texto("5_resultados_docking/" + p + "_" + l + "_out.pdbqt"));
     } catch (e) {
-      estado.textContent = "No se pudieron leer los archivos. El visor funciona en la versión en línea: https://ezesal93.github.io/docking-proyecto/";
+      estado.textContent = errorLectura;
       return;
     }
     $("selM").innerHTML = poses.map(x => "<option>" + x.n + " (" + x.afinidad + " kcal/mol)</option>").join("");
@@ -1251,8 +1320,8 @@ ATOM      9  C   UNL     1     -19.683  50.144 -29.727  1.00  0.00     0.094 A <
   $("selP").onchange = $("selL").onchange = cargar;
   $("selM").onchange = $("chkSup").onchange = dibujar;
   document.querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => {
-    $("selP").value = tr.dataset.p; $("selL").value = tr.dataset.l; cargar();
-    $("visor").scrollIntoView({ behavior: "smooth", block: "center" });
+    $("selP").value = tr.dataset.p; $("selL").value = tr.dataset.l; abrir("complejos");
+    $("visor3d").scrollIntoView({ behavior: "smooth" });
   });
   cargar();
 })();
