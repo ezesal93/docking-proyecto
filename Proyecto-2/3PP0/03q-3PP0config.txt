@@ -1,0 +1,9 @@
+receptor = 3PP0_A.pdbqt
+ligand = ligando_03q.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 18.75
+out = ligando_03q_out.pdbqt

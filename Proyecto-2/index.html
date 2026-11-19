@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cáncer de mama y plantas nativas</title>
+<meta name="description" content="Recorrido interactivo: comparamos con docking molecular el polygodial del canelo y la leptocarpina del palo negro frente al tamoxifeno.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8456b' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6' cy='7' r='2.2'/%3E%3Ccircle cx='18' cy='7' r='2.2'/%3E%3Ccircle cx='12' cy='17' r='2.2'/%3E%3Cpath d='M8 8l2.8 7M16 8l-2.8 7M8.2 7h7.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f2eff0; --surface:#fff; --surface-2:#ece5e7; --surface-3:#f8f5f6;
+  --fg:#241a1e; --muted:#6a585e; --faint:#94838a; --border:#e0d5d8;
+  --accent:#a8456b; --accent-ink:#8d2f54; --accent-soft:rgba(168,69,107,.12);
+  --warm:#b0720f; --warm-soft:rgba(176,114,15,.14);
+  --good:#2e8c58; --good-soft:rgba(46,140,88,.14);
+  --crit:#bb443a; --crit-soft:rgba(187,68,58,.14);
+  --era:#a8456b; --her:#3f6ea8;
+  --shadow:0 1px 2px rgba(40,20,28,.05),0 6px 20px rgba(40,20,28,.07);
+  --ui:"Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Spectral",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --viewer-bg:#ffffff;
+  --cielo1:#cfe0ea; --cielo2:#eef4f7; --agua:#9bb9c9; --monte:#b8c6cc; --hoja:#2f7a4f; --hoja2:#235f3d;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#140e11; --surface:#1f161a; --surface-2:#2b1f24; --surface-3:#190f13;
+  --fg:#f0e7ea; --muted:#b5a2a9; --faint:#8d7b82; --border:#3a2b31;
+  --accent:#e08aa8; --accent-ink:#f0a8c0; --accent-soft:rgba(224,138,168,.15);
+  --warm:#e0a53a; --warm-soft:rgba(224,165,58,.16);
+  --good:#4fba7e; --good-soft:rgba(79,186,126,.16);
+  --crit:#e37a6e; --crit-soft:rgba(227,122,110,.16);
+  --era:#e08aa8; --her:#79a6dd;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.35);
+  --viewer-bg:#190f13;
+  --cielo1:#1b2d38; --cielo2:#101c23; --agua:#1b3a4a; --monte:#30444c; --hoja:#3f9263; --hoja2:#2d6e49;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#140e11; --surface:#1f161a; --surface-2:#2b1f24; --surface-3:#190f13;
+  --fg:#f0e7ea; --muted:#b5a2a9; --faint:#8d7b82; --border:#3a2b31;
+  --accent:#e08aa8; --accent-ink:#f0a8c0; --accent-soft:rgba(224,138,168,.15);
+  --warm:#e0a53a; --warm-soft:rgba(224,165,58,.16);
+  --good:#4fba7e; --good-soft:rgba(79,186,126,.16);
+  --crit:#e37a6e; --crit-soft:rgba(227,122,110,.16);
+  --era:#e08aa8; --her:#79a6dd;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 26px rgba(0,0,0,.35);
+  --viewer-bg:#190f13;
+  --cielo1:#1b2d38; --cielo2:#101c23; --agua:#1b3a4a; --monte:#30444c; --hoja:#3f9263; --hoja2:#2d6e49;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:58px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.6;
+     font-size:17px;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+h1,h2,h3,h4,.ui{font-family:var(--ui)}
+
+header{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--border)}
+.hwrap{max-width:1080px;margin:0 auto;padding:.5rem max(14px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:.9rem}
+.marca{font-family:var(--ui);font-weight:800;font-size:.95rem;letter-spacing:-.01em;display:flex;align-items:center;gap:.45rem;flex:none;
+       text-decoration:none;color:inherit}
+.marca svg{width:1.3rem;height:1.3rem;color:var(--accent);flex:none}
+.marca span{display:none}
+@media (min-width:760px){.marca span{display:inline}}
+.puntos{display:flex;gap:5px;flex:1;justify-content:center;min-width:0}
+.punto{width:26px;height:7px;border-radius:99px;border:none;padding:0;background:var(--border);cursor:pointer;flex:none;transition:background .2s}
+.punto.visto{background:var(--accent-soft)}
+.punto[aria-current="true"]{background:var(--accent)}
+.tbtn{font-family:var(--ui);font-size:.78rem;border:1px solid var(--border);background:var(--surface-2);
+      color:var(--fg);border-radius:99px;padding:.3rem .65rem;cursor:pointer;flex:none}
+.tbtn:hover{border-color:var(--accent)}
+
+.paso{min-height:calc(100svh - 58px);scroll-snap-align:start;display:flex;align-items:center;
+      padding:2.2rem max(16px,env(safe-area-inset-left,0px)) 5.5rem}
+.in{max-width:1080px;margin:0 auto;width:100%}
+.num{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);display:block;margin-bottom:.5rem}
+h2{font-size:clamp(1.5rem,4.6vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0 0 .5rem;text-wrap:balance}
+.lede{font-size:clamp(1.02rem,2.3vw,1.2rem);color:var(--muted);max-width:62ch;margin:0 0 1.3rem}
+.txt{max-width:62ch}
+.txt p{margin:.75em 0}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:center}
+@media (max-width:860px){.dos{grid-template-columns:1fr;gap:1.1rem}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.25rem;box-shadow:var(--shadow)}
+.card h4{margin:0 0 .35rem;font-size:1rem;font-weight:700}
+.card p{margin:0;font-size:.95rem;color:var(--muted)}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.dato{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.cita{color:var(--faint);font-style:italic;font-size:.93em}
+.rotulo{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem}
+.cierre{font-size:1.04rem;margin:1.1rem 0 0;max-width:64ch}
+.grande{font-size:1.18rem;line-height:1.55;max-width:48ch}
+.grande p{margin:.6em 0}
+.objetivos{margin:.5rem 0 0;padding-left:1.15rem;font-size:.93rem;color:var(--muted)}
+.objetivos li{margin:.5em 0}
+.formula{font-family:var(--mono);font-size:.78rem;background:var(--surface-3);border:1px solid var(--border);
+         border-radius:10px;padding:.7rem .5rem;margin:.5rem 0;text-align:center;overflow-x:auto}
+strong{font-weight:600} em{font-style:italic}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:center;gap:.5rem;
+     padding:.6rem 14px calc(.6rem + env(safe-area-inset-bottom,0px));pointer-events:none}
+.nav::before{content:"";position:absolute;inset:-30px 0 0;z-index:-1;pointer-events:none;
+             background:linear-gradient(transparent,var(--bg) 55%)}
+.nav button{pointer-events:auto;font-family:var(--ui);font-weight:600;font-size:.92rem;
+  border:1px solid var(--border);background:var(--surface);color:var(--fg);border-radius:99px;
+  padding:.55rem 1.15rem;cursor:pointer;box-shadow:var(--shadow)}
+.nav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent-ink)}
+.nav button:disabled{opacity:.35;cursor:default}
+.nav .sig{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font-family:var(--ui);font-weight:600;font-size:.86rem;border:1px solid var(--border);
+      background:var(--surface);color:var(--muted);border-radius:99px;padding:.4rem .85rem;cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.accion{font-family:var(--ui);font-weight:700;font-size:1rem;border:none;background:var(--accent);color:#fff;
+        border-radius:12px;padding:.7rem 1.5rem;cursor:pointer;box-shadow:var(--shadow)}
+.accion:disabled{opacity:.5;cursor:default}
+.etq{font-family:var(--ui);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+     padding:.15rem .5rem;border-radius:99px;color:#fff;display:inline-block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:5px}
+
+.visor{position:relative;width:100%;aspect-ratio:4/3;max-height:44svh;border:1px solid var(--border);
+       border-radius:14px;overflow:hidden;background:var(--viewer-bg);box-shadow:var(--shadow)}
+.visor canvas{display:block}
+#p3 .visor{max-height:30svh;aspect-ratio:16/11}
+#p4 .visor{max-height:34svh}
+.cargando{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+          font-family:var(--ui);font-size:.9rem;color:var(--muted);background:var(--viewer-bg);text-align:center;padding:1rem}
+.cargando[hidden]{display:none}
+.pista{font-family:var(--ui);font-size:.8rem;color:var(--faint);margin:.45rem 0 0}
+.ficha{margin-top:.55rem;font-size:.85rem}
+.ficha h4{font-family:var(--ui);font-size:.93rem;font-weight:700;margin:0 0 .15rem}
+.ficha p{margin:0;color:var(--muted)}
+
+.medidor{margin-top:.9rem}
+.medidor .cab{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;margin-bottom:.3rem}
+.medidor .ttl{font-family:var(--ui);font-weight:700;font-size:.95rem}
+.medidor .val{font-family:var(--mono);font-size:1.3rem;font-weight:500;font-variant-numeric:tabular-nums}
+.pista-barra{height:16px;border-radius:99px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+.relleno{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .5s cubic-bezier(.3,.9,.4,1)}
+.medidor .pie{font-family:var(--ui);font-size:.85rem;color:var(--muted);margin-top:.35rem;min-height:1.3em}
+.medidor .pie b{color:var(--fg)}
+
+.barras{display:grid;gap:.75rem;margin:1rem 0}
+.fila{display:grid;grid-template-columns:8rem 1fr 4.4rem;gap:.7rem;align-items:center}
+@media (max-width:520px){.fila{grid-template-columns:5.8rem 1fr 3.6rem;gap:.5rem}}
+.fila .nom{font-family:var(--ui);font-weight:700;font-size:.9rem;line-height:1.15}
+.fila .nom small{display:block;font-weight:400;font-size:.72rem;color:var(--faint)}
+.fila .tr{height:32px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+.fila .rl{height:100%;width:0;border-radius:6px;transition:width .8s cubic-bezier(.3,.9,.4,1)}
+.fila .nu{font-family:var(--mono);font-size:.92rem;text-align:right;font-variant-numeric:tabular-nums}
+#p5 .dos{grid-template-columns:1.4fr 1fr}
+@media (max-width:860px){#p5 .dos{grid-template-columns:1fr}}
+.veredicto{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 13px 13px 0;padding:.85rem 1.1rem}
+.veredicto .is{font-family:var(--mono);font-size:1.6rem;font-weight:500;line-height:1.1;display:block;margin-bottom:.2rem}
+.veredicto p{margin:.3em 0 0;font-size:.95rem}
+.veredicto.bueno{border-color:var(--good);background:var(--good-soft)}
+.veredicto.plano{border-color:var(--warm);background:var(--warm-soft)}
+
+.tabla{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:.5rem}
+.tabla th,.tabla td{padding:.5rem .6rem;border-bottom:1px solid var(--border);text-align:left}
+.tabla thead th{font-family:var(--ui);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tabla td.n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.tabla tbody tr:last-child td{border-bottom:none}
+.tabla tr.destacada td{background:var(--accent-soft)}
+
+/* ---------- escenas ilustradas ---------- */
+.escena{margin:1.2rem 0 0;text-align:center}
+.escena svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto}
+.leyenda{display:flex;flex-wrap:wrap;gap:.45rem 1.3rem;justify-content:center;font-family:var(--ui);
+         font-size:.84rem;color:var(--muted);margin-top:.7rem}
+.leyenda span{display:inline-flex;align-items:center;gap:.4rem}
+.pt{width:.7rem;height:.7rem;border-radius:50%;flex:none}
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:620px){.fit{grid-template-columns:1fr}}
+.fit figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.9rem;box-shadow:var(--shadow)}
+.fit svg{width:100%;max-width:330px;height:auto;display:block;margin:0 auto}
+.fit.chico svg{max-width:245px}
+.fit figcaption{font-family:var(--ui);font-size:.88rem;margin-top:.5rem;text-align:center}
+.fit figcaption b{display:block;font-size:.98rem}
+
+/* la hormona entra en el receptor y la célula se divide */
+.horm{transform-box:fill-box;transform-origin:center;animation:entrar 5s ease-in-out infinite}
+@keyframes entrar{0%{transform:translate(0,0);opacity:0}6%{opacity:1}
+  30%,92%{transform:translate(74px,16px);opacity:1}100%{transform:translate(74px,16px);opacity:0}}
+.horm.rebota{animation:rebotar2 5s ease-in-out infinite}
+@keyframes rebotar2{0%{transform:translate(0,0);opacity:0}6%{opacity:1}
+  28%{transform:translate(56px,12px);opacity:1}44%,92%{transform:translate(8px,-26px);opacity:.9}
+  100%{transform:translate(8px,-26px);opacity:0}}
+.brillo{animation:prender 5s ease-in-out infinite}
+@keyframes prender{0%,28%{opacity:0}40%,92%{opacity:1}100%{opacity:0}}
+.hijas{transform-box:fill-box;transform-origin:center;animation:dividir 5s ease-in-out infinite}
+@keyframes dividir{0%,40%{transform:scale(.3);opacity:0}54%,92%{transform:scale(1);opacity:1}100%{transform:scale(.3);opacity:0}}
+.freno{transform-box:fill-box;transform-origin:center;animation:frenar 5s ease-in-out infinite}
+@keyframes frenar{0%,40%{transform:scale(.3);opacity:0}54%,92%{transform:scale(1);opacity:1}100%{transform:scale(.3);opacity:0}}
+.bloq{transform-box:fill-box;transform-origin:center;animation:asentarse 5s ease-in-out infinite}
+@keyframes asentarse{0%,10%{opacity:.75}100%{opacity:.75}}
+
+/* río y bosque del sur */
+.gota circle{fill:var(--hielo,#fff);opacity:.5}
+.lig-anim{animation:encajar 4s ease-in-out infinite}
+@keyframes encajar{0%,8%{transform:translate(34px,-30px) rotate(-18deg);opacity:.35}
+  38%,88%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(34px,-30px) rotate(-18deg);opacity:.35}}
+.lig-anim2{animation:rebotar 4s ease-in-out infinite}
+@keyframes rebotar{0%,8%{transform:translate(34px,-30px) rotate(-18deg);opacity:.35}
+  42%,52%{transform:translate(2px,-13px) rotate(-6deg);opacity:1}
+  80%{transform:translate(16px,-24px) rotate(-12deg);opacity:.8}100%{transform:translate(34px,-30px) rotate(-18deg);opacity:.35}}
+.contacto{animation:brillo2 4s ease-in-out infinite}
+@keyframes brillo2{0%,34%{opacity:0}46%,86%{opacity:1}100%{opacity:0}}
+
+/* ---------- ficha técnica ---------- */
+.tecnica{margin-top:1.5rem;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.tecnica>summary{cursor:pointer;font-family:var(--ui);font-weight:700;font-size:.95rem;padding:.8rem 1.1rem;list-style:none}
+.tecnica>summary::-webkit-details-marker{display:none}
+.tecnica>summary::after{content:" ▾";color:var(--accent)}
+.tecnica[open]>summary::after{content:" ▴"}
+.tec-in{padding:0 1.1rem 1.2rem;font-size:.9rem;color:var(--muted)}
+.tec-in h3{font-size:1rem;margin:1.5em 0 .4em;color:var(--fg);border-top:1px solid var(--border);padding-top:1.1em}
+.tec-in h3:first-child{border-top:none;padding-top:0;margin-top:.4em}
+.tec-in b{color:var(--fg)}
+.tec-in p{margin:.6em 0}
+.flujo{list-style:none;counter-reset:f;margin:0;padding:0}
+.flujo li{counter-increment:f;position:relative;padding:0 0 .85rem 2.6rem;font-size:.88rem;color:var(--muted)}
+.flujo li::before{content:counter(f);position:absolute;left:0;top:-.1rem;width:1.8rem;height:1.8rem;border-radius:50%;
+  background:var(--accent);color:#fff;font-family:var(--ui);font-weight:700;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center}
+.flujo li::after{content:"";position:absolute;left:.85rem;top:1.95rem;bottom:.15rem;width:2px;background:var(--border)}
+.flujo li:last-child{padding-bottom:0}
+.flujo li:last-child::after{display:none}
+.flujo b{font-family:var(--ui);color:var(--fg);font-weight:700}
+.refs-ol{padding-left:1.3rem;font-size:.82rem;columns:2;column-gap:2rem}
+.refs-ol li{margin:.45em 0;break-inside:avoid}
+@media (max-width:760px){.refs-ol{columns:1}}
+
+.salidas{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));margin-top:1.2rem}
+.salida{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);
+        border-radius:15px;padding:1.05rem 1.15rem;box-shadow:var(--shadow)}
+.salida:hover{border-color:var(--accent)}
+.salida b{font-family:var(--ui);font-size:1rem;display:block;margin-bottom:.2rem}
+.salida span{font-size:.9rem;color:var(--muted)}
+.creditos{margin-top:1.6rem;padding-top:1rem;border-top:1px solid var(--border);
+          font-family:var(--ui);font-size:.82rem;color:var(--faint);max-width:62ch}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .horm,.brillo,.hijas,.freno,.lig-anim,.lig-anim2,.contacto{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <a class="marca" href="../" title="Volver a los dos proyectos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="17" r="2.2"/><path d="M8 8l2.8 7M16 8l-2.8 7M8.2 7h7.6"/></svg>
+      <span>Cáncer de mama y plantas nativas</span>
+    </a>
+    <div class="puntos" id="puntos" role="tablist" aria-label="Pasos del recorrido"></div>
+    <button class="tbtn" id="tema" aria-label="Cambiar entre tema claro y oscuro">◐</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ 1 ============ -->
+<section class="paso" id="p1" aria-label="El problema">
+  <div class="in">
+    <span class="num">Paso 1 de 6 · El problema</span>
+    <h2>Una hormona le da a la célula la orden de crecer</h2>
+    <p class="lede">El cáncer de mama es el más frecuente y el más letal entre las mujeres, en el mundo y en Chile. Buena parte de estos tumores <strong>crece gracias al estrógeno</strong>.</p>
+
+    <figure class="escena">
+      <svg viewBox="0 0 460 210" role="img" aria-label="El estrógeno entra en el receptor ERα de la célula y la célula se divide">
+        <!-- célula -->
+        <circle cx="205" cy="112" r="62" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="3"/>
+        <circle cx="205" cy="112" r="20" fill="var(--accent)" opacity=".35"/>
+        <!-- receptor: hueco en el borde -->
+        <path d="M151 86a16 16 0 0 1 0 30" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
+        <g class="brillo"><circle cx="157" cy="101" r="26" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".6"/></g>
+        <text x="205" y="190" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" fill="var(--fg)">Célula con receptor ERα</text>
+        <!-- estrógeno que llega -->
+        <g class="horm">
+          <circle cx="76" cy="84" r="11" fill="var(--warm)"/><circle cx="94" cy="74" r="9" fill="var(--warm)"/>
+          <path d="M76 84l18-10" stroke="var(--warm)" stroke-width="4"/>
+        </g>
+        <text x="84" y="50" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700" fill="var(--warm)">Estrógeno</text>
+        <!-- división -->
+        <path d="M276 112h26" stroke="var(--muted)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M296 105l8 7-8 7" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <g class="hijas">
+          <circle cx="368" cy="78" r="31" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/>
+          <circle cx="368" cy="78" r="10" fill="var(--accent)" opacity=".35"/>
+          <circle cx="368" cy="148" r="31" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/>
+          <circle cx="368" cy="148" r="10" fill="var(--accent)" opacity=".35"/>
+          <text x="368" y="196" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" fill="var(--fg)">Se divide</text>
+        </g>
+      </svg>
+      <figcaption class="leyenda">
+        <span><i class="pt" style="background:var(--warm)"></i>Estrógeno</span>
+        <span><i class="pt" style="background:var(--accent)"></i>Receptor ERα</span>
+      </figcaption>
+    </figure>
+    <p class="cierre">Otra proteína clave es <strong>HER2</strong>: cuando sobra, el tumor es más agresivo. Esas dos, <span class="dato">ERα</span> y <span class="dato">HER2</span>, son nuestras dianas.</p>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="paso" id="p2" aria-label="Cómo se trata hoy">
+  <div class="in">
+    <span class="num">Paso 2 de 6 · Cómo se trata hoy</span>
+    <h2>El tamoxifeno le quita el asiento al estrógeno</h2>
+    <p class="lede">Se mete en el receptor y lo ocupa. La hormona ya no puede entrar, y <strong>la orden de crecer no llega</strong>.</p>
+
+    <figure class="escena">
+      <svg viewBox="0 0 460 210" role="img" aria-label="El tamoxifeno ocupa el receptor y el estrógeno no puede entrar, la célula no se divide">
+        <circle cx="205" cy="112" r="62" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="3"/>
+        <circle cx="205" cy="112" r="20" fill="var(--accent)" opacity=".35"/>
+        <path d="M151 86a16 16 0 0 1 0 30" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
+        <!-- tamoxifeno ocupando el receptor -->
+        <g class="bloq">
+          <circle cx="152" cy="101" r="13" fill="var(--her)"/><circle cx="133" cy="92" r="10" fill="var(--her)"/>
+          <path d="M152 101l-19-9" stroke="var(--her)" stroke-width="4"/>
+          </g>
+        <text x="104" y="158" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700" fill="var(--her)">Tamoxifeno</text>
+        <text x="205" y="190" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" fill="var(--fg)">Receptor ocupado</text>
+        <!-- estrógeno que rebota -->
+        <g class="horm rebota">
+          <circle cx="68" cy="84" r="11" fill="var(--warm)"/><circle cx="86" cy="74" r="9" fill="var(--warm)"/>
+          <path d="M68 84l18-10" stroke="var(--warm)" stroke-width="4"/>
+        </g>
+        <text x="76" y="50" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700" fill="var(--warm)">Estrógeno</text>
+        <path d="M276 112h26" stroke="var(--muted)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M296 105l8 7-8 7" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <g class="freno">
+          <circle cx="373" cy="112" r="36" fill="none" stroke="var(--good)" stroke-width="4"/>
+          <path d="M355 112h36" stroke="var(--good)" stroke-width="7" stroke-linecap="round"/>
+          <text x="373" y="178" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="13" font-weight="700" fill="var(--fg)">No se divide</text>
+        </g>
+      </svg>
+    </figure>
+    <p class="cierre">Pero el tamoxifeno tiene <strong>efectos adversos</strong>, y con los años algunos tumores <strong>dejan de responderle</strong>. Por eso se siguen buscando alternativas.</p>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="paso" id="p3" aria-label="Nuestra apuesta">
+  <div class="in">
+    <span class="num">Paso 3 de 6 · Nuestra apuesta</span>
+    <h2>Fuimos a buscarlas al bosque del sur</h2>
+    <div class="dos" style="align-items:start">
+      <div>
+        <p class="lede" style="margin-bottom:1rem">Dos plantas nativas tienen actividad descrita contra células tumorales: el <strong>canelo</strong> (<em>Drimys winteri</em>), sagrado para el pueblo mapuche, y el <strong>palo negro</strong> (<em>Leptocarpha rivularis</em>), usado en medicina tradicional.</p>
+        <figure class="escena" style="margin:0">
+          <svg viewBox="0 0 400 210" role="img" aria-label="Bosque y río del sur de Chile, con el canelo y el palo negro">
+            <defs>
+              <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--cielo1)"/><stop offset="100%" stop-color="var(--cielo2)"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="210" rx="12" fill="url(#cielo)"/>
+            <path d="M0 120l66-52 58 52z" fill="var(--monte)"/>
+            <path d="M96 120l74-62 70 62z" fill="var(--monte)" opacity=".75"/>
+            <path d="M226 120l60-46 56 46z" fill="var(--monte)"/>
+            <path d="M312 120l52-40 36 40z" fill="var(--monte)" opacity=".75"/>
+            <!-- canelo: árbol -->
+            <g>
+              <rect x="86" y="118" width="9" height="42" rx="3" fill="#6b4a32"/>
+              <path d="M90 50l30 46H60zM90 74l36 48H54zM90 100l42 50H48z" fill="var(--hoja)"/>
+              <path d="M90 60l22 34H68z" fill="var(--hoja2)"/>
+            </g>
+            <g>
+              <rect x="316" y="122" width="7" height="38" rx="3" fill="#6b4a32"/>
+              <path d="M319 72l24 36h-48zM319 92l29 40h-58z" fill="var(--hoja2)"/>
+            </g>
+            <!-- río -->
+            <rect y="152" width="400" height="58" fill="var(--agua)"/>
+            <ellipse cx="200" cy="158" rx="190" ry="10" fill="var(--agua)"/>
+            <!-- palo negro: arbusto en la ribera -->
+            <g stroke="var(--hoja)" stroke-width="5" fill="none" stroke-linecap="round">
+              <path d="M210 158c-2-16-12-26-23-32"/><path d="M210 158c0-18-5-30-11-39"/>
+              <path d="M210 158c2-18 6-31 12-40"/><path d="M210 158c3-16 13-27 24-33"/>
+            </g>
+            <circle cx="187" cy="124" r="5" fill="var(--accent)"/><circle cx="199" cy="116" r="5" fill="var(--accent)"/>
+            <circle cx="222" cy="116" r="5" fill="var(--accent)"/><circle cx="234" cy="124" r="5" fill="var(--accent)"/>
+            <text x="90" y="182" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700" fill="#fff">Canelo</text>
+            <text x="248" y="196" text-anchor="middle" font-family="Libre Franklin,sans-serif" font-size="12" font-weight="700" fill="#fff">Palo negro</text>
+          </svg>
+          <figcaption class="leyenda"><span>Bosques y riberas del sur de Chile</span></figcaption>
+        </figure>
+      </div>
+      <div>
+        <p class="ui rotulo">Las piezas · tócalas para girarlas en 3D</p>
+        <div class="chips" id="chipsLig"></div>
+        <div class="chips" id="chipsProt" style="margin-top:.4rem"></div>
+        <div class="visor" id="visor5" style="margin-top:.6rem"><div class="cargando" id="carga5">Cargando…</div></div>
+        <div class="ficha" id="fichaPieza"><h4>—</h4><p>—</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="paso" id="p4" aria-label="Cómo lo medimos">
+  <div class="in">
+    <span class="num">Paso 4 de 6 · Cómo lo medimos</span>
+    <h2>¿Qué tan fuerte se pega?</h2>
+    <p class="lede">Simulamos en el computador cómo encaja cada molécula en el sitio de unión de cada proteína. Si encaja bien, se pega fuerte. Eso es la <strong>afinidad</strong>.</p>
+
+    <div class="dos" style="align-items:center;margin-bottom:.3rem">
+      <div class="fit chico">
+        <figure>
+          <svg viewBox="0 0 260 150" role="img" aria-label="Una molécula que encaja bien en el bolsillo de una proteína">
+            <path d="M10 148V62c0-14 10-24 24-24h62c0 54 68 54 68 0h62c14 0 24 10 24 24v86Z" fill="var(--surface-2)" stroke="var(--border)" stroke-width="2"/>
+            <g class="contacto" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 3">
+              <line x1="107" y1="55" x2="96" y2="47"/><line x1="153" y1="55" x2="164" y2="47"/><line x1="130" y1="79" x2="130" y2="92"/>
+            </g>
+            <g class="lig-anim" style="transform-origin:130px 60px">
+              <path d="M116 56h28M116 56l14 12M144 56l-14 12" stroke="var(--accent-ink)" stroke-width="4"/>
+              <circle cx="116" cy="56" r="10" fill="var(--accent)"/><circle cx="144" cy="56" r="10" fill="var(--accent)"/>
+              <circle cx="130" cy="68" r="10" fill="var(--warm)"/>
+            </g>
+          </svg>
+          <figcaption><b style="color:var(--good)">Encaja</b>Se pega fuerte</figcaption>
+        </figure>
+        <figure>
+          <svg viewBox="0 0 260 150" role="img" aria-label="Una molécula que no encaja en el bolsillo de una proteína">
+            <path d="M10 148V62c0-14 10-24 24-24h62c0 54 68 54 68 0h62c14 0 24 10 24 24v86Z" fill="var(--surface-2)" stroke="var(--border)" stroke-width="2"/>
+            <g class="lig-anim2" style="transform-origin:130px 42px">
+              <path d="M98 42l32-14 32 14-32 14z" stroke="var(--muted)" stroke-width="4" fill="none"/>
+              <circle cx="98" cy="42" r="12" fill="var(--faint)"/><circle cx="130" cy="28" r="12" fill="var(--faint)"/>
+              <circle cx="162" cy="42" r="12" fill="var(--faint)"/><circle cx="130" cy="56" r="12" fill="var(--muted)"/>
+            </g>
+          </svg>
+          <figcaption><b style="color:var(--muted)">No encaja</b>Se pega flojo</figcaption>
+        </figure>
+      </div>
+      <div class="card" style="border-left:4px solid var(--good)">
+        <h4>Primero comprobamos que el método funciona ✓</h4>
+        <p>Cada proteína viene del cristal con su propio ligando puesto. Lo sacamos, lo volvimos a acoplar y comprobamos que <strong>cayera en el mismo sitio</strong>. Eso se llama <em>re-docking</em>, y valida el protocolo antes de probar nada nuevo.</p>
+        <p style="margin-top:.6em" id="redock"></p>
+      </div>
+    </div>
+
+    <p class="cierre">Pruébalo: <strong>estos son nuestros 6 acoplamientos reales</strong>.</p>
+    <div class="dos" style="align-items:start;margin-top:.6rem">
+      <div>
+        <div class="chips" id="mesaLig"></div>
+        <div class="chips" id="mesaProt" style="margin-top:.4rem"></div>
+        <p style="margin:.9rem 0 0"><button class="accion" id="btnAcoplar">▸ Acoplar</button></p>
+        <div class="medidor">
+          <div class="cab"><span class="ttl">Afinidad</span><span class="val dato" id="mVal">—</span></div>
+          <div class="pista-barra"><div class="relleno" id="mRell"></div></div>
+          <p class="pie" id="mPie">Aprieta <b>Acoplar</b>.</p>
+        </div>
+      </div>
+      <div>
+        <div class="visor" id="visor6"><div class="cargando" id="carga6">Cargando…</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="paso" id="p5" aria-label="El resultado">
+  <div class="in">
+    <span class="num">Paso 5 de 6 · El resultado</span>
+    <h2>Ganó el tamoxifeno. No era lo que esperábamos</h2>
+    <p class="lede">Cada molécula contra las dos proteínas. Mientras más larga la barra, más fuerte se pega.</p>
+    <div class="chips" id="vLig" style="margin-bottom:1.1rem"></div>
+    <div class="dos" style="align-items:center">
+      <div class="barras" id="vBarras"></div>
+      <div class="veredicto" id="vVered"><span class="is dato">—</span><p>—</p></div>
+    </div>
+    <p class="cierre">Ninguna de las dos plantas superó al tamoxifeno. Pero cambia de molécula y mira <strong>HER2</strong>: el polygodial casi lo alcanza, y la leptocarpina se desploma.</p>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="paso" id="p6" aria-label="Conclusión">
+  <div class="in">
+    <span class="num">Paso 6 de 6 · Conclusión</span>
+    <h2>La hipótesis se rechaza, y eso también es un resultado</h2>
+    <div class="dos" style="align-items:start">
+      <div>
+        <div class="grande">
+          <p>Esperábamos que los compuestos del canelo y del palo negro <strong>superaran</strong> al tamoxifeno. No lo hicieron.</p>
+          <p>Pero alcanzaron cerca del <strong>80 %</strong> de su afinidad por ERα sin haber sido diseñados para eso, y mostraron comportamientos distintos frente a HER2. Son un punto de partida, no un punto final.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-left:4px solid var(--her)">
+          <h4>El hallazgo inesperado</h4>
+          <p>El polygodial se une casi igual a las dos proteínas. Como la comunicación entre ERα y HER2 es una de las vías por las que un tumor <strong>deja de responder al tamoxifeno</strong>, una molécula así merece estudiarse.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--warm);margin-top:.9rem">
+          <h4>Lo que falta</h4>
+          <p>El docking es una predicción. Hay que comprobarlo en células reales, y analizar qué aminoácidos del sitio de unión toca cada compuesto.</p>
+        </div>
+      </div>
+    </div>
+
+    <details class="tecnica">
+      <summary>Ficha técnica · para quien quiera el detalle</summary>
+      <div class="tec-in">
+        <h3>Pregunta, hipótesis y objetivos</h3>
+        <p><b>Hipótesis.</b> El polygodial y la leptocarpina presentarán una mayor afinidad de unión por ERα y HER2 que el tamoxifeno.</p>
+        <p><b>Objetivo general.</b> Comparar, mediante docking molecular, la afinidad de unión del polygodial y la leptocarpina con la del tamoxifeno frente a las proteínas ERα y HER2, asociadas al cáncer de mama.</p>
+        <p><b>Objetivos específicos.</b></p>
+        <ol class="objetivos">
+          <li>Validar el protocolo de docking mediante el re-docking de los ligandos cristalizados en ERα y HER2.</li>
+          <li>Determinar la afinidad de unión del tamoxifeno, el polygodial y la leptocarpina por ERα y HER2.</li>
+          <li>Comparar la afinidad de los compuestos naturales con la del tamoxifeno en cada proteína.</li>
+        </ol>
+
+        <h3>Antecedentes</h3>
+        <p>El cáncer de mama es el más diagnosticado en mujeres y la principal causa de muerte por cáncer en la población femenina a nivel mundial <span class="cita">(Bray et al., 2024)</span>; en Chile es también el más frecuente y el más letal entre las mujeres <span class="cita">(Parra-Soto et al., 2020)</span>. Gran parte de estos tumores depende del estrógeno, que actúa a través del <strong>receptor de estrógeno alfa (ERα)</strong>. Otra proteína relevante es <strong>HER2</strong>, cuya sobreexpresión se asocia a tumores más agresivos. La comunicación entre ambas es uno de los mecanismos por los que algunos tumores dejan de responder a la terapia hormonal <span class="cita">(Arpino et al., 2008)</span>.</p>
+        <p>El tamoxifeno se transforma en el organismo en 4-hidroxitamoxifeno, molécula capaz de unirse a ERα y bloquear su actividad <span class="cita">(Shiau et al., 1998)</span>. Su uso prolongado puede generar resistencia y efectos adversos.</p>
+        <p>El canelo, <em>Drimys winteri</em>, contiene <b>polygodial</b>, un sesquiterpeno con toxicidad descrita sobre líneas tumorales, entre ellas la de cáncer de mama MCF-7 <span class="cita">(Montenegro et al., 2014)</span>. El palo negro, <em>Leptocarpha rivularis</em>, contiene <b>leptocarpina</b>, capaz de inducir apoptosis <span class="cita">(Bosio et al., 2015)</span>; sus extractos reducen la viabilidad de células de cáncer de mama con un efecto menor sobre células sanas <span class="cita">(Moreira et al., 2021)</span>. Se desconocía si estos compuestos se unen a ERα o a HER2.</p>
+
+        <h3>Metodología</h3>
+        <p>Estudio <em>in silico</em>, siguiendo el procedimiento de la guía <em>De cero a Docking</em> <span class="cita">(Martínez Ordóñez y Nuñez Franco, 2026)</span>. Programas: AutoDock Tools <span class="cita">(Morris et al., 2009)</span>, AutoDock Vina 1.2.7 y Vina Split <span class="cita">(Trott y Olson, 2010; Eberhardt et al., 2021)</span>, y PyMOL.</p>
+        <ol class="flujo">
+          <li><b>Descargamos las proteínas</b> del Protein Data Bank <span class="cita">(Berman et al., 2000)</span>: ERα <span class="dato">(3ERT)</span>, unida a 4-hidroxitamoxifeno, y el dominio quinasa de HER2 <span class="dato">(3PP0, cadena A)</span>, unido al inhibidor 03Q.</li>
+          <li><b>Las limpiamos en PyMOL:</b> eliminamos las aguas y separamos cada proteína de su ligando cristalizado, que guardamos aparte para la validación.</li>
+          <li><b>Preparamos todo en AutoDock Tools:</b> hidrógenos, cargas y enlaces rotables, y guardamos en formato PDBQT.</li>
+          <li><b>Descargamos los ligandos</b> de PubChem <span class="cita">(Kim et al., 2023)</span> en formato 3D Conformer.</li>
+          <li><b>Definimos la caja de búsqueda</b> centrada sobre el ligando cristalizado: <span class="dato">18,75 × 18,75 × 15 Å</span>, espaciado <span class="dato">0,375 Å</span>.</li>
+          <li><b>Validamos con re-docking</b> y recién entonces acoplamos los tres compuestos, con receptor rígido y <em>exhaustiveness</em> <span class="dato">32</span>, nueve poses por ligando.</li>
+        </ol>
+        <p><b>Selectividad.</b> Diferencia entre la afinidad por ERα y la afinidad por HER2. Un valor negativo indica preferencia por ERα.</p>
+        <p class="formula">Δ = afinidad(ERα) − afinidad(HER2)</p>
+
+        <h3>Resultados completos</h3>
+        <div style="overflow-x:auto">
+          <table class="tabla">
+            <thead><tr><th>Ligando</th><th style="text-align:right">ERα (3ERT)</th><th style="text-align:right">HER2 (3PP0)</th><th style="text-align:right">Δ</th><th>Lectura</th></tr></thead>
+            <tbody id="tablaFull"></tbody>
+          </table>
+        </div>
+        <p class="pista">Afinidad de la mejor pose, en kcal/mol. Re-docking: 4-hidroxitamoxifeno en ERα, <span class="dato">−9,93</span>; inhibidor 03Q en HER2, <span class="dato">−11,13</span>.</p>
+
+        <h3>Discusión y conclusión</h3>
+        <p>Los resultados permiten <b>rechazar la hipótesis</b>: ni el polygodial ni la leptocarpina superaron la afinidad del tamoxifeno en ninguna de las dos proteínas. Una explicación posible es el origen de cada molécula: el tamoxifeno es un fármaco optimizado durante décadas para unirse a ERα —su afinidad fue prácticamente igual a la de su forma activa cristalizada—, mientras que los compuestos naturales no han sido modificados químicamente para ello. Aun así, ambos alcanzaron cerca del 80 % de la afinidad del tamoxifeno por ERα.</p>
+        <p>En HER2, el resultado más destacado fue el del polygodial, que quedó a solo 0,55 kcal/mol del tamoxifeno. Dado que la comunicación entre ERα y HER2 es una vía de resistencia al tratamiento hormonal <span class="cita">(Arpino et al., 2008)</span>, una molécula capaz de interactuar con ambas resulta de interés. La leptocarpina, en cambio, mostró una afinidad mucho menor por HER2, lo que sugiere que su acción estaría más relacionada con ERα.</p>
+        <p><b>Limitaciones.</b> El docking es una herramienta de predicción y debe complementarse con estudios experimentales. Las diferencias pequeñas, como los 0,19 kcal/mol entre polygodial y leptocarpina en ERα, deben interpretarse en su contexto. Además, las proteínas se modelaron como estructuras rígidas.</p>
+
+        <h3>Referencias</h3>
+        <ol class="refs-ol">
+          <li>Aertgeerts, K., et al. (2011). Structural analysis of the kinase domain of HER2. <em>J. Biol. Chem.</em>, 286(21), 18756–18765.</li>
+          <li>Arpino, G., et al. (2008). Crosstalk between the estrogen receptor and the HER tyrosine kinase receptor family. <em>Endocrine Reviews</em>, 29(2), 217–233.</li>
+          <li>Berman, H. M., et al. (2000). The Protein Data Bank. <em>Nucleic Acids Research</em>, 28(1), 235–242.</li>
+          <li>Bosio, C., et al. (2015). Cytotoxic and apoptotic effects of leptocarpin. <em>Chemico-Biological Interactions</em>, 242, 415–421.</li>
+          <li>Bray, F., et al. (2024). Global cancer statistics 2022. <em>CA: A Cancer Journal for Clinicians</em>, 74(3), 229–263.</li>
+          <li>Eberhardt, J., et al. (2021). AutoDock Vina 1.2.0. <em>J. Chem. Inf. Model.</em>, 61(8), 3891–3898.</li>
+          <li>Kim, S., et al. (2023). PubChem 2023 update. <em>Nucleic Acids Research</em>, 51(D1), D1373–D1380.</li>
+          <li>Martínez Ordóñez, D., y Nuñez Franco, R. (2026). <em>De cero a Docking</em> (v1.3). re-Computing Science.</li>
+          <li>Montenegro, I., et al. (2014). Cytotoxic activity of drimane sesquiterpenes. <em>Molecules</em>, 19(11), 18993–19006.</li>
+          <li>Moreira, J., et al. (2021). <em>Leptocarpha rivularis</em> flower extracts. <em>Molecules</em>, 26(1), 67.</li>
+          <li>Morris, G. M., et al. (2009). AutoDock4 and AutoDockTools4. <em>J. Comput. Chem.</em>, 30(16), 2785–2791.</li>
+          <li>Parra-Soto, S., et al. (2020). Cáncer en Chile y en el mundo. <em>Revista Médica de Chile</em>, 148(11), 1489–1495.</li>
+          <li>Pinzi, L., y Rastelli, G. (2019). Molecular docking: shifting paradigms in drug discovery. <em>IJMS</em>, 20(18), 4331.</li>
+          <li>Schrödinger, LLC. <em>The PyMOL Molecular Graphics System</em> (v3.1.8).</li>
+          <li>Shiau, A. K., et al. (1998). The structural basis of estrogen receptor/coactivator recognition. <em>Cell</em>, 95(7), 927–937.</li>
+          <li>Trott, O., y Olson, A. J. (2010). AutoDock Vina. <em>J. Comput. Chem.</em>, 31(2), 455–461.</li>
+        </ol>
+      </div>
+    </details>
+
+    <div class="salidas">
+      <a class="salida" href="bitacora.html"><b>Bitácora completa →</b><span>Todos los archivos del proceso.</span></a>
+      <a class="salida" href="juegos.html"><b>Juegos →</b><span>Sopa de letras y memorice.</span></a>
+      <a class="salida" href="../"><b>El otro proyecto →</b><span>Senolíticos antárticos.</span></a>
+    </div>
+    <p class="creditos">
+      Emilia Antonia Cea Reyes · Profesor asesor: Ezequiel Saldivia<br>
+      Escuela Particular N.º 95 Alemana · Paillaco, Los Ríos, Chile<br>
+      ValdiCiencias Austral, Miradas Interdisciplinarias · Valdivia, 25 a 27 de noviembre de 2026
+    </p>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Navegación del recorrido">
+  <button id="ant">← Atrás</button>
+  <button id="sig" class="sig">Siguiente →</button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.0/3Dmol-min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ================= datos ================= */
+  var PROTEINAS = [
+    { id: "3ERT", nombre: "ERα", rol: "El receptor del estrógeno", color: "var(--era)",
+      archivo: "docking/docking-3ERT/3ERT_proteina.pdbqt",
+      txt: "Receptor de estrógeno alfa. Es por donde la hormona le da a la célula la orden de crecer, y es la diana del tamoxifeno. Estructura <span class='dato'>3ERT</span> del Protein Data Bank." },
+    { id: "3PP0", nombre: "HER2", rol: "El otro receptor clave", color: "var(--her)",
+      archivo: "docking/docking-3PP0/3PP0_A.pdbqt",
+      txt: "Dominio quinasa de HER2. Cuando sobra, el tumor es más agresivo, y su comunicación con ERα explica parte de la resistencia al tratamiento. Estructura <span class='dato'>3PP0</span>, cadena A." }
+  ];
+  var LIGANDOS = [
+    { id: "tamoxifeno", nombre: "Tamoxifeno", tipo: "Fármaco de referencia", color: "var(--her)",
+      txt: "El fármaco contra el que competimos. Lleva décadas usándose contra el cáncer de mama con receptor de estrógeno positivo." },
+    { id: "polygodial", nombre: "Polygodial", tipo: "Canelo", color: "var(--good)",
+      txt: "Sesquiterpeno del canelo, <em>Drimys winteri</em>. En el laboratorio mostró toxicidad sobre células de cáncer de mama." },
+    { id: "leptocarpina", nombre: "Leptocarpina", tipo: "Palo negro", color: "var(--accent)",
+      txt: "Lactona sesquiterpénica del palo negro, <em>Leptocarpha rivularis</em>. Induce apoptosis en células cancerosas." }
+  ];
+  /* afinidad de la mejor pose, en kcal/mol, leída de los registros de AutoDock Vina */
+  var AFIN = {
+    tamoxifeno:   { "3ERT": -9.66,  "3PP0": -7.696 },
+    polygodial:   { "3ERT": -7.685, "3PP0": -7.153 },
+    leptocarpina: { "3ERT": -7.878, "3PP0": -5.076 }
+  };
+  var REDOCK = { "3ERT": -9.926, "3PP0": -11.13 };
+
+  var prot = function (id) { return PROTEINAS.filter(function (p) { return p.id === id; })[0]; };
+  var lig  = function (id) { return LIGANDOS.filter(function (l) { return l.id === id; })[0]; };
+  /* toFixed arrastra el error binario; se redondea el medio hacia arriba para calzar con el informe */
+  var num = function (v, d) {
+    var dec = d === undefined ? 2 : d, m = Math.pow(10, dec);
+    var r = Math.round(Math.abs(v) * m + 1e-9) / m;
+    return (v < 0 ? "−" : "") + r.toFixed(dec).replace(".", ",");
+  };
+  var kcal = function (v) { return "−" + num(Math.abs(v)); };
+  var avance = function (ahora, t0, dur) { return Math.max(0, Math.min(1, ((ahora || t0) - t0) / dur)); };
+  var delta = function (l) { return AFIN[l]["3ERT"] - AFIN[l]["3PP0"]; };
+  /* la barra mapea de 4 a 12 kcal/mol, que cubre todo lo medido, re-docking incluido */
+  var pct = function (a) { return Math.max(4, Math.min(100, (Math.abs(a) - 4) / 8 * 100)); };
+  var fuerza = function (a) {
+    var v = Math.abs(a);
+    return v >= 9.5 ? "Se pega muy fuerte" : v >= 7.5 ? "Se pega fuerte"
+         : v >= 6 ? "Se pega medio" : "Apenas se pega";
+  };
+
+  /* ================= navegación ================= */
+  var pasos = [].slice.call(document.querySelectorAll(".paso"));
+  var puntos = pasos.map(function (s, i) {
+    var b = document.createElement("button");
+    b.className = "punto"; b.type = "button"; b.setAttribute("role", "tab");
+    b.title = "Paso " + (i + 1); b.setAttribute("aria-label", "Ir al paso " + (i + 1));
+    b.onclick = function () { irA(i); };
+    $("puntos").appendChild(b);
+    return b;
+  });
+  var actual = 0, calladoHasta = 0;
+  function irA(i) {
+    i = Math.max(0, Math.min(pasos.length - 1, i));
+    marcar(i); calladoHasta = Date.now() + 900;
+    pasos[i].scrollIntoView({ block: "start" });
+  }
+  function marcar(i) {
+    actual = i;
+    puntos.forEach(function (b, j) {
+      b.setAttribute("aria-current", j === i ? "true" : "false");
+      if (j <= i) b.classList.add("visto");
+    });
+    $("ant").disabled = i === 0;
+    $("sig").disabled = i === pasos.length - 1;
+  }
+  var pendiente = false;
+  addEventListener("scroll", function () {
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame(function () {
+      pendiente = false;
+      if (Date.now() < calladoHasta) return;
+      var mejor = 0, min = Infinity;
+      pasos.forEach(function (s, i) {
+        var d = Math.abs(s.getBoundingClientRect().top - 70);
+        if (d < min) { min = d; mejor = i; }
+      });
+      if (mejor !== actual) marcar(mejor);
+    });
+  }, { passive: true });
+  $("ant").onclick = function () { irA(actual - 1); };
+  $("sig").onclick = function () { irA(actual + 1); };
+  addEventListener("keydown", function (e) {
+    var t = e.target.tagName;
+    if (t === "INPUT" || t === "SELECT" || t === "TEXTAREA" || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); irA(actual + 1); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); irA(actual - 1); }
+    else if (e.key === "Home") { e.preventDefault(); irA(0); }
+    else if (e.key === "End") { e.preventDefault(); irA(pasos.length - 1); }
+  });
+
+  try { var g = localStorage.getItem("p2-tema"); if (g) document.documentElement.dataset.theme = g; } catch (e) {}
+  $("tema").onclick = function () {
+    var cur = document.documentElement.dataset.theme;
+    var osc = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = osc ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("p2-tema", next); } catch (e) {}
+    [v5, v6].forEach(function (v) { if (v) { v.setBackgroundColor(fondo()); v.render(); } });
+  };
+  function fondo() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--viewer-bg").trim() || "#fff";
+  }
+
+  /* ================= carga de archivos ================= */
+  var cache = {};
+  function texto(ruta) {
+    if (!cache[ruta]) cache[ruta] = fetch(ruta).then(function (r) {
+      if (!r.ok) throw new Error(ruta); return r.text();
+    });
+    return cache[ruta];
+  }
+  var soloAtomos = function (t) {
+    return t.split("\n").filter(function (l) { return /^(ATOM|HETATM)/.test(l); })
+            .map(function (l) { return l.replace(/^ATOM  /, "HETATM"); }).join("\n");
+  };
+  var primeraPose = function (t) { return soloAtomos(t.split(/^ENDMDL.*$/m)[0]); };
+  var rutaLig = function (id) { return "Ligandos/" + id + ".pdbqt"; };
+  /* los dos acoplamientos se guardaron con nombres distintos: -3ERTout y -3PP0_out */
+  var rutaPose = function (l, p) {
+    return p === "3ERT" ? "docking/docking-3ERT/" + l + "-3ERTout.pdbqt"
+                        : "docking/docking-3PP0/" + l + "-3PP0_out.pdbqt";
+  };
+  var SIN_ARCHIVOS = "No se pudieron leer los archivos. Esta parte necesita la versión publicada en internet.";
+
+  function correr(txt, dx, dy, dz) {
+    return txt.split("\n").map(function (l) {
+      if (!/^(ATOM|HETATM)/.test(l)) return l;
+      var x = (parseFloat(l.slice(30, 38)) + dx).toFixed(3);
+      var y = (parseFloat(l.slice(38, 46)) + dy).toFixed(3);
+      var z = (parseFloat(l.slice(46, 54)) + dz).toFixed(3);
+      var p = function (s) { return ("        " + s).slice(-8); };
+      return l.slice(0, 30) + p(x) + p(y) + p(z) + l.slice(54);
+    }).join("\n");
+  }
+  function centro(modelo) {
+    var a = modelo.selectedAtoms({}), c = { x: 0, y: 0, z: 0 };
+    a.forEach(function (t) { c.x += t.x; c.y += t.y; c.z += t.z; });
+    c.x /= a.length; c.y /= a.length; c.z /= a.length;
+    return c;
+  }
+
+  var hay3D = !!window.$3Dmol;
+  var v5 = null, v6 = null;
+
+  /* ================= paso 3: las piezas ================= */
+  var piezaActual = null;
+  function crearChip(cont, txt, sub, onClick) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "false");
+    b.textContent = txt; if (sub) b.title = sub;
+    b.onclick = function () { onClick(b); };
+    cont.appendChild(b);
+    return b;
+  }
+  function soloUno(cont, b) {
+    [].forEach.call(cont.querySelectorAll(".chip"), function (c) {
+      c.setAttribute("aria-pressed", c === b ? "true" : "false");
+    });
+  }
+  LIGANDOS.forEach(function (l) {
+    crearChip($("chipsLig"), l.nombre, l.tipo, function (b) {
+      soloUno($("chipsLig"), b); soloUno($("chipsProt"), null); verPieza(l, false);
+    });
+  });
+  PROTEINAS.forEach(function (p) {
+    crearChip($("chipsProt"), p.nombre, p.id, function (b) {
+      soloUno($("chipsProt"), b); soloUno($("chipsLig"), null); verPieza(p, true);
+    });
+  });
+  function verPieza(obj, esProt) {
+    piezaActual = obj;
+    var f = $("fichaPieza");
+    f.querySelector("h4").innerHTML = obj.nombre +
+      ' <span class="etq" style="background:' + obj.color + '">' + (esProt ? obj.rol : obj.tipo) + "</span>";
+    f.querySelector("p").innerHTML = obj.txt;
+    if (!hay3D) return;
+    if (!v5) v5 = $3Dmol.createViewer($("visor5"), { backgroundColor: fondo() });
+    $("carga5").hidden = false; $("carga5").textContent = "Cargando…";
+    var ruta = esProt ? obj.archivo : rutaLig(obj.id);
+    var marca = piezaActual;
+    texto(ruta).then(function (t) {
+      if (piezaActual !== marca) return;
+      v5.removeAllModels(); v5.spin(false);
+      var m = v5.addModel(esProt ? t : soloAtomos(t), "pdbqt");
+      if (esProt) m.setStyle({}, { cartoon: { color: "spectrum" } });
+      else m.setStyle({}, { stick: { radius: 0.2 }, sphere: { scale: 0.28 } });
+      v5.zoomTo(); v5.render(); v5.spin("y", 0.4);
+      $("carga5").hidden = true;
+    }).catch(function () {
+      $("carga5").hidden = false; $("carga5").textContent = SIN_ARCHIVOS;
+    });
+  }
+
+  /* ================= paso 4: mesa de acoplamiento ================= */
+  $("redock").innerHTML = "En ERα el 4-hidroxitamoxifeno dio <b class='dato'>" + kcal(REDOCK["3ERT"]) +
+    "</b> y en HER2 el inhibidor 03Q, <b class='dato'>" + kcal(REDOCK["3PP0"]) + "</b> kcal/mol.";
+
+  var mLig = "tamoxifeno", mProt = "3ERT", acoplando = false, arrancado = false, vuelta = 0;
+  LIGANDOS.forEach(function (l) {
+    var b = crearChip($("mesaLig"), l.nombre, l.tipo, function () {
+      soloUno($("mesaLig"), b); mLig = l.id; reiniciarMesa();
+    });
+    if (l.id === mLig) b.setAttribute("aria-pressed", "true");
+  });
+  PROTEINAS.forEach(function (p) {
+    var b = crearChip($("mesaProt"), p.nombre, p.id, function () {
+      soloUno($("mesaProt"), b); mProt = p.id; reiniciarMesa();
+    });
+    if (p.id === mProt) b.setAttribute("aria-pressed", "true");
+  });
+  function reiniciarMesa() {
+    vuelta++;
+    $("mVal").textContent = "—"; $("mRell").style.width = "0";
+    $("mPie").innerHTML = "Aprieta <b>Acoplar</b> para ver cómo se acopla " + lig(mLig).nombre + " a " + prot(mProt).nombre + ".";
+  }
+  $("btnAcoplar").onclick = function () { acoplar(); };
+
+  function acoplar() {
+    if (!hay3D || acoplando) return;
+    acoplando = true; $("btnAcoplar").disabled = true;
+    if (!v6) v6 = $3Dmol.createViewer($("visor6"), { backgroundColor: fondo() });
+    var l = mLig, p = mProt, af = AFIN[l][p], mi = ++vuelta;
+    var soltar = function () { acoplando = false; $("btnAcoplar").disabled = false; };
+    $("carga6").hidden = false; $("carga6").textContent = "Cargando…";
+    $("mVal").textContent = "—"; $("mRell").style.width = "0";
+    $("mPie").textContent = "Acoplando " + lig(l).nombre + " a " + prot(p).nombre + "…";
+
+    Promise.all([texto(prot(p).archivo), texto(rutaPose(l, p))]).then(function (r) {
+      if (mi !== vuelta) { soltar(); return; }
+      var pose = primeraPose(r[1]);
+      v6.removeAllModels(); v6.spin(false);
+      var mp = v6.addModel(r[0], "pdbqt");
+      mp.setStyle({}, { cartoon: { color: "#b9c4c7" } });
+      var ml = v6.addModel(pose, "pdbqt");
+      ml.setStyle({}, { stick: { colorscheme: "greenCarbon", radius: 0.24 } });
+
+      var cl = centro(ml), cp = centro(mp);
+      var d = { x: cl.x - cp.x, y: cl.y - cp.y, z: cl.z - cp.z };
+      var n = Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z) || 1, D = 34;
+      var dir = { x: d.x / n * D, y: d.y / n * D, z: d.z / n * D };
+
+      v6.zoomTo({ model: ml }); v6.zoom(0.45); v6.render();
+      $("carga6").hidden = true;
+
+      var t0 = performance.now(), dur = 1500;
+      function cuadro(ahora) {
+        if (mi !== vuelta) { soltar(); return; }
+        var k = avance(ahora, t0, dur);
+        var e = 1 - Math.pow(1 - k, 3);
+        var f = (1 - e) * (1 + 0.14 * Math.sin(k * Math.PI));
+        v6.removeModel(ml);
+        ml = v6.addModel(correr(pose, dir.x * f, dir.y * f, dir.z * f), "pdbqt");
+        ml.setStyle({}, { stick: { colorscheme: "greenCarbon", radius: 0.24 } });
+        v6.render();
+        if (k < 1) requestAnimationFrame(cuadro); else asentar(mp, ml, af, l, p, mi, soltar);
+      }
+      requestAnimationFrame(cuadro);
+    }).catch(function () {
+      $("carga6").hidden = false; $("carga6").textContent = SIN_ARCHIVOS;
+      $("mPie").textContent = SIN_ARCHIVOS;
+      soltar();
+    });
+  }
+
+  function asentar(mp, ml, af, l, p, mi, soltar) {
+    var la = ml.selectedAtoms({}), cerca = {};
+    mp.selectedAtoms({}).forEach(function (a) {
+      for (var i = 0; i < la.length; i++) {
+        var b = la[i], dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+        if (dx * dx + dy * dy + dz * dz < 25) { cerca[a.chain + ":" + a.resi] = 1; return; }
+      }
+    });
+    mp.setStyle({ predicate: function (a) { return cerca[a.chain + ":" + a.resi]; } },
+      { cartoon: { color: "#b9c4c7" }, stick: { radius: 0.09, colorscheme: "default" } });
+    v6.render();
+
+    $("mRell").style.width = pct(af) + "%";
+    $("mRell").style.background = Math.abs(af) >= 9 ? "var(--good)" : Math.abs(af) >= 7 ? "var(--warm)" : "var(--crit)";
+    var t0 = performance.now(), dur = 700;
+    (function contar(ahora) {
+      if (mi !== vuelta) return;
+      var k = avance(ahora, t0, dur);
+      $("mVal").textContent = kcal(af * (1 - Math.pow(1 - k, 2))) + " kcal/mol";
+      if (k < 1) requestAnimationFrame(contar);
+    })();
+    $("mPie").innerHTML = "<b>" + fuerza(af) + ".</b> " + lig(l).nombre + " en " + prot(p).nombre +
+      (Object.keys(cerca).length ? " · " + Object.keys(cerca).length + " aminoácidos en contacto" : "");
+    soltar();
+  }
+
+  /* ================= paso 5: el resultado ================= */
+  var vActual = "tamoxifeno";
+  LIGANDOS.forEach(function (l) {
+    var b = crearChip($("vLig"), l.nombre, l.tipo, function () { soloUno($("vLig"), b); verResultado(l.id); });
+    if (l.id === vActual) b.setAttribute("aria-pressed", "true");
+  });
+  $("vBarras").innerHTML = PROTEINAS.map(function (p) {
+    return '<div class="fila"><div class="nom">' + p.nombre + "<small>" + p.rol + "</small></div>" +
+           '<div class="tr"><div class="rl" data-p="' + p.id + '" style="background:' + p.color + '"></div></div>' +
+           '<div class="nu" data-n="' + p.id + '">—</div></div>';
+  }).join("");
+  var LECTURA = {
+    tamoxifeno: "<strong>El fármaco de referencia.</strong> La afinidad más alta por ERα de todo el estudio, casi idéntica a la de su forma activa cristalizada.",
+    polygodial: "<strong>Se une casi igual a las dos.</strong> En HER2 queda a solo 0,55 kcal/mol del tamoxifeno: ahí está el hallazgo interesante.",
+    leptocarpina: "<strong>Prefiere claramente ERα.</strong> En HER2 registró la afinidad más baja de todo el estudio."
+  };
+  function verResultado(l) {
+    vActual = l;
+    PROTEINAS.forEach(function (p) {
+      var a = AFIN[l][p.id];
+      $("vBarras").querySelector('[data-p="' + p.id + '"]').style.width = pct(a) + "%";
+      $("vBarras").querySelector('[data-n="' + p.id + '"]').textContent = kcal(a);
+    });
+    var d = delta(l), v = $("vVered");
+    v.className = "veredicto " + (Math.abs(d) >= 1.5 ? "bueno" : "plano");
+    v.querySelector(".is").textContent = "Δ " + num(d);
+    v.querySelector("p").innerHTML = LECTURA[l] +
+      (l === "tamoxifeno" ? "" :
+       " Alcanza el <b>" + Math.round(Math.abs(AFIN[l]["3ERT"]) / Math.abs(AFIN.tamoxifeno["3ERT"]) * 100) +
+       " %</b> de la afinidad del tamoxifeno por ERα.");
+  }
+
+  /* tabla completa de la ficha técnica */
+  $("tablaFull").innerHTML = LIGANDOS.map(function (l) {
+    var d = delta(l.id);
+    return '<tr' + (l.id === "tamoxifeno" ? ' class="destacada"' : "") + "><td>" + l.nombre + "</td>" +
+      '<td class="n">' + kcal(AFIN[l.id]["3ERT"]) + '</td><td class="n">' + kcal(AFIN[l.id]["3PP0"]) +
+      '</td><td class="n">' + num(d) + "</td><td>" +
+      (Math.abs(d) >= 1.5 ? "Prefiere ERα" : "Se une parecido a ambas") + "</td></tr>";
+  }).join("");
+
+  /* ================= arranque perezoso ================= */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      if (e.target.id === "p3" && !piezaActual) {
+        verPieza(LIGANDOS[1], false);
+        $("chipsLig").querySelectorAll(".chip")[1].setAttribute("aria-pressed", "true");
+      }
+      if (e.target.id === "p4" && !arrancado) { arrancado = true; acoplar(); }
+    });
+  }, { threshold: 0.35 });
+  pasos.forEach(function (s) { io.observe(s); });
+
+  reiniciarMesa();
+  verResultado(vActual);
+  marcar(0);
+  if (!hay3D) {
+    [$("carga5"), $("carga6")].forEach(function (c) {
+      c.hidden = false; c.textContent = "No se pudo cargar el visor 3D. Revisa tu conexión a internet.";
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a8456b' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6' cy='7' r='2.2'/%3E%3Ccircle cx='18' cy='7' r='2.2'/%3E%3Ccircle cx='12' cy='17' r='2.2'/%3E%3Cpath d='M8 8l2.8 7M16 8l-2.8 7M8.2 7h7.6'/%3E%3C/svg%3E">
+<title>Bitácora · Cáncer de mama y plantas nativas</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; color: #111; background: #fff;
+         max-width: 820px; margin: 0 auto; padding: 24px 16px; line-height: 1.5; }
+  h1 { font-size: 1.7em; margin-bottom: 0; }
+  .sub { color: #555; margin-top: 4px; }
+  h2 { border-bottom: 2px solid #111; padding-bottom: 4px; margin-top: 2em; }
+  h3 { margin-top: 1.5em; }
+  h4 { margin: 0 0 4px; font-family: Consolas, monospace; font-size: .95em; }
+  .doc { margin: 14px 0 20px; break-inside: avoid; page-break-inside: avoid; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 10.5px; line-height: 1.3;
+         background: #f5f5f5; border: 1px solid #ccc; padding: 8px; margin: 0;
+         white-space: pre; overflow-x: auto; }
+  .more { font-size: .85em; color: #444; margin: 4px 0 0; }
+  a { color: #0645ad; word-break: break-all; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #999; padding: 4px 8px; text-align: left; }
+  td.num { text-align: right; font-family: Consolas, monospace; }
+  .chico { font-size: .82em; color: #555; }
+  .menu { position: sticky; top: 0; z-index: 10; display: flex; gap: 2px; overflow-x: auto;
+           margin: -24px -16px 16px; padding: 8px 16px; background: #111;
+           font-family: system-ui, sans-serif; font-size: .85em; white-space: nowrap; }
+  .menu a { color: #ddd; text-decoration: none; padding: 5px 10px; border-radius: 4px; word-break: normal; }
+  .menu a:hover { background: #333; color: #fff; }
+  .page { page-break-before: always; break-before: page; }
+  @media print {
+    body { max-width: none; padding: 0; }
+    .menu { display: none; }
+    pre { background: none; overflow: visible; white-space: pre-wrap; }
+    a { color: #111; text-decoration: none; }
+    h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  }
+  @page { margin: 18mm 15mm; }
+</style>
+</head>
+<body>
+
+<nav class="menu" aria-label="Secciones">
+  <a href="index.html">← Recorrido</a>
+  <a href="#obtencion">1. Obtención</a>
+  <a href="#preparacion">2. Preparación</a>
+  <a href="#validacion">3. Validación</a>
+  <a href="#configuracion">4. Configuración</a>
+  <a href="#resultados">5. Resultados</a>
+</nav>
+
+<h1>Bitácora de investigación: docking molecular</h1>
+<p class="sub">Polygodial y leptocarpina frente al tamoxifeno, contra ERα (3ERT) y HER2 (3PP0) · AutoDock Vina 1.2.7</p>
+<p class="sub">Emilia Antonia Cea Reyes · Escuela Particular N.º 95 Alemana, Paillaco</p>
+
+<h2 id="obtencion">1. Obtención de las estructuras</h2>
+<p>Las proteínas se descargaron del <strong>Protein Data Bank</strong>: la estructura <strong>3ERT</strong>,
+que contiene ERα unido a 4-hidroxitamoxifeno, y la <strong>3PP0</strong>, de la que se usó la cadena A,
+con el dominio quinasa de HER2 unido al inhibidor 03Q.</p>
+<p>Los tres ligandos —tamoxifeno, polygodial y leptocarpina— se descargaron de <strong>PubChem</strong>
+en formato <em>3D Conformer</em>. En PyMOL se eliminaron las aguas de las proteínas y se separó cada una
+de su ligando cristalizado, que se guardó aparte para la validación.</p>
+
+<h2 id="preparacion">2. Preparación de los archivos PDBQT</h2>
+<p>En AutoDock Tools se agregaron los hidrógenos, se asignaron las cargas y los enlaces rotables, y todo
+se guardó en formato PDBQT, que es el que exige Vina. Por su extensión, de cada archivo se muestran solo
+las primeras líneas.</p>
+<h3>2.1 Proteínas</h3>
+<div class="doc"><h4>3ERT_proteina.pdbqt</h4><pre>REMARK   4 XXXX COMPLIES WITH FORMAT V. 2.0
+ATOM      1  N   LEU A 306       6.369   9.127   4.589  1.00 62.53    -0.067 N 
+ATOM      2  HN1 LEU A 306       6.768   8.341   5.102  1.00  0.00     0.275 HD
+ATOM      3  HN2 LEU A 306       6.209   8.902   3.607  1.00  0.00     0.275 HD
+ATOM      4  HN3 LEU A 306       5.402   9.309   4.859  1.00  0.00     0.275 HD
+ATOM      5  CA  LEU A 306       7.232  10.329   4.754  1.00 61.71     0.270 C 
+ATOM      6  C   LEU A 306       7.381  10.684   6.231  1.00 61.99     0.248 C 
+ATOM      7  O   LEU A 306       6.407  11.019   6.906  1.00 62.55    -0.271 OA
+ATOM      8  CB  LEU A 306       6.637  11.501   3.989  1.00 61.59     0.050 C 
+ATOM      9  N   ALA A 307       8.609  10.605   6.730  1.00 61.40    -0.346 N 
+ATOM     10  HN  ALA A 307       9.375  10.322   6.120  1.00  0.00     0.163 HD
+ATOM     11  CA  ALA A 307       8.891  10.912   8.125  1.00 59.75     0.172 C 
+ATOM     12  C   ALA A 307       8.693  12.393   8.429  1.00 58.63     0.240 C 
+ATOM     13  O   ALA A 307       8.451  12.770   9.574  1.00 58.72    -0.271 OA
+ATOM     14  CB  ALA A 307      10.319  10.501   8.465  1.00 60.90     0.042 C 
+ATOM     15  N   LEU A 308       8.789  13.228   7.400  1.00 56.65    -0.346 N 
+ATOM     16  HN  LEU A 308       8.972  12.854   6.469  1.00  0.00     0.163 HD
+ATOM     17  CA  LEU A 308       8.638  14.668   7.573  1.00 57.08     0.177 C 
+ATOM     18  C   LEU A 308       7.190  15.130   7.710  1.00 56.98     0.241 C 
+ATOM     19  O   LEU A 308       6.935  16.307   7.960  1.00 55.81    -0.271 OA</pre><p class="more">Se muestran 20 de 2373 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3ERT/3ERT_proteina.pdbqt">docking/docking-3ERT/3ERT_proteina.pdbqt</a></p></div><div class="doc"><h4>3PP0_A.pdbqt</h4><pre>REMARK   4 XXXX COMPLIES WITH FORMAT V. 2.0
+ATOM      1  N   ALA A 706      28.242  41.311  27.511  1.00 63.83    -0.067 N 
+ATOM      2  HN1 ALA A 706      28.138  41.776  28.413  1.00  0.00     0.275 HD
+ATOM      3  HN2 ALA A 706      27.354  40.934  27.180  1.00  0.00     0.275 HD
+ATOM      4  HN3 ALA A 706      28.417  41.981  26.762  1.00  0.00     0.275 HD
+ATOM      5  CA  ALA A 706      29.299  40.259  27.561  1.00 63.84     0.271 C 
+ATOM      6  C   ALA A 706      29.455  39.562  26.209  1.00 62.05     0.250 C 
+ATOM      7  O   ALA A 706      28.452  39.154  25.611  1.00 60.43    -0.271 OA
+ATOM      8  CB  ALA A 706      28.973  39.234  28.639  1.00 63.85     0.050 C 
+ATOM      9  N   PRO A 707      30.707  39.435  25.715  1.00 60.78    -0.337 N 
+ATOM     10  CA  PRO A 707      30.951  38.595  24.535  1.00 59.11     0.179 C 
+ATOM     11  C   PRO A 707      30.644  37.120  24.812  1.00 56.51     0.241 C 
+ATOM     12  O   PRO A 707      31.383  36.460  25.544  1.00 55.22    -0.271 OA
+ATOM     13  CB  PRO A 707      32.446  38.802  24.240  1.00 60.58     0.037 C 
+ATOM     14  CG  PRO A 707      33.018  39.423  25.467  1.00 62.46     0.022 C 
+ATOM     15  CD  PRO A 707      31.907  40.197  26.103  1.00 61.21     0.127 C 
+ATOM     16  N   ASN A 708      29.554  36.624  24.227  1.00 54.92    -0.346 N 
+ATOM     17  HN  ASN A 708      29.023  37.225  23.597  1.00  0.00     0.163 HD
+ATOM     18  CA  ASN A 708      29.086  35.255  24.449  1.00 53.11     0.185 C 
+ATOM     19  C   ASN A 708      29.826  34.259  23.540  1.00 56.33     0.241 C </pre><p class="more">Se muestran 20 de 2811 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3PP0/3PP0_A.pdbqt">docking/docking-3PP0/3PP0_A.pdbqt</a></p></div>
+<h3>2.2 Ligandos</h3>
+<div class="doc"><h4>tamoxifeno.pdbqt</h4><pre>REMARK  8 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_1  and  C_12 
+REMARK    2  A    between atoms: O_1  and  C_20 
+REMARK    3  A    between atoms: N_2  and  C_19 
+REMARK    4  A    between atoms: C_3  and  C_5 
+REMARK    5  A    between atoms: C_3  and  C_7 
+REMARK    6  A    between atoms: C_4  and  C_6 
+REMARK    7  A    between atoms: C_4  and  C_8 
+REMARK    8  A    between atoms: C_19  and  C_20 
+ROOT
+HETATM    1  C   UNL     1      -1.984   0.190  -0.089  1.00  0.00    -0.009 C 
+HETATM    2  C   UNL     1      -2.378  -1.124   0.009  1.00  0.00    -0.036 C 
+ENDROOT
+BRANCH   1   3
+HETATM    3  C   UNL     1      -0.584   0.534  -0.275  1.00  0.00    -0.024 A 
+HETATM    4  C   UNL     1      -0.059   0.650  -1.562  1.00  0.00     0.015 A 
+HETATM    5  C   UNL     1       1.285   0.979  -1.740  1.00  0.00     0.037 A 
+HETATM    6  C   UNL     1       2.095   1.190  -0.630  1.00  0.00     0.068 A 
+HETATM    7  C   UNL     1       1.579   1.077   0.656  1.00  0.00     0.037 A </pre><p class="more">Se muestran 20 de 57 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/Ligandos/tamoxifeno.pdbqt">Ligandos/tamoxifeno.pdbqt</a></p></div><div class="doc"><h4>polygodial.pdbqt</h4><pre>REMARK  2 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: C_8  and  C_16 
+REMARK    2  A    between atoms: C_14  and  C_17 
+ROOT
+HETATM    1  C   UNL     1      -0.169   0.670   0.086  1.00  0.00    -0.025 C 
+HETATM    2  C   UNL     1      -1.008  -0.627  -0.211  1.00  0.00     0.006 C 
+HETATM    3  C   UNL     1      -2.571  -0.516  -0.087  1.00  0.00    -0.043 C 
+HETATM    4  C   UNL     1      -0.805   1.880  -0.643  1.00  0.00     0.011 C 
+HETATM    5  C   UNL     1      -3.059   0.774  -0.793  1.00  0.00     0.009 C 
+HETATM    6  C   UNL     1       1.272   0.417  -0.506  1.00  0.00     0.091 C 
+HETATM    7  C   UNL     1      -2.300   2.028  -0.378  1.00  0.00     0.002 C 
+HETATM    8  C   UNL     1      -0.392  -1.848   0.514  1.00  0.00     0.034 C 
+HETATM    9  C   UNL     1      -0.071   0.992   1.600  1.00  0.00     0.016 C 
+HETATM   10  C   UNL     1      -3.115  -0.554   1.355  1.00  0.00     0.015 C 
+HETATM   11  C   UNL     1      -3.229  -1.713  -0.823  1.00  0.00     0.015 C 
+HETATM   12  C   UNL     1       1.845  -0.928  -0.133  1.00  0.00    -0.013 C 
+HETATM   13  C   UNL     1       1.101  -1.936   0.348  1.00  0.00    -0.015 C 
+ENDROOT
+BRANCH   6  14</pre><p class="more">Se muestran 20 de 28 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/Ligandos/polygodial.pdbqt">Ligandos/polygodial.pdbqt</a></p></div><div class="doc"><h4>leptocarpina.pdbqt</h4><pre>REMARK  4 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_2  and  C_11 
+REMARK    2  A    between atoms: O_2  and  C_22 
+REMARK    3  A    between atoms: O_4  and  C_14 
+REMARK    4  A    between atoms: C_22  and  C_23 
+ROOT
+HETATM    1  O   UNL     1      -0.701  -2.806  -1.841  1.00  0.00    -0.369 OA
+HETATM    2  O   UNL     1       2.760   1.420   1.012  1.00  0.00    -0.307 OA
+HETATM    3  O   UNL     1       3.769   3.338   0.236  1.00  0.00    -0.260 OA
+HETATM    4  C   UNL     1      -0.550  -1.630  -1.026  1.00  0.00     0.086 A 
+HETATM    5  C   UNL     1       0.612  -2.557  -1.327  1.00  0.00     0.159 A 
+HETATM    6  C   UNL     1      -0.744  -0.352  -1.792  1.00  0.00     0.073 C 
+HETATM    7  C   UNL     1       1.115  -3.604  -0.367  1.00  0.00     0.071 C 
+HETATM    8  C   UNL     1      -0.380   0.953  -1.052  1.00  0.00     0.146 C 
+HETATM    9  C   UNL     1      -1.408  -1.804   0.181  1.00  0.00     0.049 C 
+HETATM   10  C   UNL     1       1.111   1.098  -0.658  1.00  0.00     0.087 C 
+HETATM   11  C   UNL     1       1.741  -3.059   0.937  1.00  0.00     0.149 C 
+HETATM   12  C   UNL     1       1.466   0.841   0.813  1.00  0.00     0.166 C 
+HETATM   13  C   UNL     1       2.222  -1.620   0.809  1.00  0.00    -0.057 C </pre><p class="more">Se muestran 20 de 44 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/Ligandos/leptocarpina.pdbqt">Ligandos/leptocarpina.pdbqt</a></p></div>
+
+<h2 id="validacion" class="page">3. Validación del protocolo por re-docking</h2>
+<p>Antes de evaluar los compuestos de estudio se comprobó que el protocolo reprodujera la posición real
+de un ligando conocido: se volvió a acoplar el ligando cristalizado de cada proteína y se superpuso en
+PyMOL con el original.</p>
+<div class="doc"><h4>03q-3PP0config.txt</h4><pre>receptor = 3PP0_A.pdbqt
+ligand = ligando_03q.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 18.75
+out = ligando_03q_out.pdbqt</pre><p class="more">Archivo: <a href="3PP0/03q-3PP0config.txt">3PP0/03q-3PP0config.txt</a></p></div>
+<div class="doc"><h4>oht.3ERT-redocking.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3ERT_proteina.pdbqt
+Ligand: ligando_oht.pdbqt
+Grid center: X 30.01 Y -1.913 Z 24.206
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 2145549684) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -9.926          0          0
+   2       -9.914     0.4809      1.618
+   3       -9.044      1.894      5.193
+   4       -8.887      2.316      5.446
+   5       -6.859       3.54       10.4
+   6       -6.453      3.247      9.597
+   7       -6.159      3.581      9.733
+   8       -5.993      7.036      9.036
+   9       -2.989      3.841      7.798</pre><p class="more">Archivo: <a href="oht.3ERT-redocking.txt">oht.3ERT-redocking.txt</a></p></div><div class="doc"><h4>03q-3PP0-redocking.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3PP0_A.pdbqt
+Ligand: ligando_03q.pdbqt
+Grid center: X 16.622 Y 17.394 Z 26.218
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1343964553) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -11.13          0          0
+   2       -10.66      2.096      3.725
+   3       -10.17      1.993      3.541
+   4       -10.08      1.409      1.749
+   5       -9.138      3.232      5.492
+   6       -9.105      3.619      5.835
+   7       -8.757      2.392      4.287
+   8       -8.696      2.717      4.783
+   9       -8.563      2.848       3.91</pre><p class="more">Archivo: <a href="03q-3PP0-redocking.txt">03q-3PP0-redocking.txt</a></p></div>
+
+<h2 id="configuracion" class="page">4. Archivos de configuración</h2>
+<p>Una caja de búsqueda por proteína, centrada sobre el ligando cristalizado, de 18,75 × 18,75 × 15 Å,
+con espaciado 0,375 Å y exhaustiveness 32. Se muestran completos.</p>
+<div class="doc"><h4>tamoxifeno-3ERTconfig.txt</h4><pre>receptor = 3ERT_proteina.pdbqt
+ligand = tamoxifeno.pdbqt
+center_x = 30.01
+center_y = -1.913
+center_z = 24.206
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = tamoxifeno-3ERTout.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3ERT/tamoxifeno-3ERTconfig.txt">docking/docking-3ERT/tamoxifeno-3ERTconfig.txt</a></p></div><div class="doc"><h4>polygodial-3ERTconfig.txt</h4><pre>receptor = 3ERT_proteina.pdbqt
+ligand = polygodial.pdbqt
+center_x = 30.01
+center_y = -1.913
+center_z = 24.206
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = polygodial-3ERTout.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3ERT/polygodial-3ERTconfig.txt">docking/docking-3ERT/polygodial-3ERTconfig.txt</a></p></div><div class="doc"><h4>leptocarpina-3ERTconfig.txt</h4><pre>receptor = 3ERT_proteina.pdbqt
+ligand = leptocarpina.pdbqt
+center_x = 30.01
+center_y = -1.913
+center_z = 24.206
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = leptocarpina-3ERTout.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3ERT/leptocarpina-3ERTconfig.txt">docking/docking-3ERT/leptocarpina-3ERTconfig.txt</a></p></div><div class="doc"><h4>tamoxifeno-3PP0config.txt</h4><pre>receptor = 3PP0_A.pdbqt
+ligand = tamoxifeno.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = tamoxifeno-3PP0_out.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3PP0/tamoxifeno-3PP0config.txt">docking/docking-3PP0/tamoxifeno-3PP0config.txt</a></p></div><div class="doc"><h4>polygodial-3PP0config.txt</h4><pre>receptor = 3PP0_A.pdbqt
+ligand = polygodial.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = polygodial-3PP0_out.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3PP0/polygodial-3PP0config.txt">docking/docking-3PP0/polygodial-3PP0config.txt</a></p></div><div class="doc"><h4>leptocarpina-3PP0config.txt</h4><pre>receptor = 3PP0_A.pdbqt
+ligand = leptocarpina.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = leptocarpina-3PP0_out.pdbqt</pre><p class="more">Archivo: <a href="docking/docking-3PP0/leptocarpina-3PP0config.txt">docking/docking-3PP0/leptocarpina-3PP0config.txt</a></p></div>
+
+<h2 id="resultados" class="page">5. Resultados del docking</h2>
+<h3>5.1 Resumen: afinidad de la mejor pose</h3>
+<table>
+  <thead><tr><th>Ligando</th><th>ERα (3ERT)</th><th>HER2 (3PP0)</th><th>Δ</th></tr></thead>
+  <tbody><tr><td>Tamoxifeno</td><td class="num">−9,66</td><td class="num">−7,70</td><td class="num">−1,96</td></tr><tr><td>Polygodial</td><td class="num">−7,69</td><td class="num">−7,15</td><td class="num">−0,53</td></tr><tr><td>Leptocarpina</td><td class="num">−7,88</td><td class="num">−5,08</td><td class="num">−2,80</td></tr><tr><td>4-hidroxitamoxifeno <span class="chico">(re-docking)</span></td><td class="num">−9,93</td><td class="num">—</td><td class="num">—</td></tr><tr><td>Inhibidor 03Q <span class="chico">(re-docking)</span></td><td class="num">—</td><td class="num">−11,13</td><td class="num">—</td></tr></tbody>
+</table>
+<p class="chico">Afinidades en kcal/mol, modo 1. Δ es la diferencia entre la afinidad por ERα y la
+afinidad por HER2: un valor más negativo indica mayor preferencia por ERα.</p>
+
+<h3>5.2 Registros de AutoDock Vina</h3>
+<div class="doc"><h4>tamoxifeno-3ERT-resultados.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3ERT_proteina.pdbqt
+Ligand: tamoxifeno.pdbqt
+Grid center: X 30.01 Y -1.913 Z 24.206
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 189408409) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1        -9.66          0          0
+   2        -9.65    0.06719      1.292
+   3       -8.857      1.734      5.116
+   4       -8.834      0.843      4.594
+   5       -6.748      3.181      10.11
+   6       -6.449       6.82      8.876
+   7       -6.386      3.114      9.432
+   8       -6.384      3.613      7.421
+   9        -5.87      3.241      8.948</pre><p class="more">Archivo: <a href="docking/docking-3ERT/tamoxifeno-3ERT-resultados.txt">docking/docking-3ERT/tamoxifeno-3ERT-resultados.txt</a></p></div><div class="doc"><h4>polygodial-3ERT-resultados.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3ERT_proteina.pdbqt
+Ligand: polygodial.pdbqt
+Grid center: X 30.01 Y -1.913 Z 24.206
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 153912463) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.685          0          0
+   2       -7.594      1.269      3.098
+   3       -7.555      2.851      4.613
+   4       -7.399      2.967      4.856
+   5       -7.248      2.577      5.293
+   6       -6.844      1.614      2.762
+   7       -6.754      2.872      5.153
+   8       -6.443      1.736      3.468
+   9        -6.26       8.84      10.64</pre><p class="more">Archivo: <a href="docking/docking-3ERT/polygodial-3ERT-resultados.txt">docking/docking-3ERT/polygodial-3ERT-resultados.txt</a></p></div><div class="doc"><h4>leptocarina-3ERT-resultado.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3ERT_proteina.pdbqt
+Ligand: leptocarpina.pdbqt
+Grid center: X 30.01 Y -1.913 Z 24.206
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: 1454408443) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.878          0          0
+   2       -7.535      1.788       4.95
+   3       -7.528      6.525      9.617
+   4       -7.227      7.105      10.07
+   5       -7.182       6.92      8.975
+   6       -7.108      5.663      8.761
+   7       -7.066      8.946       10.9
+   8       -6.963      4.701      9.899
+   9        8.879       7.04      10.32</pre><p class="more">Archivo: <a href="docking/docking-3ERT/leptocarina-3ERT-resultado.txt">docking/docking-3ERT/leptocarina-3ERT-resultado.txt</a></p></div><div class="doc"><h4>tamoxifeno-3PP0-resultados.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3PP0_A.pdbqt
+Ligand: tamoxifeno.pdbqt
+Grid center: X 16.622 Y 17.394 Z 26.218
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -892978004) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.696          0          0
+   2       -7.693    0.06285      1.293
+   3       -7.478      3.281      7.287
+   4        -7.38      2.891      7.008
+   5        -7.22      3.055      6.972
+   6       -6.088      2.951      7.833
+   7       -6.011      2.003       5.26
+   8       -5.967      1.596      5.076
+   9       -5.838      1.743      4.596</pre><p class="more">Archivo: <a href="docking/docking-3PP0/tamoxifeno-3PP0-resultados.txt">docking/docking-3PP0/tamoxifeno-3PP0-resultados.txt</a></p></div><div class="doc"><h4>polygodial-3PP0-resultados.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3PP0_A.pdbqt
+Ligand: polygodial.pdbqt
+Grid center: X 16.622 Y 17.394 Z 26.218
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -1070614096) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.153          0          0
+   2       -6.784      1.858      3.115
+   3        -6.75      2.486      4.171
+   4       -6.717      1.138      1.248
+   5       -5.982       1.75      2.859
+   6       -5.829      2.439      4.648
+   7       -5.648      1.372      3.308
+   8       -5.149      6.601      8.633
+   9       -4.884      2.485      4.648</pre><p class="more">Archivo: <a href="docking/docking-3PP0/polygodial-3PP0-resultados.txt">docking/docking-3PP0/polygodial-3PP0-resultados.txt</a></p></div><div class="doc"><h4>leptocarpina-3PP0-resultados.txt</h4><pre>AutoDock Vina v1.2.7
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# J. Eberhardt, D. Santos-Martins, A. F. Tillack, and S. Forli  #
+# AutoDock Vina 1.2.0: New Docking Methods, Expanded Force      #
+# Field, and Python Bindings, J. Chem. Inf. Model. (2021)       #
+# DOI 10.1021/acs.jcim.1c00203                                  #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, J. Comp. Chem. (2010)                         #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see https://github.com/ccsb-scripps/AutoDock-Vina for  #
+# more information.                                             #
+#################################################################
+
+Scoring function : vina
+Rigid receptor: 3PP0_A.pdbqt
+Ligand: leptocarpina.pdbqt
+Grid center: X 16.622 Y 17.394 Z 26.218
+Grid size  : X 18.75 Y 18.75 Z 15
+Grid space : 0.375
+Exhaustiveness: 32
+CPU: 0
+Verbosity: 1
+
+Computing Vina grid ... done.
+Performing docking (random seed: -790279719) ...
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.076          0          0
+   2       -4.907      1.959      3.449
+   3        -4.79      1.676      5.258
+   4       -4.747      1.713      5.461
+   5       -4.186      2.004      5.025
+   6       -3.569      1.768      5.928
+   7        -2.86      1.943      4.414
+   8       -2.585      1.984      6.313
+   9        -2.55      2.658      6.435</pre><p class="more">Archivo: <a href="docking/docking-3PP0/leptocarpina-3PP0-resultados.txt">docking/docking-3PP0/leptocarpina-3PP0-resultados.txt</a></p></div>
+
+<h3 class="page">5.3 Poses generadas</h3>
+<p>Las nueve poses de cada acoplamiento. Se muestran las primeras líneas; el documento completo está en
+el enlace. Para verlas en 3D, el <a href="index.html">recorrido</a> tiene un visor interactivo.</p>
+<div class="doc"><h4>tamoxifeno-3ERTout.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -9.660      0.000      0.000
+REMARK INTER + INTRA:         -16.437
+REMARK INTER:                 -14.178
+REMARK INTRA:                  -2.259
+REMARK UNBOUND:                -2.259
+REMARK  8 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_1  and  C_12 
+REMARK    2  A    between atoms: O_1  and  C_20 
+REMARK    3  A    between atoms: N_2  and  C_19 
+REMARK    4  A    between atoms: C_3  and  C_5 
+REMARK    5  A    between atoms: C_3  and  C_7 
+REMARK    6  A    between atoms: C_4  and  C_6 
+REMARK    7  A    between atoms: C_4  and  C_8 
+REMARK    8  A    between atoms: C_19  and  C_20 
+ROOT
+HETATM    1  C   UNL     1      30.625  -0.987  27.104  1.00  0.00    -0.009 C 
+HETATM    2  C   UNL     1      31.246  -0.102  27.955  1.00  0.00    -0.036 C 
+ENDROOT</pre><p class="more">Se muestran 20 de 325 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3ERT/tamoxifeno-3ERTout.pdbqt">docking/docking-3ERT/tamoxifeno-3ERTout.pdbqt</a></p></div><div class="doc"><h4>polygodial-3ERTout.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.685      0.000      0.000
+REMARK INTER + INTRA:          -8.605
+REMARK INTER:                  -8.583
+REMARK INTRA:                  -0.022
+REMARK UNBOUND:                -0.022
+REMARK  2 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: C_8  and  C_16 
+REMARK    2  A    between atoms: C_14  and  C_17 
+ROOT
+HETATM    1  C   UNL     1      29.668  -0.054  28.076  1.00  0.00    -0.025 C 
+HETATM    2  C   UNL     1      31.075  -0.727  27.876  1.00  0.00     0.006 C 
+HETATM    3  C   UNL     1      32.339   0.202  27.986  1.00  0.00    -0.043 C 
+HETATM    4  C   UNL     1      29.703   0.868  29.321  1.00  0.00     0.011 C 
+HETATM    5  C   UNL     1      32.204   1.118  29.229  1.00  0.00     0.009 C 
+HETATM    6  C   UNL     1      28.644  -1.226  28.337  1.00  0.00     0.091 C 
+HETATM    7  C   UNL     1      30.871   1.850  29.313  1.00  0.00     0.002 C 
+HETATM    8  C   UNL     1      31.063  -1.648  26.632  1.00  0.00     0.034 C 
+HETATM    9  C   UNL     1      29.218   0.780  26.848  1.00  0.00     0.016 C </pre><p class="more">Se muestran 20 de 324 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3ERT/polygodial-3ERTout.pdbqt">docking/docking-3ERT/polygodial-3ERTout.pdbqt</a></p></div><div class="doc"><h4>leptocarpina-3ERTout.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.878      0.000      0.000
+REMARK INTER + INTRA:          -9.339
+REMARK INTER:                  -9.490
+REMARK INTRA:                   0.151
+REMARK UNBOUND:                 0.151
+REMARK  4 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_2  and  C_11 
+REMARK    2  A    between atoms: O_2  and  C_22 
+REMARK    3  A    between atoms: O_4  and  C_14 
+REMARK    4  A    between atoms: C_22  and  C_23 
+ROOT
+HETATM    1  O   UNL     1      29.292  -2.563  27.979  1.00  0.00    -0.369 OA
+HETATM    2  O   UNL     1      33.369   1.983  27.152  1.00  0.00    -0.307 OA
+HETATM    3  O   UNL     1      35.547   2.223  27.860  1.00  0.00    -0.260 OA
+HETATM    4  C   UNL     1      30.286  -1.877  27.197  1.00  0.00     0.086 A 
+HETATM    5  C   UNL     1      29.648  -1.248  28.421  1.00  0.00     0.159 A 
+HETATM    6  C   UNL     1      31.642  -2.521  27.271  1.00  0.00     0.073 C 
+HETATM    7  C   UNL     1      28.527  -0.243  28.354  1.00  0.00     0.071 C </pre><p class="more">Se muestran 20 de 416 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3ERT/leptocarpina-3ERTout.pdbqt">docking/docking-3ERT/leptocarpina-3ERTout.pdbqt</a></p></div><div class="doc"><h4>tamoxifeno-3PP0_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.696      0.000      0.000
+REMARK INTER + INTRA:         -11.716
+REMARK INTER:                 -11.296
+REMARK INTRA:                  -0.420
+REMARK UNBOUND:                -0.420
+REMARK  8 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_1  and  C_12 
+REMARK    2  A    between atoms: O_1  and  C_20 
+REMARK    3  A    between atoms: N_2  and  C_19 
+REMARK    4  A    between atoms: C_3  and  C_5 
+REMARK    5  A    between atoms: C_3  and  C_7 
+REMARK    6  A    between atoms: C_4  and  C_6 
+REMARK    7  A    between atoms: C_4  and  C_8 
+REMARK    8  A    between atoms: C_19  and  C_20 
+ROOT
+HETATM    1  C   UNL     1      13.815  11.991  29.170  1.00  0.00    -0.009 C 
+HETATM    2  C   UNL     1      14.813  11.120  29.541  1.00  0.00    -0.036 C 
+ENDROOT</pre><p class="more">Se muestran 20 de 585 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3PP0/tamoxifeno-3PP0_out.pdbqt">docking/docking-3PP0/tamoxifeno-3PP0_out.pdbqt</a></p></div><div class="doc"><h4>polygodial-3PP0_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -7.153      0.000      0.000
+REMARK INTER + INTRA:          -8.112
+REMARK INTER:                  -7.990
+REMARK INTRA:                  -0.123
+REMARK UNBOUND:                -0.123
+REMARK  2 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: C_8  and  C_16 
+REMARK    2  A    between atoms: C_14  and  C_17 
+ROOT
+HETATM    1  C   UNL     1      15.414  11.763  28.933  1.00  0.00    -0.025 C 
+HETATM    2  C   UNL     1      15.132  13.308  28.843  1.00  0.00     0.006 C 
+HETATM    3  C   UNL     1      13.628  13.766  28.845  1.00  0.00    -0.043 C 
+HETATM    4  C   UNL     1      14.535  11.137  30.045  1.00  0.00     0.011 C 
+HETATM    5  C   UNL     1      12.855  13.007  29.953  1.00  0.00     0.009 C 
+HETATM    6  C   UNL     1      16.932  11.607  29.334  1.00  0.00     0.091 C 
+HETATM    7  C   UNL     1      13.057  11.498  29.922  1.00  0.00     0.002 C 
+HETATM    8  C   UNL     1      15.997  13.952  27.732  1.00  0.00     0.034 C 
+HETATM    9  C   UNL     1      15.138  11.021  27.599  1.00  0.00     0.016 C </pre><p class="more">Se muestran 20 de 324 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3PP0/polygodial-3PP0_out.pdbqt">docking/docking-3PP0/polygodial-3PP0_out.pdbqt</a></p></div><div class="doc"><h4>leptocarpina-3PP0_out.pdbqt</h4><pre>MODEL 1
+REMARK VINA RESULT:    -5.076      0.000      0.000
+REMARK INTER + INTRA:          -6.487
+REMARK INTER:                  -6.115
+REMARK INTRA:                  -0.372
+REMARK UNBOUND:                -0.372
+REMARK  4 active torsions:
+REMARK  status: (&#x27;A&#x27; for Active; &#x27;I&#x27; for Inactive)
+REMARK    1  A    between atoms: O_2  and  C_11 
+REMARK    2  A    between atoms: O_2  and  C_22 
+REMARK    3  A    between atoms: O_4  and  C_14 
+REMARK    4  A    between atoms: C_22  and  C_23 
+ROOT
+HETATM    1  O   UNL     1      13.327  15.598  28.643  1.00  0.00    -0.369 OA
+HETATM    2  O   UNL     1      18.643  12.643  27.654  1.00  0.00    -0.307 OA
+HETATM    3  O   UNL     1      20.077  11.564  29.097  1.00  0.00    -0.260 OA
+HETATM    4  C   UNL     1      14.078  14.433  28.256  1.00  0.00     0.086 A 
+HETATM    5  C   UNL     1      14.720  15.802  28.383  1.00  0.00     0.159 A 
+HETATM    6  C   UNL     1      14.194  13.415  29.354  1.00  0.00     0.073 C 
+HETATM    7  C   UNL     1      15.011  16.700  27.209  1.00  0.00     0.071 C </pre><p class="more">Se muestran 20 de 468 líneas. Documento completo: <a href="https://raw.githubusercontent.com/ezesal93/docking-proyecto/main/Proyecto-2/docking/docking-3PP0/leptocarpina-3PP0_out.pdbqt">docking/docking-3PP0/leptocarpina-3PP0_out.pdbqt</a></p></div>
+
+</body>
+</html>

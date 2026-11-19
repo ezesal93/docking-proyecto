@@ -1,0 +1,10 @@
+receptor = 3ERT_proteina.pdbqt
+ligand = polygodial.pdbqt
+center_x = 30.01
+center_y = -1.913
+center_z = 24.206
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = polygodial-3ERTout.pdbqt

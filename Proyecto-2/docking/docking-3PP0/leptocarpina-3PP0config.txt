@@ -1,0 +1,10 @@
+receptor = 3PP0_A.pdbqt
+ligand = leptocarpina.pdbqt
+center_x = 16.622
+center_y = 17.394
+center_z = 26.218
+size_x = 18.75
+size_y = 18.75
+size_z = 15.0
+exhaustiveness = 32
+out = leptocarpina-3PP0_out.pdbqt
