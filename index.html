@@ -85,6 +85,39 @@ h2{font-size:clamp(1.5rem,4.6vw,2.4rem);font-weight:800;letter-spacing:-.02em;li
 .card h4{margin:0 0 .35rem;font-size:1rem;font-weight:700}
 .card p{margin:0;font-size:.95rem;color:var(--muted)}
 .rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.cita{color:var(--faint);font-style:italic;font-size:.93em}
+.marca-linea{font-weight:600;color:var(--fg)}
+.rotulo{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem}
+.objetivos{margin:.5rem 0 0;padding-left:1.15rem;font-size:.93rem;color:var(--muted)}
+.objetivos li{margin:.5em 0}
+.formula{font-family:var(--mono);font-size:.78rem;background:var(--surface-3);border:1px solid var(--border);
+         border-radius:10px;padding:.7rem .5rem;margin:.5rem 0;text-align:center;overflow-x:auto}
+/* flujo metodológico numerado */
+.flujo{list-style:none;counter-reset:f;margin:0;padding:0}
+.flujo li{counter-increment:f;position:relative;padding:0 0 .85rem 2.6rem;font-size:.89rem;color:var(--muted)}
+/* el visor del paso de metodología es secundario: va más bajo para que el paso quepa */
+#p6 .visor{max-height:30svh;aspect-ratio:16/11}
+.ficha{margin-top:.55rem;font-size:.85rem}
+.ficha h4{font-family:var(--ui);font-size:.93rem;font-weight:700;margin:0 0 .15rem}
+.ficha p{margin:0;color:var(--muted)}
+.flujo li::before{content:counter(f);position:absolute;left:0;top:-.1rem;width:1.8rem;height:1.8rem;border-radius:50%;
+  background:var(--accent);color:#fff;font-family:var(--ui);font-weight:700;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center}
+.flujo li::after{content:"";position:absolute;left:.85rem;top:1.95rem;bottom:.15rem;width:2px;background:var(--border)}
+.flujo li:last-child{padding-bottom:0}
+.flujo li:last-child::after{display:none}
+.flujo b{font-family:var(--ui);color:var(--fg);font-weight:700}
+:root[data-theme="dark"] .flujo li::before{color:#07171b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .flujo li::before{color:#07171b}}
+/* referencias plegables */
+.refs{margin-top:1.3rem;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.refs summary{cursor:pointer;font-family:var(--ui);font-weight:700;font-size:.92rem;padding:.7rem 1rem;list-style:none}
+.refs summary::-webkit-details-marker{display:none}
+.refs summary::after{content:" ▾";color:var(--accent)}
+.refs[open] summary::after{content:" ▴"}
+.refs ol{margin:0;padding:0 1.1rem 1rem 2.3rem;font-size:.8rem;color:var(--muted);columns:2;column-gap:2rem}
+.refs li{margin:.5em 0;break-inside:avoid}
+@media (max-width:760px){.refs ol{columns:1}}
 strong{font-weight:600}
 em{font-style:italic}
 .dato{font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -168,7 +201,7 @@ em{font-style:italic}
 .fit{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media (max-width:620px){.fit{grid-template-columns:1fr}}
 .fit figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.9rem;box-shadow:var(--shadow)}
-.fit svg{width:100%;height:auto;display:block}
+.fit svg{width:100%;max-width:330px;height:auto;display:block;margin:0 auto}
 .fit figcaption{font-family:var(--ui);font-size:.88rem;margin-top:.5rem;text-align:center}
 .fit figcaption b{display:block;font-size:.98rem}
 .lig-anim{animation:encajar 4s ease-in-out infinite}
@@ -216,43 +249,45 @@ em{font-style:italic}
 <section class="paso" id="p1" aria-label="El problema">
   <div class="in dos">
     <div class="txt">
-      <span class="num">Paso 1 de 8 · El problema</span>
-      <h2>Hay células que dejan de dividirse, pero no se mueren</h2>
-      <p class="lede">Se quedan en el tejido, encendidas, echando humo. Se llaman <strong>células senescentes</strong>.</p>
-      <p>Cuando una célula sufre un daño grave toma una decisión definitiva: deja de dividirse para siempre. Así evita convertirse en un tumor. El problema es que tampoco se muere.</p>
-      <p>Se queda ahí y empieza a soltar señales inflamatorias que dañan a las células vecinas y pueden volverlas senescentes también. Con los años se van acumulando, y esa inflamación constante es hoy uno de los motores del <strong>envejecimiento</strong>.</p>
+      <span class="num">Paso 1 de 9 · Introducción</span>
+      <h2>La población envejece, y con ella aumentan las enfermedades crónicas</h2>
+      <p class="lede">A escala celular, uno de los motores de ese proceso se llama <strong>senescencia</strong>.</p>
+      <p>La población mundial envejece, y con ello aumentan las enfermedades crónicas como la diabetes, la hipertensión, las enfermedades cardiovasculares y la demencia <span class="cita">(Piña Morán et al., 2022)</span>.</p>
+      <p>A nivel celular, este proceso se asocia a la acumulación de <strong>células senescentes</strong>: células que pierden de forma irreversible su capacidad de dividirse pero que, a pesar de eso, siguen vivas.</p>
+      <p>Y siguen secretando. Liberan un conjunto de moléculas proinflamatorias conocido como <strong>fenotipo secretor asociado a la senescencia</strong>, que daña los tejidos sanos y propaga la senescencia a las células vecinas <span class="cita">(Witham et al., 2023)</span>.</p>
     </div>
     <div class="rejilla">
-      <div class="card"><h4>Deja de dividirse</h4><p>De forma irreversible, en respuesta al daño en el ADN, al estrés oxidativo o al desgaste de los telómeros.</p></div>
-      <div class="card"><h4>Sigue viva y activa</h4><p>Mantiene su metabolismo y secreta citoquinas inflamatorias: el fenotipo secretor asociado a la senescencia, o SASP.</p></div>
-      <div class="card"><h4>Se acumula</h4><p>Con la edad aparecen más y se eliminan peor. La inflamación crónica resultante está detrás de muchas enfermedades asociadas al envejecimiento.</p></div>
+      <div class="card"><h4>Dejan de dividirse</h4><p>De forma irreversible, en respuesta al daño en el ADN, al estrés oxidativo, al acortamiento de los telómeros o a la disfunción mitocondrial.</p></div>
+      <div class="card"><h4>Pero siguen vivas</h4><p>Permanecen metabólicamente activas y secretan citoquinas proinflamatorias, quimioquinas y proteasas: el <span class="dato">SASP</span>.</p></div>
+      <div class="card"><h4>Y se acumulan</h4><p>Con los años se juntan más. La inflamación crónica de bajo grado que producen subyace a numerosas enfermedades asociadas a la edad.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ============ 2 ============ -->
-<section class="paso" id="p2" aria-label="Lo que ya existe">
+<section class="paso" id="p2" aria-label="Los senolíticos">
   <div class="in dos">
     <div class="txt">
-      <span class="num">Paso 2 de 8 · Lo que ya existe</span>
-      <h2>Ya hay remedios que las eliminan. El asunto es cómo</h2>
-      <p class="lede">Se llaman <strong>senolíticos</strong>, y el más estudiado combina dos compuestos: dasatinib y quercetina, abreviado <span class="dato">D+Q</span>.</p>
-      <p>Esa combinación llegó a un primer ensayo en humanos con fibrosis pulmonar idiopática y mostró mejoras en la función física de los pacientes <span style="color:var(--faint)">(Justice et al., 2019)</span>.</p>
-      <p>Pero el dasatinib es un <strong>antineoplásico</strong>: un fármaco contra el cáncer que inhibe muchas quinasas a la vez. Golpea su objetivo y golpea también lo que está al lado, con efectos adversos documentados.</p>
-      <p>De ahí nuestra pregunta: ¿existirá algo que apunte <strong>mejor</strong>?</p>
+      <span class="num">Paso 2 de 9 · El estándar actual</span>
+      <h2>Ya existen fármacos que las eliminan</h2>
+      <p class="lede">Se llaman <strong>senolíticos</strong>, y el régimen más estudiado combina dasatinib y quercetina: <span class="dato">D+Q</span>.</p>
+      <p>La evidencia muestra que eliminar estas células produce efectos positivos frente al envejecimiento. Los senolíticos son fármacos capaces de eliminarlas de forma selectiva.</p>
+      <p>La combinación <span class="dato">D+Q</span> demostró mejoras en la función física de pacientes con fibrosis pulmonar idiopática, en uno de los primeros ensayos clínicos en humanos <span class="cita">(Justice et al., 2019)</span>.</p>
+      <p>Sin embargo, el dasatinib tiene <strong>baja selectividad y efectos secundarios</strong>: actúa no solo sobre las células de interés, sino que también puede dañar células sanas.</p>
+      <p class="marca-linea">Por eso se hace relevante contar con <strong>otras fuentes de senolíticos</strong>.</p>
     </div>
     <div>
       <div class="card" style="border-left:4px solid var(--good)">
-        <h4>Quercetina</h4>
-        <p>Un flavonoide, de los que están presentes en la dieta. Es la mitad "amable" del régimen.</p>
+        <h4>Quercetina <span class="etq" style="background:var(--warm)">la Q</span></h4>
+        <p>Un flavonoide presente en la dieta.</p>
       </div>
       <div class="card" style="border-left:4px solid var(--crit);margin-top:.9rem">
-        <h4>Dasatinib</h4>
-        <p>Un inhibidor de múltiples quinasas usado en oncología. Eficaz, pero poco selectivo: ahí está el problema que queremos resolver.</p>
+        <h4>Dasatinib <span class="etq" style="background:var(--crit)">la D</span></h4>
+        <p>Un inhibidor de múltiples tirosina-quinasas usado en oncología. Eficaz, pero poco selectivo: ahí está el problema que queremos resolver.</p>
       </div>
       <div class="card" style="margin-top:.9rem;background:var(--surface-3)">
         <h4 style="font-size:.9rem">Qué quiere decir "selectivo"</h4>
-        <p>Que actúa sobre lo que debe y deja en paz lo demás. Mientras más selectivo, menos efectos adversos.</p>
+        <p>Que actúa sobre la diana que corresponde y deja en paz a las demás. Mientras más selectivo, menos efectos adversos.</p>
       </div>
     </div>
   </div>
@@ -262,32 +297,71 @@ em{font-style:italic}
 <section class="paso" id="p3" aria-label="Dónde buscamos">
   <div class="in dos">
     <div class="txt">
-      <span class="num">Paso 3 de 8 · Dónde buscamos</span>
-      <h2>Fuimos a buscarlo a la Antártida</h2>
-      <p class="lede">Ahí crece <em>Deschampsia antarctica</em>, una de las dos únicas plantas con flores de todo el continente.</p>
-      <p>Para aguantar el frío, la radiación y la desecación, esta planta fabrica compuestos de defensa. Entre ellos hay <strong>flavonoides</strong>, y dos nos interesaban en particular: la <strong>apigenina</strong> y la <strong>luteolina</strong>.</p>
-      <p>No los elegimos al azar. Ortiz-Espín y sus colaboradores demostraron en 2017 que el extracto de esta planta protege a fibroblastos humanos de la senescencia y <strong>restaura la expresión de SIRT1</strong>, una proteína asociada a la longevidad.</p>
-      <p>Nuestra pregunta es si esos dos flavonoides explican ese efecto, y si apuntan mejor que los senolíticos de referencia.</p>
+      <span class="num">Paso 3 de 9 · La bioprospección</span>
+      <h2>Fuimos a buscarlas a la Antártida</h2>
+      <p class="lede">Las plantas de ambientes extremos despiertan alto interés en biomedicina: desarrollan compuestos bioactivos como defensa evolutiva.</p>
+      <p><em>Deschampsia antarctica</em> es una de las dos únicas plantas vasculares nativas de la Antártida <span class="cita">(Ramírez et al., 2024)</span>. Su extracto, abreviado <span class="dato">EDA</span>, contiene flavonoides como la <strong>apigenina</strong> y la <strong>luteolina</strong> <span class="cita">(Mataix et al., 2020)</span>.</p>
+      <p>Ortiz-Espín y colaboradores demostraron en 2017 que ese extracto protege a fibroblastos humanos de la senescencia inducida por peróxido de hidrógeno, y que <strong>restaura la expresión de SIRT1</strong>, una sirtuina dependiente de <span class="dato">NAD+</span> que cumple un papel central en las estrategias antienvejecimiento <span class="cita">(Haigis y Sinclair, 2010)</span>.</p>
+      <p>Otra proteína clave es <strong>p53</strong>, que activa la senescencia como protección frente al cáncer, aunque su sobreactivación acelera el envejecimiento <span class="cita">(Beck et al., 2020)</span>.</p>
     </div>
     <div>
-      <div class="card">
-        <h4>La hipótesis</h4>
-        <p style="color:var(--fg);font-family:var(--body);font-size:1.02rem">La apigenina y la luteolina de <em>Deschampsia antarctica</em> presentan un índice de selectividad senolítica <em>in silico</em> mayor que el del dasatinib y la quercetina.</p>
+      <div class="card" style="border-left:4px solid var(--warm)">
+        <h4>La brecha que abordamos</h4>
+        <p style="font-family:var(--body);font-size:1.02rem;color:var(--fg)">Se sabe que el extracto protege de la senescencia, y se sabe que <span class="dato">D+Q</span> es clínicamente relevante. Pero <strong>no se ha encontrado en la literatura revisada una comparación directa</strong> de la selectividad senolítica de ambos bajo las mismas condiciones.</p>
+        <p style="margin-top:.6em">Esa comparación es la brecha que aborda esta investigación.</p>
       </div>
       <div class="card" style="margin-top:.9rem;background:var(--surface-3)">
-        <h4 style="font-size:.9rem">In silico</h4>
-        <p>Quiere decir "hecho por computador". Se distingue de <em>in vitro</em>, en células o tubo de ensayo, y de <em>in vivo</em>, en un organismo completo.</p>
+        <h4 style="font-size:.9rem">Flavonoide</h4>
+        <p>Familia de compuestos vegetales con actividad antioxidante. La apigenina, la luteolina y también la quercetina lo son.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ 4 ============ -->
-<section class="paso" id="p4" aria-label="Qué es el docking">
+<section class="paso" id="p4" aria-label="La pregunta">
   <div class="in">
-    <span class="num">Paso 4 de 8 · El método</span>
+    <span class="num">Paso 4 de 9 · El planteamiento</span>
+    <h2>La pregunta, la hipótesis y los objetivos</h2>
+    <div class="dos" style="align-items:start">
+      <div>
+        <div class="card" style="border-left:4px solid var(--accent)">
+          <h4>Problema de investigación</h4>
+          <p style="font-family:var(--body);font-size:1.06rem;color:var(--fg)">¿Presentan los flavonoides apigenina y luteolina presentes en el extracto de <em>Deschampsia antarctica</em> un índice de selectividad mayor al de dasatinib y quercetina?</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--good);margin-top:.9rem">
+          <h4>Hipótesis</h4>
+          <p style="font-family:var(--body);font-size:1.02rem;color:var(--fg)">Los flavonoides apigenina y luteolina presentes en el extracto de <em>Deschampsia antarctica</em> presentan un índice de selectividad senolítica <em>in silico</em> mayor al de dasatinib y quercetina.</p>
+        </div>
+        <div class="card" style="margin-top:.9rem;background:var(--surface-3)">
+          <h4 style="font-size:.9rem">In silico</h4>
+          <p>Quiere decir "hecho por computador". Se distingue de <em>in vitro</em>, en células o tubo de ensayo, y de <em>in vivo</em>, en un organismo completo.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h4>Objetivo general</h4>
+          <p style="font-family:var(--body);font-size:1rem;color:var(--fg)">Comparar la selectividad senolítica <em>in silico</em> de los flavonoides apigenina y luteolina presentes en extracto de <em>Deschampsia antarctica</em>, frente a dasatinib y quercetina, mediante docking molecular contra las proteínas <strong>SIRT1</strong>, <strong>p53</strong> y <strong>PRX6</strong>.</p>
+        </div>
+        <div class="card" style="margin-top:.9rem">
+          <h4>Objetivos específicos</h4>
+          <ol class="objetivos">
+            <li>Determinar las energías de unión <em>in silico</em> de los cuatro ligandos contra las tres proteínas asociadas a la senescencia, mediante acoplamiento molecular.</li>
+            <li>Calcular el índice de selectividad de cada ligando a partir de las energías de unión obtenidas en el docking.</li>
+            <li>Comparar los índices de selectividad de los flavonoides de <em>Deschampsia antarctica</em> frente a los de los senolíticos de referencia.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="paso" id="p5" aria-label="Qué es el docking">
+  <div class="in">
+    <span class="num">Paso 5 de 9 · El método, en concepto</span>
     <h2>¿Qué es el docking molecular?</h2>
-    <p class="lede">Es simular en el computador cómo una molécula pequeña encaja en una proteína, y <strong>qué tan fuerte queda pegada</strong>. Esa fuerza se llama afinidad.</p>
+    <p class="lede">Es simular en el computador cómo una molécula pequeña encaja en una proteína, y <strong>qué tan fuerte queda unida</strong>. Esa fuerza es la afinidad.</p>
     <div class="fit">
       <figure>
         <svg viewBox="0 0 260 150" role="img" aria-label="Una molécula que encaja bien en el bolsillo de una proteína">
@@ -303,7 +377,7 @@ em{font-style:italic}
             <circle cx="130" cy="68" r="10" fill="var(--warm)"/>
           </g>
         </svg>
-        <figcaption><b style="color:var(--good)">Encaja bien</b>Mucho contacto con el bolsillo: se pega fuerte. <strong>Afinidad alta.</strong></figcaption>
+        <figcaption><b style="color:var(--good)">Encaja bien</b>Mucho contacto con el bolsillo: se une fuerte. <strong>Afinidad alta.</strong></figcaption>
       </figure>
       <figure>
         <svg viewBox="0 0 260 150" role="img" aria-label="Una molécula que no encaja en el bolsillo de una proteína">
@@ -315,56 +389,58 @@ em{font-style:italic}
             <circle cx="162" cy="42" r="12" fill="var(--faint)"/><circle cx="130" cy="56" r="12" fill="var(--muted)"/>
           </g>
         </svg>
-        <figcaption><b style="color:var(--muted)">No encaja</b>Choca y queda suelta: se pega flojo. <strong>Afinidad baja.</strong></figcaption>
+        <figcaption><b style="color:var(--muted)">No encaja</b>Choca y queda suelta: se une flojo. <strong>Afinidad baja.</strong></figcaption>
       </figure>
     </div>
     <div class="rejilla" style="margin-top:1.1rem">
-      <div class="card"><h4>El número que entrega</h4><p>La afinidad se mide en <span class="dato">kcal/mol</span>. Es un número <strong>negativo</strong>: mientras más negativo, más fuerte es la unión. Un <span class="dato">−10</span> se pega mucho más que un <span class="dato">−5</span>.</p></div>
-      <div class="card"><h4>Para qué sirve</h4><p>Es un filtro previo al laboratorio. Permite ordenar candidatos y decidir cuáles vale la pena probar de verdad, ahorrando tiempo y recursos.</p></div>
-      <div class="card"><h4>Lo que no dice</h4><p>El docking indica que la molécula <strong>se une</strong>, no si activa o inhibe a la proteína. Eso se resuelve después, con ensayos.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 5 ============ -->
-<section class="paso" id="p5" aria-label="Las piezas">
-  <div class="in">
-    <span class="num">Paso 5 de 8 · Las piezas</span>
-    <h2>Tres proteínas y cuatro moléculas</h2>
-    <p class="lede">Estas son las piezas reales del estudio. Tócalas para verlas en 3D y gíralas con el dedo o el mouse.</p>
-    <div class="dos" style="align-items:start">
-      <div>
-        <p class="ui" style="font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem">Proteínas · las dianas</p>
-        <div class="chips" id="chipsProt"></div>
-        <p class="ui" style="font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:1.1rem 0 .4rem">Ligandos · las moléculas candidatas</p>
-        <div class="chips" id="chipsLig"></div>
-        <div class="card" id="fichaPieza" style="margin-top:1.1rem">
-          <h4>—</h4><p>—</p>
-        </div>
-      </div>
-      <div>
-        <div class="visor" id="visor5"><div class="cargando" id="carga5">Cargando…</div></div>
-        <p class="pista">Arrastra para girar · rueda o pellizca para acercar</p>
-      </div>
+      <div class="card"><h4>El número que entrega</h4><p>La energía de unión se mide en <span class="dato">kcal/mol</span>. Mientras <strong>más negativo</strong>, más fuerte es la unión; un valor positivo indicaría repulsión. Un <span class="dato">−10</span> se une mucho más que un <span class="dato">−5</span>.</p></div>
+      <div class="card"><h4>Para qué sirve</h4><p>Es una etapa de cribado virtual que antecede al trabajo experimental y lo orienta: permite jerarquizar candidatos antes de invertir recursos en el laboratorio <span class="cita">(Trott y Olson, 2010)</span>.</p></div>
+      <div class="card"><h4>Lo que no dice</h4><p>El docking estima la <strong>afinidad de unión</strong>, no la función. Indica que la molécula se une a la proteína, sin establecer si la activa o la inhibe.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ============ 6 ============ -->
-<section class="paso" id="p6" aria-label="La mesa de acoplamiento">
+<section class="paso" id="p6" aria-label="Cómo lo hicimos">
   <div class="in">
-    <span class="num">Paso 6 de 8 · El experimento</span>
+    <span class="num">Paso 6 de 9 · Metodología</span>
+    <h2>Cómo lo hicimos, paso a paso</h2>
+    <p class="lede">Un estudio computacional comparativo. Este es el camino completo, de la base de datos al número final.</p>
+    <div class="dos" style="align-items:start">
+      <ol class="flujo">
+        <li><b>Descargamos las tres proteínas</b> del Protein Data Bank, en formato Legacy PDB: SIRT1 <span class="dato">(4I5I)</span>, el blanco deseado; p53 <span class="dato">(1TUP)</span>, el blanco a evitar; y PRX6 <span class="dato">(5B6N)</span>, el blanco de apoyo.</li>
+        <li><b>Las limpiamos</b> en UCSF Chimera 1.20 <span class="cita">(Pettersen et al., 2004)</span>: fuera iones metálicos, aguas y todo componente no proteico, dejando solo la cadena de aminoácidos.</li>
+        <li><b>Descargamos los cuatro ligandos</b> de PubChem: apigenina y luteolina del extracto, dasatinib y quercetina como referencia.</li>
+        <li><b>Convertimos todo a PDBQT</b>, el formato de entrada que exige AutoDock Vina.</li>
+        <li><b>Centramos una caja de búsqueda</b> sobre el sitio de unión de cada proteína: <span class="dato">20×20×20 Å</span>, espaciado <span class="dato">0,375 Å</span>, exhaustiveness <span class="dato">32</span>.</li>
+        <li><b>Corrimos AutoDock Vina 1.2.7</b> <span class="cita">(Trott y Olson, 2010; Eberhardt et al., 2021)</span>. Entrega 9 modos por acoplamiento; tomamos el de mejor afinidad, el <strong>modo 1</strong>.</li>
+      </ol>
+      <div>
+        <p class="ui rotulo">Las piezas · tócalas para verlas en 3D</p>
+        <div class="chips" id="chipsProt"></div>
+        <div class="chips" id="chipsLig" style="margin-top:.4rem"></div>
+        <div class="visor" id="visor5" style="margin-top:.6rem"><div class="cargando" id="carga5">Cargando…</div></div>
+        <div class="ficha" id="fichaPieza"><h4>—</h4><p>—</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="paso" id="p7" aria-label="La mesa de acoplamiento">
+  <div class="in">
+    <span class="num">Paso 7 de 9 · El experimento</span>
     <h2>La mesa de acoplamiento</h2>
     <p class="lede">Elige una molécula y una proteína, y mira cómo se acopla. Son los <strong>12 acoplamientos reales</strong> del estudio, con las posiciones que calculó AutoDock Vina.</p>
     <div class="dos" style="align-items:start">
       <div>
-        <p class="ui" style="font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem">1 · La molécula</p>
+        <p class="ui rotulo">1 · La molécula</p>
         <div class="chips" id="mesaLig"></div>
-        <p class="ui" style="font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .4rem">2 · La proteína</p>
+        <p class="ui rotulo" style="margin-top:1rem">2 · La proteína</p>
         <div class="chips" id="mesaProt"></div>
         <p style="margin:1.1rem 0 0"><button class="accion" id="btnAcoplar">▸ Acoplar</button></p>
         <div class="medidor">
-          <div class="cab"><span class="ttl">Afinidad</span><span class="val dato" id="mVal">—</span></div>
+          <div class="cab"><span class="ttl">Energía de unión · modo 1</span><span class="val dato" id="mVal">—</span></div>
           <div class="pista-barra"><div class="relleno" id="mRell"></div></div>
           <p class="pie" id="mPie">Aprieta <b>Acoplar</b> para ver la molécula entrar en la proteína.</p>
         </div>
@@ -377,12 +453,12 @@ em{font-style:italic}
   </div>
 </section>
 
-<!-- ============ 7 ============ -->
-<section class="paso" id="p7" aria-label="El veredicto">
+<!-- ============ 8 ============ -->
+<section class="paso" id="p8" aria-label="Resultados">
   <div class="in">
-    <span class="num">Paso 7 de 8 · El resultado</span>
+    <span class="num">Paso 8 de 9 · Resultados</span>
     <h2>Aquí está todo el proyecto</h2>
-    <p class="lede">La misma molécula contra las tres proteínas. <strong>Eso es la selectividad:</strong> pegarse fuerte a la que interesa y flojo a las demás.</p>
+    <p class="lede">La misma molécula contra las tres proteínas. <strong>Eso es la selectividad:</strong> unirse fuerte a la diana deseada y débil a las que conviene no tocar.</p>
     <div class="dos" style="align-items:start">
       <div>
         <div class="chips" id="vLig" style="margin-bottom:1rem"></div>
@@ -395,51 +471,78 @@ em{font-style:italic}
       <div>
         <div class="card">
           <h4>El índice de selectividad</h4>
-          <p style="font-family:var(--mono);font-size:.84rem;background:var(--surface-3);border:1px solid var(--border);border-radius:10px;padding:.7rem;margin:.5rem 0;text-align:center">IS = |SIRT1| ÷ promedio(|p53|, |PRX6|)</p>
-          <p>Divide lo que se pega a la proteína que queremos por lo que se pega, en promedio, a las que no queremos tocar.</p>
-          <p style="margin-top:.5em"><strong style="color:var(--fg)">Si es mayor que 1, discrimina.</strong> Si está cerca de 1, se pega a todo por igual.</p>
+          <p class="formula">IS = |afinidad(SIRT1)| ÷ promedio(|afinidad(p53)|, |afinidad(PRX6)|)</p>
+          <p>El cociente entre la afinidad por el blanco deseado y el promedio de las afinidades por los blancos no deseados, en valores absolutos.</p>
+          <p style="margin-top:.5em"><strong style="color:var(--fg)">Un IS mayor que 1 indica preferencia</strong> por el blanco deseado. Cerca de 1, no discrimina.</p>
         </div>
         <div style="overflow-x:auto;margin-top:.9rem">
           <table class="tabla">
-            <thead><tr><th>Molécula</th><th style="text-align:right">IS</th><th>Lectura</th></tr></thead>
+            <thead><tr><th>Ligando</th><th style="text-align:right">IS</th><th>Clasificación</th></tr></thead>
             <tbody id="tablaIS"></tbody>
           </table>
         </div>
+        <p class="pista">Los flavonoides se unieron con más fuerza a SIRT1 que el dasatinib, y más débilmente a p53 y PRX6. El dasatinib mostró afinidades similares frente a las tres proteínas, sin discriminar.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 8 ============ -->
-<section class="paso" id="p8" aria-label="Qué falta">
+<!-- ============ 9 ============ -->
+<section class="paso" id="p9" aria-label="Conclusiones">
   <div class="in">
-    <span class="num">Paso 8 de 8 · Conclusión</span>
+    <span class="num">Paso 9 de 9 · Discusión y conclusiones</span>
     <h2>Qué concluimos y qué falta</h2>
     <div class="dos" style="align-items:start">
       <div class="txt">
-        <p>Los dos flavonoides antárticos fueron <strong>más selectivos que el dasatinib</strong>, que resultó ser el único por debajo de 1: se une casi igual a las tres proteínas. Eso concuerda con su baja especificidad descrita en la literatura.</p>
-        <p>También aportamos una posible explicación molecular al trabajo de Ortiz-Espín: si estos flavonoides se unen con fuerza a SIRT1, eso podría estar detrás del efecto protector que ellos midieron en células.</p>
-        <p>Eso sí, <strong>la hipótesis se cumple solo en parte</strong>. Frente al dasatinib la diferencia es clara; frente a la quercetina, que también es un flavonoide, es marginal: 1,66 y 1,61 contra 1,47.</p>
+        <p>Los flavonoides del extracto de <em>Deschampsia antarctica</em> resultaron <strong>más selectivos que el dasatinib</strong> por SIRT1, la proteína antienvejecimiento que interesa activar <span class="cita">(Haigis y Sinclair, 2010)</span>.</p>
+        <p>La clave está en que los flavonoides se unen con mucha fuerza a SIRT1 y débilmente a los blancos no deseados, mientras que el dasatinib se une con una intensidad parecida a las tres proteínas, sin discriminar. Un fármaco poco selectivo es coherente con los efectos secundarios y la baja especificidad descritos en la literatura <span class="cita">(Justice et al., 2019)</span>.</p>
+        <p>Estos hallazgos concuerdan con la evidencia experimental previa: Ortiz-Espín et al. (2017) demostraron que el extracto protege a los fibroblastos y restaura SIRT1. Este estudio aporta una <strong>posible explicación mecanística</strong> a esa observación.</p>
+        <div class="card" style="border-left:4px solid var(--good);margin-top:1rem">
+          <h4>Conclusión</h4>
+          <p style="font-family:var(--body);font-size:1.02rem;color:var(--fg)">La hipótesis se cumple: el extracto de <em>Deschampsia antarctica</em>, a través de la apigenina y la luteolina, presenta un índice de selectividad senolítica superior al de dasatinib y quercetina <strong>en las condiciones evaluadas</strong>. Esto respalda la bioprospección de plantas extremófilas <span class="cita">(Ramírez et al., 2024)</span> como estrategia para descubrir senolíticos naturales.</p>
+        </div>
       </div>
       <div>
         <div class="card" style="border-left:4px solid var(--warm)">
-          <h4>Lo que este estudio no prueba</h4>
-          <p>Es una predicción por computador. El docking estima la fuerza de unión, pero no reemplaza la comprobación en células ni en organismos, y tampoco dice si la molécula activa o inhibe a la proteína.</p>
+          <h4>Limitaciones</h4>
+          <p>El docking molecular es una predicción computacional: estima la afinidad de unión, pero <strong>no reemplaza la comprobación experimental</strong> en células ni en organismos. Tampoco establece si la molécula activa o inhibe a la proteína.</p>
         </div>
         <div class="card" style="border-left:4px solid var(--accent);margin-top:.9rem">
-          <h4>Lo que viene</h4>
-          <p>Simular la dinámica molecular para ver si la unión se mantiene en el tiempo, y validar las predicciones con ensayos <em>in vitro</em> sobre cultivos de células senescentes.</p>
+          <h4>Proyecciones</h4>
+          <p>Simular la <strong>dinámica molecular</strong> de estos flavonoides para evaluar la estabilidad de la unión en el tiempo, y validar las predicciones mediante <strong>ensayos <em>in vitro</em></strong> con el extracto sobre cultivos de células senescentes.</p>
+        </div>
+        <div class="card" style="margin-top:.9rem;background:var(--surface-3)">
+          <h4 style="font-size:.9rem">Palabras clave</h4>
+          <p>Senescencia celular · Senolíticos · Docking molecular · <em>Deschampsia antarctica</em> · Índice de selectividad</p>
         </div>
       </div>
     </div>
+
+    <details class="refs">
+      <summary>Referencias bibliográficas</summary>
+      <ol>
+        <li>Beck, J., et al. (2020). Sobre el papel de p53 en la senescencia y el envejecimiento.</li>
+        <li>Eberhardt, J., Santos-Martins, D., Tillack, A. F., &amp; Forli, S. (2021). AutoDock Vina 1.2.0: New docking methods, expanded force field, and Python bindings. <em>J. Chem. Inf. Model.</em>, 61(8), 3891–3898.</li>
+        <li>Haigis, M. C., &amp; Sinclair, D. A. (2010). Mammalian sirtuins: biological insights and disease relevance. <em>Annu. Rev. Pathol.</em>, 5, 253–295.</li>
+        <li>Justice, J. N., et al. (2019). Senolytics in idiopathic pulmonary fibrosis: Results from a first-in-human, open-label, pilot study. <em>EBioMedicine</em>, 40, 554–563.</li>
+        <li>Mataix, M., et al. (2020). <em>Deschampsia antarctica</em> extract (Edafence®) as a powerful skin protection tool against the aging exposome. <em>Plast. Aesthet. Res.</em>, 7, 69.</li>
+        <li>Ortiz-Espín, A., et al. (2017). An extract from the plant <em>Deschampsia antarctica</em> protects fibroblasts from senescence induced by hydrogen peroxide. <em>Oxid. Med. Cell. Longev.</em>, 2017, 2694945.</li>
+        <li>Pettersen, E. F., et al. (2004). UCSF Chimera — A visualization system for exploratory research and analysis. <em>J. Comput. Chem.</em>, 25(13), 1605–1612.</li>
+        <li>Piña Morán, M., et al. (2022). Envejecimiento, calidad de vida y salud. Desafíos para los roles sociales de las personas mayores. <em>Rumbos TS</em>, 17(28), 7–27.</li>
+        <li>Ramírez, C. F., et al. (2024). Ecophysiology of Antarctic vascular plants. <em>Plants</em>, 13(3), 449.</li>
+        <li>Trott, O., &amp; Olson, A. J. (2010). AutoDock Vina: improving the speed and accuracy of docking. <em>J. Comput. Chem.</em>, 31(2), 455–461.</li>
+        <li>Witham, M. D., et al. (2023). New horizons in cellular senescence for clinicians. <em>Age Ageing</em>, 52(7), afad127.</li>
+      </ol>
+    </details>
+
     <div class="salidas">
-      <a class="salida" href="bitacora.html"><b>Bitácora completa →</b><span>Todos los archivos del proceso: estructuras, configuraciones y resultados de AutoDock Vina.</span></a>
+      <a class="salida" href="bitacora.html"><b>Bitácora completa →</b><span>Todos los archivos del proceso: estructuras, configuraciones y registros de AutoDock Vina.</span></a>
       <a class="salida" href="juegos.html"><b>Juegos →</b><span>Una sopa de letras y un memorice con las proteínas y los ligandos del estudio.</span></a>
     </div>
     <p class="creditos">
+      <strong>Evaluación de la selectividad senolítica de los flavonoides apigenina y luteolina presentes en <em>Deschampsia antarctica</em> frente a dasatinib y quercetina mediante docking molecular</strong><br>
       Francisca González Galindo · Amanda Toledo Leiva · Ezequiel Saldivia Vegara<br>
-      Escuela Particular N.º 95 Alemana, Paillaco, Los Ríos, Chile · Expo Ciencias Nacional<br>
-      Estructuras del Protein Data Bank y PubChem · Acoplamiento con AutoDock Vina 1.2.7
+      Escuela Particular N.º 95 Alemana · Paillaco, Los Ríos, Chile · Expo Ciencias Nacional
     </p>
   </div>
 </section>
@@ -484,7 +587,13 @@ em{font-style:italic}
     Dasatinib:  { "4I5I": -6.021, "1TUP": -6.124, "5B6N": -6.806 }
   };
   var prot = function (id) { return PROTEINAS.filter(function (p) { return p.id === id; })[0]; };
-  var num = function (v, d) { return v.toFixed(d === undefined ? 2 : d).replace(".", ","); };
+  /* toFixed arrastra el error binario y deja −5,63 donde el artículo dice −5,64:
+     se redondea el medio hacia arriba para que las cifras calcen con la tabla publicada */
+  var num = function (v, d) {
+    var dec = d === undefined ? 2 : d, m = Math.pow(10, dec);
+    var r = Math.round(Math.abs(v) * m + 1e-9) / m;
+    return (v < 0 ? "-" : "") + r.toFixed(dec).replace(".", ",");
+  };
   /* todas las afinidades son negativas: se formatean siempre con un solo signo menos */
   var kcal = function (v) { return "−" + num(Math.abs(v)); };
   /* requestAnimationFrame puede entregar una marca anterior a t0, así que el avance se acota a 0..1 */
@@ -802,11 +911,11 @@ em{font-style:italic}
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
-      if (e.target.id === "p5" && !piezaActual) {
+      if (e.target.id === "p6" && !piezaActual) {
         verPieza(PROTEINAS[0], true);
         $("chipsProt").querySelector(".chip").setAttribute("aria-pressed", "true");
       }
-      if (e.target.id === "p6" && !arrancado6) { arrancado6 = true; acoplar(); }
+      if (e.target.id === "p7" && !arrancado6) { arrancado6 = true; acoplar(); }
     });
   }, { threshold: 0.35 });
   pasos.forEach(function (s) { io.observe(s); });
